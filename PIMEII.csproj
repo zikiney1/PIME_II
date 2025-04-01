@@ -2,6 +2,6 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>NovoProjetodeJogo</RootNamespace>
+    <RootNamespace>PIMEII</RootNamespace>
   </PropertyGroup>
 </Project>

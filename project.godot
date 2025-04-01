@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [dotnet]
 
-project/assembly_name="Novo Projeto de Jogo"
+project/assembly_name="PIMEII"
 
 [rendering]
 
