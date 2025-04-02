@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Novo Projeto de Jogo", "Novo Projeto de Jogo.csproj", "{DFCAE430-5182-4AA2-9929-6A66404DBE6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PIMEII", "PIMEII.csproj", "{DFCAE430-5182-4AA2-9929-6A66404DBE6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
