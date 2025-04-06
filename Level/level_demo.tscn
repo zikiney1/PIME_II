@@ -1,8 +1,45 @@
-[gd_scene load_steps=2 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=4 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
+[ext_resource type="PackedScene" uid="uid://b3sxaasjc68xf" path="res://Entities/camera/camera.tscn" id="2_2tdjr"]
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="3_pbyjw"]
 
 [node name="Level_Demo" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource("1_kw413")]
-position = Vector2(271, 132)
+
+[node name="Camera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_2tdjr")]
+zoom = Vector2(0.7, 0.7)
+player = NodePath("../Player")
+
+[node name="walls" type="Node" parent="."]
+
+[node name="Icon" type="Sprite2D" parent="walls"]
+position = Vector2(40, 182)
+scale = Vector2(5.16, 1)
+texture = ExtResource("3_pbyjw")
+
+[node name="Icon2" type="Sprite2D" parent="walls"]
+position = Vector2(852, 21)
+scale = Vector2(5.16, 1)
+texture = ExtResource("3_pbyjw")
+
+[node name="Icon3" type="Sprite2D" parent="walls"]
+position = Vector2(624.24, 632)
+scale = Vector2(5.16, 1)
+texture = ExtResource("3_pbyjw")
+
+[node name="Icon4" type="Sprite2D" parent="walls"]
+position = Vector2(1436.24, 471)
+scale = Vector2(5.16, 1)
+texture = ExtResource("3_pbyjw")
+
+[node name="Icon5" type="Sprite2D" parent="walls"]
+position = Vector2(-855, 488)
+scale = Vector2(5.16, 1)
+texture = ExtResource("3_pbyjw")
+
+[node name="Icon6" type="Sprite2D" parent="walls"]
+position = Vector2(-110, 838)
+scale = Vector2(5.16, 1)
+texture = ExtResource("3_pbyjw")
