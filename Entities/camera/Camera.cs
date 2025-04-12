@@ -20,7 +20,9 @@ public partial class Camera : Camera2D
         GlobalPosition = currentRoom * roomSize + roomSize / 2f;
 
         ProcessMode = ProcessModeEnum.Always; // <- Importante! Permite que a câmera funcione mesmo com o jogo pausado
+        player.GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").ProcessMode = ProcessModeEnum.Always;
     }
+
 
     public override void _Process(double delta)
     {
