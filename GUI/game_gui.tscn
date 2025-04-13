@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpxj72d1rhigg"]
+
+[ext_resource type="Texture2D" uid="uid://35oefac0ypgp" path="res://assets/GUI/blackBG.png" id="1_att1m"]
+[ext_resource type="Texture2D" uid="uid://o75nqhosorv8" path="res://assets/rascunhos/level design - rascunho.png" id="2_att1m"]
+
+[node name="GameGUI" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GUIContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="TextureRect" type="TextureRect" parent="GUIContainer"]
+layout_mode = 2
+texture = ExtResource("1_att1m")
+
+[node name="MainGUI" type="HBoxContainer" parent="GUIContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="life" type="VBoxContainer" parent="GUIContainer/MainGUI"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="GUIContainer/MainGUI/life"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "LIfe"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="GUIContainer/MainGUI/life"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Itens" type="Control" parent="GUIContainer/MainGUI"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="Map" type="TextureRect" parent="GUIContainer/MainGUI"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_stretch_ratio = 0.4
+texture = ExtResource("2_att1m")
+expand_mode = 3
+
+[node name="GameContainter" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3

@@ -7,11 +7,12 @@
 [node name="Level_Demo" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource("1_kw413")]
-position = Vector2(777, 397)
+position = Vector2(1160, 723)
 
 [node name="Camera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_2tdjr")]
-position = Vector2(823, 468)
-zoom = Vector2(0.7, 0.7)
+position = Vector2(1150, 635)
+scale = Vector2(0.5, 0.5)
+zoom = Vector2(0.5, 0.5)
 player = NodePath("../Player")
 
 [node name="walls" type="Node" parent="."]

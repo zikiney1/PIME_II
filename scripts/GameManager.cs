@@ -4,6 +4,7 @@ public partial class GameManager : Node{
 
     public static GameManager Instance { get; set; }
     [Export] Player player;
+    [Export] Camera camera;
 
     public CfgData configData;
 
@@ -25,6 +26,9 @@ public partial class GameManager : Node{
         }
 
         SetKeys();
+
+        player.GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").ProcessMode = ProcessModeEnum.Always;
+        camera.ProcessMode = ProcessModeEnum.Always;
     }
 
     public string KeyConfig(string key) => configData["KEY CONFIG"][key];
@@ -34,13 +38,15 @@ public partial class GameManager : Node{
     public void LoadConfig() => configData = CFGParser.Parse(configPath);
 
     public CfgData DefaultConfig(){
+        const string KEYCONFIG = "KEY CONFIG";
         CfgData data = new CfgData();
         data.Add(new Section("KEY CONFIG"));
-        data["KEY CONFIG"].Add("LEFT", "Left,D");
-        data["KEY CONFIG"].Add("RIGHT", "Right,A");
-        data["KEY CONFIG"].Add("UP", "Up,W");
-        data["KEY CONFIG"].Add("DOWN", "Down,S");
-        data["KEY CONFIG"].Add("ATTACK", "Space");
+        data[KEYCONFIG].Add("LEFT", "Left,D");
+        data[KEYCONFIG].Add("RIGHT", "Right,A");
+        data[KEYCONFIG].Add("UP", "Up,W");
+        data[KEYCONFIG].Add("DOWN", "Down,S");
+        data[KEYCONFIG].Add("ATTACK", "Space");
+        data[KEYCONFIG].Add("DEFEND", "Shift");
         
         return data;
     }
@@ -53,12 +59,14 @@ public partial class GameManager : Node{
         string[] up = KeyConfig("UP").Split(',');
         string[] down = KeyConfig("DOWN").Split(',');
         string[] attack = KeyConfig("ATTACK").Split(',');
+        string[] defend = KeyConfig("DEFEND").Split(',');
 
         SetAction("left", left);
         SetAction("right", right);
         SetAction("up", up);
         SetAction("down", down);
         SetAction("attack", attack);
+        SetAction("defend", defend);
     }
 
     void SetAction(string actionName, string[] keys){
