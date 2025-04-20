@@ -11,6 +11,8 @@ public partial class Player : CharacterBody2D{
     PlayerState previousState;
     Control GUI;
 
+    EquipamentSys equipamentSys = new EquipamentSys();
+
     enum PlayerState{
         Idle,
         Walking,
@@ -44,7 +46,7 @@ public partial class Player : CharacterBody2D{
             if(state != PlayerState.Defending)
                 state = PlayerState.Walking;
 
-            float speedTotal = Speed / ((state == PlayerState.Defending? 1 : 0) + 1 );
+            float speedTotal = ( Speed * equipamentSys.GetSpeedModifier() ) / ((state == PlayerState.Defending? 1 : 0) + 1 );
             Velocity = direction * speedTotal * (float)delta;
             lastDirection = direction;
         }else{
@@ -82,16 +84,16 @@ public partial class Player : CharacterBody2D{
         state = previousState;
     }
 
-    public void GetDamage(sbyte amount = 1){
+    public void GetDamage(Equipament[] enemyEquipaments, sbyte amount = 1){
         if(lifes - amount <= 0) {
-            GameOver();
+            Die();
             return;
         }
-        lifes -= amount;
+        lifes -= equipamentSys.GetDamage(enemyEquipaments, amount);
     }
 
-    void GameOver(){
-
+    void Die(){
+        
     }
 
     

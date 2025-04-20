@@ -14,8 +14,6 @@ public partial class GameManager : Node{
 
     public readonly static byte GAMEUNITS = 32;
 
-
-
     public override void _Ready(){
         Instance = this;
         if(FileAccess.FileExists(configPath)){
@@ -87,5 +85,10 @@ public partial class GameManager : Node{
             }
         }
 
+    }
+
+
+    public void GameOver(){
+        GetTree().ChangeSceneToFile("res://Scenes/GameOver.tscn");
     }
 }
