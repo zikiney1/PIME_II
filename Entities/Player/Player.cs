@@ -10,25 +10,35 @@ public partial class Player : CharacterBody2D{
     PlayerState previousState;
     Control GUI;
 
-    EquipamentSys equipamentSys = new EquipamentSys();
+    EquipamentSys equipamentSys = new();
     LifeSystem lifeSystem;
+
+    bool isDefending = false;
 
     enum PlayerState{
         Idle,
         Walking,
         Attacking,
-        Defending,
         Dead,
         Climbing
     }
 
     public void Damage(Equipament[] enemyEquipaments,sbyte amount = 1) => lifeSystem.GetDamage(enemyEquipaments,amount);
+    public void Damage(Element element,sbyte amount = 1) => lifeSystem.GetDamage(element,amount);
+    public void Damage(sbyte amount = 1) => lifeSystem.GetDamage(1f,amount);
+    public int MaxLife() => lifeSystem.MaxLife();
+    public int CurrentLife() => lifeSystem.CurrentLife();
+
+
+    public override void _EnterTree()
+    {
+        lifeSystem = new(equipamentSys, 10,10);
+        lifeSystem.WhenDies += Die;
+    }
+
 
     public override void _Ready()
     {
-        lifeSystem = new(equipamentSys, 10);
-        lifeSystem.WhenDies += Die;
-
         lastDirection = new();
         HitArea = GetNode<Area2D>("HitArea");
         timer = NodeFac.GenTimer(this, 0.5f, StopAttack);
@@ -47,10 +57,10 @@ public partial class Player : CharacterBody2D{
         Vector2 direction = Input.GetVector("left", "right", "up", "down");
 
         if(direction != Vector2.Zero){
-            if(state != PlayerState.Defending)
-                state = PlayerState.Walking;
+            state = PlayerState.Walking;
+            // if(state != PlayerState.Defending)
 
-            float speedTotal = ( Speed * equipamentSys.GetSpeedModifier() ) / ((state == PlayerState.Defending? 1 : 0) + 1 );
+            float speedTotal = ( Speed * equipamentSys.GetSpeedModifier() ) / (MathM.BoolToInt(isDefending) + 1 );
             Velocity = direction * speedTotal * (float)delta;
             lastDirection = direction;
         }else{
@@ -67,7 +77,7 @@ public partial class Player : CharacterBody2D{
     {
         if(@event is InputEventKey KeyEvent){
             if(KeyEvent.IsActionPressed("defend")) 
-                state = state == PlayerState.Defending? PlayerState.Idle : PlayerState.Defending;
+                isDefending = !isDefending;
             
             if(KeyEvent.IsActionPressed("attack")) Attack();
         }

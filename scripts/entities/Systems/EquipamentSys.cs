@@ -59,41 +59,42 @@ public class EquipamentSys{
         lastInserted = 0;
     }
 
-    public float GetDamageModifier(Equipament[] enemyEquipaments){
-        float damageModifier = 0;
-        foreach (Equipament enemyEquipament in enemyEquipaments){
-            if(enemyEquipament == null) continue;
-            foreach (Equipament equipament in equipaments){
-                if(equipament == null || enemyEquipament.DamageModifier <= 0) continue;
-                //da o dano do equipamento
-                damageModifier += equipament.DamageModifier;
 
-                //amplifica ou diminui o dano do equipamento baseado na fraqueza do elemnto ou resistencia dele
-                if(equipament.Weaknesses().Contains(enemyEquipament.Type())){
-                    damageModifier += enemyEquipament.element.DamageModifier();
-                }else if(equipament.Resistances().Contains(enemyEquipament.Type())){
-                    damageModifier -= equipament.element.DefenseModifier();
-                }
-            }
+    public float ElementModifier(Element ourElement, Element enemyElement){
+        if(ourElement.Weaknesses().Contains(enemyElement.Type())){
+            return enemyElement.DamageModifier();
+        }else if(ourElement.Resistances().Contains(enemyElement.Type())){
+            return - ourElement.DefenseModifier();
+        }else{
+            return 0;
+        }
+    }
+
+    public float GetDamageModifier(Element enemyElement){
+        if(enemyElement == null) return 1;
+        float damageModifier = 0;
+
+        foreach (Equipament equipament in equipaments){
+            damageModifier += ElementModifier(equipament.element,enemyElement);
+            
         }
         return damageModifier;
     }
 
-    public float GetAttackDamageModifier(Equipament[] enemyEquipaments){
+    public float GetDamageModifier(Equipament[] enemyEquipaments){
+        if(enemyEquipaments == null || enemyEquipaments.Length == 0) return 1;
         float damageModifier = 0;
+
         foreach (Equipament enemyEquipament in enemyEquipaments){
             if(enemyEquipament == null) continue;
             foreach (Equipament equipament in equipaments){
                 if(equipament == null || enemyEquipament.DamageModifier <= 0) continue;
+                
                 //da o dano do equipamento
-                damageModifier += equipament.DamageModifier;
+                damageModifier += enemyEquipament.DamageModifier - equipament.DefenseModifier;
 
                 //amplifica ou diminui o dano do equipamento baseado na fraqueza do elemnto ou resistencia dele
-                if(enemyEquipament.Weaknesses().Contains(equipament.Type())){
-                    damageModifier += equipament.element.DamageModifier();
-                }else if(enemyEquipament.Resistances().Contains(equipament.Type())){
-                    damageModifier -= enemyEquipament.element.DefenseModifier();
-                }
+                damageModifier += ElementModifier(equipament.element,enemyEquipament.element);
             }
         }
         return damageModifier;

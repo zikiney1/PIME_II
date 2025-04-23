@@ -3,22 +3,32 @@ using System;
 
 public class LifeSystem{
     EquipamentSys equipamentSys;
-    byte totalLife;
+    byte currentLife;
+    byte maxLife;
     public Action WhenDies;
-    public LifeSystem(EquipamentSys equipamentSystem, byte totalLife){
+    public LifeSystem(EquipamentSys equipamentSystem, byte currentLife, byte maxLife){
         this.equipamentSys = equipamentSystem;
-        this.totalLife = totalLife;
-        WhenDies += () => {};
+        this.currentLife = currentLife;
+        this.maxLife = maxLife;
+        WhenDies = () => {};
     }
-
     public void GetDamage(Equipament[] enemyEquipaments, sbyte amount = 1){
-        float equipModifier = equipamentSys.GetDamageModifier(enemyEquipaments);
-        byte totalDamage = (byte)(amount * Math.Floor(equipModifier));
+        GetDamage(equipamentSys.GetDamageModifier(enemyEquipaments),amount);
+    }
+    public void GetDamage(Element element, sbyte amount = 1){
+        GetDamage(equipamentSys.GetDamageModifier(element),amount);
+    }
+    public void GetDamage(float modifier, sbyte amount = 1){
+        if(modifier < 0) modifier = 1;
+        byte totalDamage = (byte)(amount * Math.Floor(modifier));
 
-        if(totalLife - totalDamage <= 0) {
-            WhenDies();
+        if(currentLife - totalDamage <= 0) {
+            if(WhenDies != null) WhenDies();
             return;
         }
-        totalLife -= totalDamage;
+        currentLife -= totalDamage;
     }
+
+    public int CurrentLife() => currentLife;
+    public int MaxLife() => maxLife;
 }

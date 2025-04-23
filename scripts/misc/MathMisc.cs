@@ -2,9 +2,9 @@ using System;
 using Godot;
 
 
-public static class MathMisc
+public static class MathM
 {
-
+    public static int BoolToInt(bool value) => value? 1 : 0;
     public static void Iterate2DArray(int height, int width,Action<int,int> action){
         for (int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){

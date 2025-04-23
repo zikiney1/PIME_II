@@ -5,10 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://b3sxaasjc68xf" path="res://Entities/camera/camera.tscn" id="2_2tdjr"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="3_pbyjw"]
 
-[node name="Level_Demo" type="Node" node_paths=PackedStringArray("player", "camera")]
+[node name="Level_Demo" type="Node"]
 script = ExtResource("1_0bltp")
-player = NodePath("Player")
-camera = NodePath("Camera")
 
 [node name="Player" parent="." instance=ExtResource("1_kw413")]
 position = Vector2(1160, 723)
