@@ -41,6 +41,7 @@ public class CfgData{
     }
     public bool IsEmpty() => sections.Count == 0;
     public bool Contains(string key) => sections.ContainsKey(key);
+    public bool Contains(Section section) => sections.ContainsKey(section.name);
 
     public override string ToString()
     {
@@ -58,18 +59,18 @@ public static class CFGParser{
         CfgData data = new();
         
         FileAccess file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
-        string[] lines = file.GetAsText().Split("\n");
-
+        string line;
         Section currentSection = new();
         string currentSectionName = "";
 
-        foreach(string line in lines){
+        while((line = file.GetLine()) != ""){
             if(line.StartsWith("#") || line.Trim() == "") continue;
             else if(line.StartsWith("[") && line.EndsWith("]")){
-                string sectionName = line.Substring(1, line.Length-2);
-                bool result = data.Add(currentSection);
-                if(!result) GD.PrintErr("was not able to add section: " + currentSectionName);
-                currentSection = new(sectionName);
+                currentSectionName = line.Substring(1, line.Length-2);
+                if(!currentSection.IsEmpty()){
+                    if(!data.Add(currentSection)) GD.PrintErr("was not able to add section: " + currentSectionName);
+                }
+                currentSection = new(currentSectionName);
             }
             else{
                 int index = line.IndexOf('=');
@@ -84,9 +85,12 @@ public static class CFGParser{
                 }
                 currentSection.Add(key, value);
             }
+            
         }
-        
-        if(!data.Add(currentSection)) GD.PrintErr("was not able to add section: " + currentSectionName);
+        if(!data.Contains(currentSection))
+            if(!data.Add(currentSection)) 
+                GD.PrintErr("was not able to add section: " + currentSectionName);
+
         return data;
     }
     

@@ -4,7 +4,6 @@ using System;
 public partial class Player : CharacterBody2D{
     Vector2 lastDirection;
     float Speed = (GameManager.GAMEUNITS)  * 1000;
-    sbyte lifes;
     Area2D HitArea;
     Timer timer;
     PlayerState state = PlayerState.Idle;
@@ -12,6 +11,7 @@ public partial class Player : CharacterBody2D{
     Control GUI;
 
     EquipamentSys equipamentSys = new EquipamentSys();
+    LifeSystem lifeSystem;
 
     enum PlayerState{
         Idle,
@@ -22,9 +22,13 @@ public partial class Player : CharacterBody2D{
         Climbing
     }
 
+    public void Damage(Equipament[] enemyEquipaments,sbyte amount = 1) => lifeSystem.GetDamage(enemyEquipaments,amount);
 
     public override void _Ready()
     {
+        lifeSystem = new(equipamentSys, 10);
+        lifeSystem.WhenDies += Die;
+
         lastDirection = new();
         HitArea = GetNode<Area2D>("HitArea");
         timer = NodeFac.GenTimer(this, 0.5f, StopAttack);
@@ -84,13 +88,6 @@ public partial class Player : CharacterBody2D{
         state = previousState;
     }
 
-    public void GetDamage(Equipament[] enemyEquipaments, sbyte amount = 1){
-        if(lifes - amount <= 0) {
-            Die();
-            return;
-        }
-        lifes -= equipamentSys.GetDamage(enemyEquipaments, amount);
-    }
 
     void Die(){
         

@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+
+//então, uma gambiarra pro sistema de elementos funcionar bem, seria colocar inimigos com um equipamento só, dai pode ser colocado inimigos que são agua e pedra no futuro
 public class Equipament{
     public Equipament(byte id, Element element, float damageModifier, float defenseModifier, float speedModifier){
         this.id = id;
@@ -57,9 +59,8 @@ public class EquipamentSys{
         lastInserted = 0;
     }
 
-    public sbyte GetDamage(Equipament[] enemyEquipaments, int amount = 1){
+    public float GetDamageModifier(Equipament[] enemyEquipaments){
         float damageModifier = 0;
-        sbyte totalModifier;
         foreach (Equipament enemyEquipament in enemyEquipaments){
             if(enemyEquipament == null) continue;
             foreach (Equipament equipament in equipaments){
@@ -75,15 +76,11 @@ public class EquipamentSys{
                 }
             }
         }
-        totalModifier = (sbyte)Math.Round(amount *  damageModifier);
-
-        if(totalModifier > 0) totalModifier = 0;
-        return totalModifier;
+        return damageModifier;
     }
 
-    public sbyte AttackDamage(Equipament[] enemyEquipaments, int amount = 1){
+    public float GetAttackDamageModifier(Equipament[] enemyEquipaments){
         float damageModifier = 0;
-        sbyte totalModifier;
         foreach (Equipament enemyEquipament in enemyEquipaments){
             if(enemyEquipament == null) continue;
             foreach (Equipament equipament in equipaments){
@@ -99,23 +96,19 @@ public class EquipamentSys{
                 }
             }
         }
-        totalModifier = (sbyte)Math.Round(amount *  damageModifier);
-
-        if(totalModifier < 0) totalModifier = 0;
-        return totalModifier;
+        return damageModifier;
     }
 
     
 
-    public sbyte GetSpeedModifier(){
-        if(lastInserted == 0) return 0;
+    public float GetSpeedModifier(){
         float EquipamentModifier = 0;
         for(int i = 0; i < lastInserted; i++){
             if(equipaments[i] == null) continue;
             EquipamentModifier += equipaments[i].SpeedModifier;
             
         }
-        return (sbyte)(1 + Math.Round(EquipamentModifier));
+        return (float)(1f + EquipamentModifier);
     }
 
     
