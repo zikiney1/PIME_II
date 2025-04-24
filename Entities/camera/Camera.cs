@@ -4,6 +4,8 @@ using System;
 public partial class Camera : Camera2D
 {
     [Export] Player player;
+    Control UIContainer;
+
     private Vector2 roomSize;
     private Vector2 currentRoom;
     private Vector2 targetPosition;
@@ -13,19 +15,20 @@ public partial class Camera : Camera2D
     private float moveTimer = 0f;
     private Vector2 moveStart;
     Vector2 OffSet = new Vector2(-10, 130);
+    Vector2 newZoom;
 
-    public override void _Ready()
-    {
-        roomSize = (GetViewportRect().Size - OffSet) / (Zoom * 1.1f);
-
-        ProcessMode = ProcessModeEnum.Always; // <- Importante! Permite que a câmera funcione mesmo com o jogo pausado
-        player.GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").ProcessMode = ProcessModeEnum.Always;
+    public override void _Ready(){
+        newZoom = new(1f/ Zoom.X, 1f/ Zoom.Y);
+        UIContainer = player.GetNode<Control>("Canvas/GameGUI/GUIContainer");
+        OffSet = new(0,UIContainer.GetRect().Size.Y* 8);
+        
+        roomSize = (GetViewportRect().Size - OffSet) * newZoom;
 
         currentRoom = GetRoom(player.GlobalPosition);
-        GlobalPosition = currentRoom * roomSize + roomSize / 2f - OffSet;
-        // SetScreenPos(0.1f);
+        GlobalPosition = currentRoom * RoomSize() + RoomSize() / 2f - OffSet;
     }
 
+    Vector2 RoomSize() => (GetViewportRect().Size - OffSet) * newZoom;
 
 
     public override void _Process(double delta)
@@ -51,27 +54,24 @@ public partial class Camera : Camera2D
 
     }
 
-    private void StartCameraMove(Vector2 newRoom)
-    {
+    private void StartCameraMove(Vector2 newRoom){
         currentRoom = newRoom;
         moveStart = GlobalPosition;
-        targetPosition = currentRoom * roomSize + roomSize / 2f - OffSet;
+        targetPosition = currentRoom * RoomSize() + RoomSize() / 2f - OffSet;
         moveTimer = 0f;
         isMoving = true;
-        // SetScreenPos();
-        GetTree().Paused = true; // Pausa tudo (menos a câmera)
+        GetTree().Paused = true;
     }
 
     private void FinishCameraMove(){
-        
         isMoving = false;
-        GetTree().Paused = false; // Retoma o jogo
+        GetTree().Paused = false;
     }
 
     private Vector2 GetRoom(Vector2 position){
         return new Vector2(
-            Mathf.Floor(position.X / roomSize.X),
-            Mathf.Floor(position.Y / roomSize.Y)
+            Mathf.Floor(position.X / RoomSize().X),
+            Mathf.Floor(position.Y / RoomSize().Y)
         );
     }
     
