@@ -12,8 +12,11 @@ public partial class Player : CharacterBody2D{
 
     EquipamentSys equipamentSys = new();
     LifeSystem lifeSystem;
+    InventorySystem inventory;
 
     bool isDefending = false;
+
+    byte[] Hands = new byte[2];
 
     enum PlayerState{
         Idle,
@@ -28,11 +31,13 @@ public partial class Player : CharacterBody2D{
     public void Damage(sbyte amount = 1) => lifeSystem.GetDamage(1f,amount);
     public int MaxLife() => lifeSystem.MaxLife();
     public int CurrentLife() => lifeSystem.CurrentLife();
+    public void Heal(byte amount = 1) => lifeSystem.Heal(amount);
 
 
     public override void _EnterTree()
     {
-        lifeSystem = new(equipamentSys, 10,10);
+        inventory = new(9);
+        lifeSystem = new(equipamentSys, 5,10);
         lifeSystem.WhenDies += Die;
     }
 
@@ -103,6 +108,12 @@ public partial class Player : CharacterBody2D{
         
     }
 
-    
+    void UsePotion(int hand){
+        ItemData potionItem = inventory[Hands[hand]];
+        if(potionItem == null) return;
+        if(potionItem.type != ItemType.Potion) return;
+
+        potionItem.effect.Apply(this);
+    }
 
 }

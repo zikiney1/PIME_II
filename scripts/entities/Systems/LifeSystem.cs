@@ -12,6 +12,7 @@ public class LifeSystem{
         this.maxLife = maxLife;
         WhenDies = () => {};
     }
+    public void Heal(byte amount = 1) => currentLife += (byte)Math.Clamp(amount,1,maxLife-currentLife);
     public void GetDamage(Equipament[] enemyEquipaments, sbyte amount = 1){
         GetDamage(equipamentSys.GetDamageModifier(enemyEquipaments),amount);
     }
