@@ -32,14 +32,14 @@ public static class ItemDB{
         if (resource == null) return null;
 
         PotionBuilder pb = new (resource.potionType, resource.duration);
-        if(resource.healAmount >= 0){
+        if(resource.healAmount > 0){
             if(resource.HealBehavior == PotionBuilder.PotionType.Instant){
                 pb.HealInstant(AmountWithLevel(resource.healAmount,level));
             }else{
                 pb.HealOverTime(AmountWithLevel(resource.healAmount,level));
             }
         }
-        if(resource.damageAmount >= 0){
+        if(resource.damageAmount > 0){
             if(resource.DamageBehavior == PotionBuilder.PotionType.Instant){
                 pb.TakeDamageInstant(resource.healAmount);
             }else{
@@ -47,7 +47,7 @@ public static class ItemDB{
             }
         }
 
-        if(resource.AffectOtherResistance || resource.resistanceAmount >= 0){
+        if(resource.AffectOtherResistance && resource.resistanceAmount > 0){
             Element element;
             if(resource.resistanceElement == ElementsEnum.Fire) element = new FireElement();
             else if(resource.resistanceElement == ElementsEnum.Water) element = new WaterElement();
@@ -55,15 +55,15 @@ public static class ItemDB{
 
             pb.Resistence(element, resource.resistanceAmount);
         }else{
-            if(resource.resistanceAmount >= 0){
+            if(resource.resistanceAmount > 0){
                 pb.Resistence(resource.resistanceElement, resource.resistanceAmount);
             }
-            if(resource.weaknessAmount >= 0){
+            if(resource.weaknessAmount > 0){
                 pb.Resistence(resource.WeakElement, resource.weaknessAmount);
             }
         }
 
-        if(resource.speedAmount >= 0){
+        if(resource.speedAmount > 0){
             pb.Speed(resource.speedAmount);
         }
 

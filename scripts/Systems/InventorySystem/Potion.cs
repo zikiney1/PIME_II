@@ -2,14 +2,14 @@ using Godot;
 using System;
 
 public class PotionEffect{
-    public Action<Player> whenApply;
+    public Action<Entitie> whenApply;
     public Action whenStop;
     public Action whenUpdate;
-    public Player player;
+    public Entitie entitie;
 
-    public virtual void Apply(Player player){
-        this.player = player;
-        whenApply?.Invoke(player);
+    public virtual void Apply(Entitie entitie){
+        this.entitie = entitie;
+        whenApply?.Invoke(entitie);
     }
 }
 
@@ -19,8 +19,8 @@ public class PeriodicEffect : PotionEffect{
     protected bool isToStop = false;
     Timer durationTimer, UpdateTimer;
 
-    public override void Apply(Player player) {
-        base.Apply(player);
+    public override void Apply(Entitie entitie) {
+        base.Apply(entitie);
 
         durationTimer = new();
         durationTimer.WaitTime = duration;
@@ -41,8 +41,8 @@ public class PeriodicEffect : PotionEffect{
             UpdateTimer.Stop();
         };
 
-        player.AddChild(durationTimer);
-        player.AddChild(UpdateTimer);
+        entitie.AddChild(durationTimer);
+        entitie.AddChild(UpdateTimer);
     }
 }
 
@@ -50,16 +50,16 @@ public class PeriodicEffect : PotionEffect{
 public class TimedEffect : PotionEffect{
     protected float duration = 3;
     public TimedEffect(float duration) => this.duration = duration;
-    public override void Apply(Player player) {
-        base.Apply(player);
-        Timer timer = NodeFac.GenTimer(player, duration, whenStop);
-        player.AddChild(timer);
+    public override void Apply(Entitie entitie) {
+        base.Apply(entitie);
+        Timer timer = NodeFac.GenTimer(entitie, duration, whenStop);
+        entitie.AddChild(timer);
     }
 }
 
 public class InstaEffect : PotionEffect{
-    public override void Apply(Player player){
-        base.Apply(player);
+    public override void Apply(Entitie entitie){
+        base.Apply(entitie);
     }
 }
 
@@ -85,41 +85,45 @@ public class PotionBuilder{
 
     public PotionBuilder TakeDamageOverTime(int amount = 1, int level = 1){
         effect.whenUpdate += () => {
-            effect.player.Damage(AmountWithLevel(amount,level));
+            effect.entitie.Damage(AmountWithLevel(amount,level));
+            effect.entitie.TakeDamageUpdate();
         };
         return this;
     }
     public PotionBuilder TakeDamageInstant(int amount = 1, int level = 1){
-        effect.whenApply += (Player player) => {
-            player.Damage(AmountWithLevel(amount,level));
+        effect.whenApply += (Entitie entitie) => {
+            entitie.Damage(AmountWithLevel(amount,level));
+            effect.entitie.WhenTakeDamage();
         };
         return this;
     }
     public PotionBuilder HealOverTime(int amount = 1, int level = 1){
         effect.whenUpdate += () => {
-            effect.player.Heal(AmountWithLevel(amount,level));
+            effect.entitie.Heal(AmountWithLevel(amount,level));
+            effect.entitie.HealUpdate();
         };
         return this;
     }
     public PotionBuilder HealInstant(int amount = 1, int level = 1){
-        effect.whenApply += (Player player) => {
-            player.Heal(AmountWithLevel(amount,level));
+        effect.whenApply += (Entitie entitie) => {
+            entitie.Heal(AmountWithLevel(amount,level));
+            effect.entitie.whenHeal();
         };
         return this;
     }
     
     public PotionBuilder Damage(ElementsEnum element, float amount, int level = 1){
-        effect.whenApply += (player) => {
-            player.entitieModifier.SetPotionDamageModifier((Half)AmountWithLevel(amount,level),element);  
+        effect.whenApply += (entitie) => {
+            entitie.entitieModifier.SetPotionDamageModifier((Half)AmountWithLevel(amount,level),element);  
         };
-        effect.whenStop += () => effect.player.entitieModifier.ResetPotionDamageModifier(element);
+        effect.whenStop += () => effect.entitie.entitieModifier.ResetPotionDamageModifier(element);
         return this;
     }
     public PotionBuilder Resistence(ElementsEnum element, float amount, int level = 1){
-        effect.whenApply += (player) => {
-            player.entitieModifier.SetPotionResistenceModifier((Half)AmountWithLevel(amount,level),element);  
+        effect.whenApply += (entitie) => {
+            entitie.entitieModifier.SetPotionResistenceModifier((Half)AmountWithLevel(amount,level),element);  
         };
-        effect.whenStop += () => effect.player.entitieModifier.ResetPotionResistenceModifier(element);
+        effect.whenStop += () => effect.entitie.entitieModifier.ResetPotionResistenceModifier(element);
         return this;
     }
     public PotionBuilder Resistence(Element element, float amount, int level = 1){
@@ -132,10 +136,10 @@ public class PotionBuilder{
         return this;
     }
     public PotionBuilder Speed(float amount, int level = 1){
-        effect.whenApply += (player) => {
-            player.entitieModifier.SetPotionSpeedModifier((Half)AmountWithLevel(amount,level));  
+        effect.whenApply += (entitie) => {
+            entitie.entitieModifier.SetPotionSpeedModifier((Half)AmountWithLevel(amount,level));  
         };
-        effect.whenStop += () => effect.player.entitieModifier.ResetPotionSpeedModifier();
+        effect.whenStop += () => effect.entitie.entitieModifier.ResetPotionSpeedModifier();
         return this;
     }
 

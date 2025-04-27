@@ -9,7 +9,7 @@ public partial class Player : Entitie{
 
     bool isDefending = false;
 
-
+    public void UpdateHearts() => GUI.UpdateHearts();
 
 
     public override void _EnterTree()
@@ -20,6 +20,9 @@ public partial class Player : Entitie{
         inventory = new(9);
         lifeSystem = new(entitieModifier, 5,10);
         lifeSystem.WhenDies += Die;
+
+        inventory.Add(new Item(1));
+        HandItem = inventory[0];
     }
 
 
@@ -67,19 +70,19 @@ public partial class Player : Entitie{
     }
 
 
+
     protected override void Die(){
-        
-    }
-
-    protected override void UsePotion(){
-        if(HandItem == null) return;
-        if(HandItem.type != ItemType.Potion) return;
-
-        HandItem.effect.Apply(this);
+        GD.Print("YOU DIED");
     }
 
 
-    protected override void WhenDamage(){
-        GUI.UpdateHearts();
+
+    public override void WhenTakeDamage(){
+        UpdateHearts();
     }
+
+    public override void whenHeal(){
+        UpdateHearts();
+    }
+
 }

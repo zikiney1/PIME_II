@@ -11,10 +11,10 @@ public partial class Entitie : CharacterBody2D{
     protected EquipamentSys equipamentSys;
     protected Vector2 lastDirection;
 
-    protected ItemData HandItem = null;
+    protected Item HandItem = null;
 
     protected Timer DamageTimer;
-    float DamageTimerTime = 1f;
+    float InvencibleTimer = 1f;
     float AttackSpeed = 0.3f;
     protected Timer AttackTimer;
 
@@ -41,21 +41,21 @@ public partial class Entitie : CharacterBody2D{
         if(!canReciveDamage) return;
         lifeSystem.GetDamage(1f,amount);
      
-        WhenDamage();
+        WhenTakeDamage();
         DamageTimer.Start();
     }
     public void Damage(EntitieModifier entitieModifier,int amount = 1) {
         if(!canReciveDamage) return;
         lifeSystem.GetDamage(entitieModifier,amount);
      
-        WhenDamage();
+        WhenTakeDamage();
         DamageTimer.Start();
     }
     public void Damage(ElementsEnum element,int amount = 1){
         if(!canReciveDamage) return;
         lifeSystem.GetDamage(element,amount);
      
-        WhenDamage();
+        WhenTakeDamage();
         DamageTimer.Start();
     }
 
@@ -63,8 +63,21 @@ public partial class Entitie : CharacterBody2D{
 
     protected virtual void Defend(){}
     protected virtual void Die(){}
-    protected virtual void UsePotion(){}
+    
     protected virtual void Ready_(){}
+    
+    protected virtual void UsePotion(){
+        if(HandItem == null) return;
+        ItemData handItemData = ItemDB.GetItemData(HandItem.id);
+        if(handItemData == null) return;
+
+        if(handItemData.type != ItemType.Potion) return;
+
+        handItemData.effect.Apply(this);
+        inventory.Remove(HandItem);
+        if(inventory[HandItem.position] == null) HandItem = null;
+    }
+    
     protected virtual void StopAttack(){
         this.state = EntitieState.Idle;
         state = previousState;
@@ -75,7 +88,7 @@ public partial class Entitie : CharacterBody2D{
         lastDirection = new();
         previousState = state;
 
-        DamageTimer = NodeFac.GenTimer(this, DamageTimerTime, WhenDamageTimerEnds);
+        DamageTimer = NodeFac.GenTimer(this, InvencibleTimer, WhenInvencibleTimerEnds);
         AttackTimer = NodeFac.GenTimer(this, AttackSpeed, StopAttack);
         Ready_();
     }
@@ -103,11 +116,16 @@ public partial class Entitie : CharacterBody2D{
 		MoveAndSlide();
     }
 
-    protected virtual void WhenDamage(){
+    public virtual void WhenTakeDamage(){}
+    public virtual void TakeDamageUpdate(){}
+    public virtual void WhenTakeDamageTimerEnds(){}
 
-    }
+    public virtual void whenHeal(){}
+    public virtual void HealUpdate(){}
 
-    protected virtual void WhenDamageTimerEnds(){
+    public virtual void DamageUpdate(){}
+    public virtual void EffectUpdate(){}
 
-    }
+    protected virtual void WhenInvencibleTimerEnds(){}
+
 }
