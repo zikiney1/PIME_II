@@ -31,7 +31,7 @@ public class LifeSystem{
     }
 
     public void GetDamage(float modifier, int amount = 1){
-        byte totalDamage = (byte)(amount * (1 + Math.Floor(modifier)));
+        byte totalDamage = (byte)Math.Floor(amount * (1 - modifier));
 
         if(currentLife - totalDamage <= 0) {
             if(WhenDies != null) WhenDies();

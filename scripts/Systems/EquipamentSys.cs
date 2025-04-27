@@ -37,7 +37,7 @@ public class EquipamentSys{
         foreach (ElementsEnum element in equipament.Resistances()){
             if(element == ElementsEnum.Fire){
                 EntitieModifier.fireResistenceModifier += (Half)equipament.DefenseModifier;
-                EntitieModifier.fireDamageModifier -= (Half)equipament.DamageModifier;
+                EntitieModifier.fireDamageModifier += (Half)equipament.DamageModifier;
             }
             else if(element == ElementsEnum.Water){
                 EntitieModifier.waterResistenceModifier += (Half)equipament.DefenseModifier;

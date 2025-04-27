@@ -23,6 +23,8 @@ public partial class Player : Entitie{
 
         inventory.Add(new Item(1));
         HandItem = inventory[0];
+
+        equipamentSys.AddEquipament(new Equipament(0, new WaterElement(), 0, 0.32f, 0));
     }
 
 
