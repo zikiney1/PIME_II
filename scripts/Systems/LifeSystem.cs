@@ -26,13 +26,12 @@ public class LifeSystem{
 
     public void GetDamage(ElementsEnum element, int amount = 1){
         if(element == ElementsEnum.Fire) GetDamage((float)entitieResistence.GetFireResistenceModifier(),amount);
-        if(element == ElementsEnum.Water) GetDamage((float)entitieResistence.GetWaterResistenceModifier(),amount);
-        if(element == ElementsEnum.Rock) GetDamage((float)entitieResistence.GetRockResistenceModifier(),amount);
+        else if(element == ElementsEnum.Water) GetDamage((float)entitieResistence.GetWaterResistenceModifier(),amount);
+        else if(element == ElementsEnum.Rock) GetDamage((float)entitieResistence.GetRockResistenceModifier(),amount);
     }
 
     public void GetDamage(float modifier, int amount = 1){
-        if(modifier < 0) modifier = 1;
-        byte totalDamage = (byte)(amount * Math.Floor(modifier));
+        byte totalDamage = (byte)(amount * (1 + Math.Floor(modifier)));
 
         if(currentLife - totalDamage <= 0) {
             if(WhenDies != null) WhenDies();

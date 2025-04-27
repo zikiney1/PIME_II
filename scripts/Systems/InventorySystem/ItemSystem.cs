@@ -5,12 +5,15 @@ public static class ItemDB{
     public static Dictionary<byte, ItemData> itemDB = new();
 
     public static void SetupItemDB(){
-        const string path = "res://Resources/Items";
+        const string path = "res://Resources/Items/";
         DirAccess dir = DirAccess.Open(path);
         if(dir == null) return;
+        dir.ListDirBegin();
         string fileName;
         while((fileName = dir.GetNext()) != ""){
             ItemResource item = GD.Load<ItemResource>(path + "/" + fileName);
+
+            int level = item.effect == null ? 1 : item.effect.useLevel? item.level : 1;
             ItemData data = new(
                 item.name, 
                 item.description, 
@@ -18,20 +21,22 @@ public static class ItemDB{
                 (Half)item.price, 
                 item.stackMaxSize,
                 item.type, 
-                GetPotionEffect(item.effect)
+                GetPotionEffect(item.effect, level)
             );
 
             itemDB.Add(item.id, data);
         }   
     }
 
-    public static PotionEffect GetPotionEffect(PotionEffectResource resource){
+    public static PotionEffect GetPotionEffect(PotionEffectResource resource,int level = 1){
+        if (resource == null) return null;
+
         PotionBuilder pb = new (resource.potionType, resource.duration);
         if(resource.healAmount >= 0){
             if(resource.HealBehavior == PotionBuilder.PotionType.Instant){
-                pb.HealInstant(resource.healAmount);
+                pb.HealInstant(AmountWithLevel(resource.healAmount,level));
             }else{
-                pb.HealOverTime(resource.healAmount);
+                pb.HealOverTime(AmountWithLevel(resource.healAmount,level));
             }
         }
         if(resource.damageAmount >= 0){
@@ -65,6 +70,13 @@ public static class ItemDB{
         return pb.Build();
     }
 
+    public static int AmountWithLevel(int amount,int level){
+        return amount + (int)Math.Round((float)(amount/5) * (level-1));
+    }
+    public static float AmountWithLevel(float amount,int level){
+        return (float)(amount + Math.Round((amount/5) * (level-1)));
+    }
+
     public static ItemData GetItemData(byte id){
         if(itemDB.ContainsKey(id)){
             return itemDB[id];
@@ -82,6 +94,7 @@ public enum ItemType{
 }
 
 public class ItemData{
+    public byte level = 1;
     public string name {get;} = "";
     public string description {get;} = "";
     public Texture2D iconFile {get;}

@@ -3,6 +3,7 @@ using Godot;
 [GlobalClass]
 public partial class ItemResource : Resource{
     [Export] public byte id = 1;
+    [Export] public byte level = 1;
     [Export] public string name = "";
     [Export(PropertyHint.MultilineText)] public string description = "";
     [Export] public Texture2D iconFile = null;

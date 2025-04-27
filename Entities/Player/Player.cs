@@ -5,7 +5,7 @@ public partial class Player : Entitie{
     Area2D HitArea;
     Timer timer;
     
-    Control GUI;
+    GameGui GUI;
 
     bool isDefending = false;
 
@@ -23,13 +23,11 @@ public partial class Player : Entitie{
     }
 
 
-    public override void _Ready()
+    protected override void Ready_()
     {
-        lastDirection = new();
         HitArea = GetNode<Area2D>("HitArea");
         timer = NodeFac.GenTimer(this, 0.5f, StopAttack);
-        previousState = state;
-        GUI = GetNode<Control>("Canvas/GameGUI");
+        GUI = GetNode<GameGui>("Canvas/GameGUI");
     }
 
     public override void _PhysicsProcess(double delta){
@@ -60,18 +58,12 @@ public partial class Player : Entitie{
     }
 
     protected override void Attack(){
-        if(lastDirection == Vector2.Zero) return;
-
-        previousState = state;
-        this.state = EntitieState.Attacking;
-        HitArea.Position = lastDirection * GameManager.GAMEUNITS * 3;     
-        
-        timer.Start();
+        HitArea.Position = lastDirection * GameManager.GAMEUNITS * 3;  
+        base.Attack();
     }
     protected override void StopAttack(){
-        this.state = EntitieState.Idle;
+        base.StopAttack();
         HitArea.Position = Vector2.Zero;
-        state = previousState;
     }
 
 
@@ -86,4 +78,8 @@ public partial class Player : Entitie{
         HandItem.effect.Apply(this);
     }
 
+
+    protected override void WhenDamage(){
+        GUI.UpdateHearts();
+    }
 }

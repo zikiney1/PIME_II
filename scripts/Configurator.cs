@@ -9,6 +9,7 @@ public class Configurator{
     public Configurator(){
        if(FileAccess.FileExists(configPath)){
             configData = CFGParser.Parse(configPath);
+            SaveConfig();
         }else{
             configData = DefaultConfig();
             CFGParser.ToFile(configData, configPath);
@@ -31,6 +32,7 @@ public class Configurator{
         data[KEYCONFIG].Add("DOWN", "Down,S");
         data[KEYCONFIG].Add("ATTACK", "Space");
         data[KEYCONFIG].Add("DEFEND", "Shift");
+        data[KEYCONFIG].Add("USE", "E");
         
         return data;
     }
@@ -49,6 +51,7 @@ public class Configurator{
         string[] down = KeyConfig("DOWN").Split(',');
         string[] attack = KeyConfig("ATTACK").Split(',');
         string[] defend = KeyConfig("DEFEND").Split(',');
+        string[] use = KeyConfig("USE").Split(',');
 
         SetAction("left", left);
         SetAction("right", right);
@@ -56,6 +59,7 @@ public class Configurator{
         SetAction("down", down);
         SetAction("attack", attack);
         SetAction("defend", defend);
+        SetAction("use", use);
     }
 
     void SetAction(string actionName, string[] keys){

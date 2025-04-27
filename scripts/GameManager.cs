@@ -11,6 +11,7 @@ public partial class GameManager : Node{
 
     public override void _EnterTree()
     {
+        ItemDB.SetupItemDB();
         Instance = this;
 
         player = GetNode<Player>("Player");

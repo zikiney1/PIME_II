@@ -13,6 +13,14 @@ public partial class Entitie : CharacterBody2D{
 
     protected ItemData HandItem = null;
 
+    protected Timer DamageTimer;
+    float DamageTimerTime = 1f;
+    float AttackSpeed = 0.3f;
+    protected Timer AttackTimer;
+
+    protected bool canReciveDamage = true;
+
+
     public enum EntitieState{
         Idle,
         Walking,
@@ -25,19 +33,61 @@ public partial class Entitie : CharacterBody2D{
     public void SetPotionDamageModifier(Half modifier, ElementsEnum element) => entitieModifier.SetPotionDamageModifier(modifier,element);
     public void SetPotionResistenceModifier(Half modifier, ElementsEnum element) => entitieModifier.SetPotionResistenceModifier(modifier,element);
     public void SetPotionSpeedModifier(Half modifier) => entitieModifier.SetPotionSpeedModifier(modifier);
-    public void Damage(int amount = 1) => lifeSystem.GetDamage(1f,amount);
-    public void Damage(EntitieModifier entitieModifier,int amount = 1) => lifeSystem.GetDamage(entitieModifier,amount);
-    public void Damage(ElementsEnum element,sbyte amount = 1) => lifeSystem.GetDamage(element,amount);
     public int MaxLife() => lifeSystem.MaxLife();
     public int CurrentLife() => lifeSystem.CurrentLife();
     public void Heal(int amount = 1) => lifeSystem.Heal(amount);
 
+    public void Damage(int amount = 1) {
+        if(!canReciveDamage) return;
+        lifeSystem.GetDamage(1f,amount);
+     
+        WhenDamage();
+        DamageTimer.Start();
+    }
+    public void Damage(EntitieModifier entitieModifier,int amount = 1) {
+        if(!canReciveDamage) return;
+        lifeSystem.GetDamage(entitieModifier,amount);
+     
+        WhenDamage();
+        DamageTimer.Start();
+    }
+    public void Damage(ElementsEnum element,int amount = 1){
+        if(!canReciveDamage) return;
+        lifeSystem.GetDamage(element,amount);
+     
+        WhenDamage();
+        DamageTimer.Start();
+    }
 
-    protected virtual void Attack(){}
+
+
     protected virtual void Defend(){}
     protected virtual void Die(){}
     protected virtual void UsePotion(){}
-    protected virtual void StopAttack(){}
+    protected virtual void Ready_(){}
+    protected virtual void StopAttack(){
+        this.state = EntitieState.Idle;
+        state = previousState;
+    }
+
+    public override void _Ready(){
+        base._Ready();
+        lastDirection = new();
+        previousState = state;
+
+        DamageTimer = NodeFac.GenTimer(this, DamageTimerTime, WhenDamageTimerEnds);
+        AttackTimer = NodeFac.GenTimer(this, AttackSpeed, StopAttack);
+        Ready_();
+    }
+
+    protected virtual void Attack(){
+        if(lastDirection == Vector2.Zero) return;
+
+        previousState = state;
+        this.state = EntitieState.Attacking;
+        AttackTimer.Start();
+    }
+
 
     protected virtual void Walk(Vector2 direction,double delta, float speed = 0){
         if (speed == 0) speed = Speed;
@@ -51,5 +101,13 @@ public partial class Entitie : CharacterBody2D{
         }
 
 		MoveAndSlide();
+    }
+
+    protected virtual void WhenDamage(){
+
+    }
+
+    protected virtual void WhenDamageTimerEnds(){
+
     }
 }

@@ -1,14 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=7 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
 [ext_resource type="PackedScene" uid="uid://b3sxaasjc68xf" path="res://Entities/camera/camera.tscn" id="2_2tdjr"]
+[ext_resource type="Script" uid="uid://dc8vr6dck0mi6" path="res://Tests/DamageArea.cs" id="2_mhf4e"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="3_pbyjw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
+size = Vector2(25, 130)
 
 [node name="Level_Demo" type="Node" node_paths=PackedStringArray("player", "camera")]
 script = ExtResource("1_0bltp")
 player = NodePath("Player")
 camera = NodePath("Camera")
+
+[node name="DamageArea" type="Area2D" parent="."]
+position = Vector2(713, 326)
+scale = Vector2(5.16, 1)
+script = ExtResource("2_mhf4e")
+
+[node name="Icon" type="Sprite2D" parent="DamageArea"]
+modulate = Color(1, 0, 0, 1)
+scale = Vector2(0.193798, 1)
+texture = ExtResource("3_pbyjw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(-0.0969086, 0)
+shape = SubResource("RectangleShape2D_4f2ty")
 
 [node name="Player" parent="." instance=ExtResource("1_kw413")]
 position = Vector2(1160, 723)
