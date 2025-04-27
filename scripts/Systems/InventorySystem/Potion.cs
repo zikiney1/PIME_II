@@ -77,48 +77,55 @@ public class PotionBuilder{
         else if(type == PotionType.Timed) effect = new TimedEffect(duration);
     }
 
-    public PotionBuilder SetDamageOverTime(int amount = 1){
+    public PotionBuilder TakeDamageOverTime(int amount = 1){
         effect.whenUpdate += () => {
             effect.player.Damage(amount);
         };
         return this;
     }
-    public PotionBuilder SetHealOverTime(int amount = 1){
+    public PotionBuilder TakeDamageInstant(int amount = 1){
+        effect.whenApply += (Player player) => {
+            player.Damage(amount);
+        };
+        return this;
+    }
+    public PotionBuilder HealOverTime(int amount = 1){
         effect.whenUpdate += () => {
             effect.player.Heal(amount);
         };
         return this;
     }
-    public PotionBuilder SetHealInstant(int amount = 1){
+    public PotionBuilder HealInstant(int amount = 1){
         effect.whenApply += (Player player) => {
             player.Heal(amount);
         };
         return this;
     }
-    public PotionBuilder SetResistenceThreshold(Element element, float amount){
-        foreach (ElementsEnum elementType in element.Weaknesses()){
-            SetResistence(elementType,-amount);
-        }
-        foreach (ElementsEnum elementType in element.Resistances()){
-            SetResistence(elementType,amount);
-        }
-        return this;
-    }
-    public PotionBuilder SetDamage(ElementsEnum element, float amount){
+    
+    public PotionBuilder Damage(ElementsEnum element, float amount){
         effect.whenApply += (player) => {
             player.entitieModifier.SetPotionDamageModifier((Half)amount,element);  
         };
         effect.whenStop += () => effect.player.entitieModifier.ResetPotionDamageModifier(element);
         return this;
     }
-    public PotionBuilder SetResistence(ElementsEnum element, float amount){
+    public PotionBuilder Resistence(ElementsEnum element, float amount){
         effect.whenApply += (player) => {
             player.entitieModifier.SetPotionResistenceModifier((Half)amount,element);  
         };
         effect.whenStop += () => effect.player.entitieModifier.ResetPotionResistenceModifier(element);
         return this;
     }
-    public PotionBuilder SetSpeed(float amount){
+    public PotionBuilder Resistence(Element element, float amount){
+        foreach (ElementsEnum elementType in element.Weaknesses()){
+            Resistence(elementType,-amount);
+        }
+        foreach (ElementsEnum elementType in element.Resistances()){
+            Resistence(elementType,amount);
+        }
+        return this;
+    }
+    public PotionBuilder Speed(float amount){
         effect.whenApply += (player) => {
             player.entitieModifier.SetPotionSpeedModifier((Half)amount);  
         };
@@ -141,57 +148,58 @@ public class PotionFactory{
 
     public static PotionBuilder HealingOverTime(int amount,float duration, int level){
         PotionBuilder builder = new PotionBuilder(PotionBuilder.PotionType.Periodic,duration);
-        builder.SetHealOverTime(AmountWithLevel(amount,level));
+        builder.HealOverTime(AmountWithLevel(amount,level));
         return builder;
     }
     public static PotionBuilder HealInstant(int amount,int level){
         PotionBuilder builder = new PotionBuilder(PotionBuilder.PotionType.Instant);
-        builder.SetHealInstant(AmountWithLevel(amount,level));
+        builder.HealInstant(AmountWithLevel(amount,level));
         return builder;
     }
 
     public static PotionBuilder HealAndDamageOverTime(int healAmount, int damageAmount, float duration, int level){
         PotionBuilder builder = HealInstant(healAmount,level);
-        builder.SetHealOverTime(AmountWithLevel(damageAmount,level));
+        builder.HealOverTime(AmountWithLevel(damageAmount,level));
         return builder;
     }
 
-    public static PotionBuilder DamageAndHealOverTime(int damageAmount, int healAmount, float duration, int level){
+    public static PotionBuilder TakeDamageAndHealOverTime(int damageAmount, int healAmount, float duration, int level){
         PotionBuilder builder = HealingOverTime(healAmount,duration,level);
-        builder.SetDamageOverTime(AmountWithLevel(damageAmount,level));
+        builder.TakeDamageOverTime(AmountWithLevel(damageAmount,level));
         return builder;
     }
 
     public static PotionBuilder SpeedPotion(float amount, float duration, int level){
         PotionBuilder builder = new PotionBuilder(PotionBuilder.PotionType.Timed,duration);
-        builder.SetSpeed(AmountWithLevel(amount,level));
+        builder.Speed(AmountWithLevel(amount,level));
         return builder;
     }
 
     public static PotionBuilder FireResistance(float amount, float duration, int level){
         PotionBuilder builder = new PotionBuilder(PotionBuilder.PotionType.Timed,duration);
-        builder.SetResistence(ElementsEnum.Fire,AmountWithLevel(amount,level));
+        builder.Resistence(ElementsEnum.Fire,AmountWithLevel(amount,level));
         return builder;
     }
     public static PotionBuilder WaterResistance(float amount, float duration, int level){
         PotionBuilder builder = new PotionBuilder(PotionBuilder.PotionType.Timed,duration);
-        builder.SetResistence(ElementsEnum.Water,AmountWithLevel(amount,level));
+        builder.Resistence(ElementsEnum.Water,AmountWithLevel(amount,level));
         return builder;
     }
     public static PotionBuilder RockResistance(float amount, float duration, int level){
         PotionBuilder builder = new PotionBuilder(PotionBuilder.PotionType.Timed,duration);
-        builder.SetResistence(ElementsEnum.Rock,AmountWithLevel(amount,level));
+        builder.Resistence(ElementsEnum.Rock,AmountWithLevel(amount,level));
         return builder;
     }
 
-    public static PotionBuilder DamageAndResistOverTime(int damageAmount, ElementsEnum element, float resistenceAmount, float duration, int level){
+
+    public static PotionBuilder TakeDamageAndResistOverTime(int damageAmount, ElementsEnum element, float resistenceAmount, float duration, int level){
         PotionBuilder builder = new PotionBuilder(PotionBuilder.PotionType.Periodic,duration);
 
-        if(element == ElementsEnum.Fire) builder.SetResistence(ElementsEnum.Fire,AmountWithLevel(resistenceAmount,level));
-        else if(element == ElementsEnum.Water) builder.SetResistence(ElementsEnum.Water,AmountWithLevel(resistenceAmount,level));
-        else builder.SetResistence(ElementsEnum.Rock,AmountWithLevel(resistenceAmount,level));;
+        if(element == ElementsEnum.Fire) builder.Resistence(ElementsEnum.Fire,AmountWithLevel(resistenceAmount,level));
+        else if(element == ElementsEnum.Water) builder.Resistence(ElementsEnum.Water,AmountWithLevel(resistenceAmount,level));
+        else builder.Resistence(ElementsEnum.Rock,AmountWithLevel(resistenceAmount,level));;
         
-        builder.SetDamageOverTime(AmountWithLevel(damageAmount,level));
+        builder.TakeDamageOverTime(AmountWithLevel(damageAmount,level));
         return builder;
     }
 }

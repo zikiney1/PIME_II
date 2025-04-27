@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 public class InventorySystem{
@@ -31,6 +30,10 @@ public class InventorySystem{
 
     public bool ContainsItem(Item item) => items.Contains(item);
 
+    public bool ContainsItemInQuantity(Item item, byte quantity){
+        return ContainsItem(item) && item.quantity >= quantity;
+    }
+
     public bool Remove(byte position, byte quantityToRemove=1){
         if(position > items.Length-1) return false;
         if(items[position] == null) return true;
@@ -41,52 +44,23 @@ public class InventorySystem{
         return true;
     }
 
-    public ItemData this[byte index] => ItemDB.GetItemData(items[index].id);
-}
-
-
-public static class ItemDB{
-    public static Dictionary<byte, ItemData> itemDB = new();
-
-    public static void SetupItemDB(){
-        
-    }
-
-    public static ItemData GetItemData(byte id){
-        if(itemDB.ContainsKey(id)){
-            return itemDB[id];
-        }else{
-            throw new Exception("Item Data Does not Exist");
+    public bool Remove(Item item, byte quantityToRemove=1){
+        if(item == null) return false;
+        for(int i = 0; i < items.Length; i++){
+            if(items[i].id == item.id){
+                items[i].quantity -= quantityToRemove;
+                if(items[i].quantity <= 0 )
+                    items[i] = null;
+                return true;
+            }
         }
+        return false;
     }
+
+    public Item this[byte index] => items[index];
+    public ItemData GetItemData(int position) => ItemDB.GetItemData(items[position].id);
 }
 
-public enum ItemType{
-    Potion,
-    Equipament,
-    Seed,
-    Ingredient
-}
-
-public class ItemData{
-    public string name {get;} = "";
-    public string description {get;} = "";
-    public Texture2D iconFile {get;}
-    public Half price {get;} = (Half)1;
-    public byte stackMaxSize {get;} = 5;
-    public ItemType type {get;} = ItemType.Potion;
-    public PotionEffect effect {get;}
-
-    public ItemData(string name, string description, Texture2D iconFile, Half price, byte stackMaxSize, ItemType type, PotionEffect effect){
-        this.name = name;
-        this.description = description;
-        this.iconFile = iconFile;
-        this.price = price;
-        this.stackMaxSize = stackMaxSize;
-        this.type = type;
-        this.effect = effect;
-    }
-}
 
 public class Item{
     public byte id {get;}
