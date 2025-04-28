@@ -44,22 +44,14 @@ public class Configurator{
     }
 
     void SetKeys(){
-        
-        string[] left = KeyConfig("LEFT").Split(',');
-        string[] right = KeyConfig("RIGHT").Split(',');
-        string[] up = KeyConfig("UP").Split(',');
-        string[] down = KeyConfig("DOWN").Split(',');
-        string[] attack = KeyConfig("ATTACK").Split(',');
-        string[] defend = KeyConfig("DEFEND").Split(',');
-        string[] use = KeyConfig("USE").Split(',');
+        foreach(Section section in configData.sections.Values){
+            if(section.name != KEYCONFIG) continue;
+            foreach (string name in section.values.Keys){
 
-        SetAction("left", left);
-        SetAction("right", right);
-        SetAction("up", up);
-        SetAction("down", down);
-        SetAction("attack", attack);
-        SetAction("defend", defend);
-        SetAction("use", use);
+                string[] keys = section.values[name].Split(',');
+                SetAction(name.ToLower(), keys);
+            }
+        }
     }
 
     void SetAction(string actionName, string[] keys){
