@@ -11,6 +11,7 @@ public class PotionEffect{
         this.entitie = entitie;
         whenApply?.Invoke(entitie);
     }
+    public virtual void Delete(){}
 }
 
 public class PeriodicEffect : PotionEffect{
@@ -22,27 +23,43 @@ public class PeriodicEffect : PotionEffect{
     public override void Apply(Entitie entitie) {
         base.Apply(entitie);
 
-        durationTimer = new();
+        const string durationTimerName = "DurationTimer";
+        const string UpdateTimerName = "UpdateTimer";
+
+
+        if(entitie.HasNode(durationTimerName)) durationTimer = entitie.GetNode<Timer>(durationTimerName);
+        else {
+            durationTimer = new();
+            durationTimer.Name = durationTimerName;
+            entitie.AddChild(durationTimer);
+        }
         durationTimer.WaitTime = duration;
         durationTimer.OneShot = true;
         durationTimer.Timeout += whenStop;
-
-        UpdateTimer = new();
-        UpdateTimer.WaitTime = 1f;
-        UpdateTimer.Timeout += whenUpdate;
-
-        whenUpdate += () => {
-            if(isToStop) whenStop?.Invoke();
-        };
-
         whenStop += () => {
             isToStop = true;
             durationTimer.Stop();
             UpdateTimer.Stop();
         };
 
-        entitie.AddChild(durationTimer);
-        entitie.AddChild(UpdateTimer);
+
+        if(entitie.HasNode(UpdateTimerName)) UpdateTimer = entitie.GetNode<Timer>(UpdateTimerName);
+        else {
+            UpdateTimer = new();
+            UpdateTimer.Name = UpdateTimerName;
+            entitie.AddChild(UpdateTimer);
+        }
+
+        UpdateTimer.WaitTime = 1f;
+        UpdateTimer.Timeout += whenUpdate;
+
+        whenUpdate += () => {
+            if(isToStop) whenStop?.Invoke();
+        };
+    }
+    public override void Delete() {
+        UpdateTimer.QueueFree();
+        durationTimer.QueueFree();
     }
 }
 
@@ -50,10 +67,18 @@ public class PeriodicEffect : PotionEffect{
 public class TimedEffect : PotionEffect{
     protected float duration = 3;
     public TimedEffect(float duration) => this.duration = duration;
+    Timer timerEffect;
     public override void Apply(Entitie entitie) {
+        const string timedEffectName = "TimedEffect";
         base.Apply(entitie);
-        Timer timer = NodeFac.GenTimer(entitie, duration, whenStop);
-        entitie.AddChild(timer);
+        if(entitie.HasNode(timedEffectName)) timerEffect = entitie.GetNode<Timer>(timedEffectName);
+        else timerEffect = NodeFac.GenTimer(entitie, duration, whenStop);
+
+        timerEffect.Name = timedEffectName;
+        entitie.AddChild(timerEffect);
+    }
+    public override void Delete(){
+        timerEffect.QueueFree();
     }
 }
 

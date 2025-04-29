@@ -26,8 +26,7 @@ public partial class Player : Entitie{
         inventory.Add(new Item(1));
         HandItem = inventory[0];
 
-        equipamentSys.AddEquipament(ItemDB.GetItemData(5).equipament);
-        GD.Print(ItemDB.GetItemData(5).equipament.DefenseModifier);
+        equipamentSys.AddEquipament(ItemDB.GetItemData(5).equipamentData);
     }
 
 

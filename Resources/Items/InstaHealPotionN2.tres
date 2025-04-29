@@ -12,5 +12,5 @@ description = "Uma simples poção de cura instantanea"
 price = 5.0
 stackMaxSize = 3
 type = 0
-effect = ExtResource("1_t66ce")
+PotionEffect = ExtResource("1_t66ce")
 metadata/_custom_type_script = "uid://bp21ptg4qc36q"

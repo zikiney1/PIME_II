@@ -70,7 +70,7 @@ public class InventorySystem{
     }
 
     public Item this[byte index] => items[index];
-    public ItemData GetItemData(int position) => ItemDB.GetItemData(items[position].id);
+    public ItemResource GetItemData(int position) => ItemDB.GetItemData(items[position].id);
 }
 
 

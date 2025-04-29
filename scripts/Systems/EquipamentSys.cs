@@ -1,41 +1,19 @@
 using System;
 
-public class Equipament{
-    public Equipament(EquipamentDataResource resource, byte id){
-        this.id = id;
-        this.element = Element.GetElement(resource.Element);
-        this.DamageModifier = resource.DamageModifier;
-        this.DefenseModifier = resource.DefenseModifier;
-        this.SpeedModifier = resource.SpeedModifier;
-    }
 
-    public static Equipament GetEquipament(EquipamentDataResource resource, byte id) {
-        if(resource == null) return null;
-        return new Equipament(resource, id);
-    }
-    public Element element { get;}
-    public float DamageModifier { get;}
-    public float DefenseModifier { get;}
-    public float SpeedModifier { get;}
-    public byte id { get;}
-
-    public ElementsEnum Type() => element.Type();
-    public ElementsEnum[] Weaknesses() => element.Weaknesses();
-    public ElementsEnum[] Resistances() => element.Resistances();
-}
 
 
 public class EquipamentSys{
-    public Equipament[] equipaments;
+    public EquipamentData[] equipaments;
     byte lastInserted = 0;
     public EntitieModifier EntitieModifier;
 
     public EquipamentSys(EntitieModifier EntitieModifier){
-        equipaments = new Equipament[2];
+        equipaments = new EquipamentData[2];
         this.EntitieModifier = EntitieModifier;
     }
 
-    public bool AddEquipament(Equipament equipament){
+    public bool AddEquipament(EquipamentData equipament){
         if(lastInserted == 2 || equipament == null) return false;
 
         foreach (ElementsEnum element in equipament.Resistances()){

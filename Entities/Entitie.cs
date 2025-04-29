@@ -68,8 +68,8 @@ public partial class Entitie : CharacterBody2D{
     
     protected virtual void UsePotion(){
         if(HandItem == null) return;
-        ItemData handItemData = ItemDB.GetItemData(HandItem.id);
-        if(handItemData == null) return;
+        ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+        if(handItemData == null || handItemData.effect == null) return;
 
         if(handItemData.type != ItemType.Potion) return;
 
