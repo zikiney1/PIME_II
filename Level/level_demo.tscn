@@ -19,6 +19,7 @@ position = Vector2(713, 326)
 scale = Vector2(5.16, 1)
 script = ExtResource("2_mhf4e")
 damage = 3
+type = 2
 
 [node name="Icon" type="Sprite2D" parent="DamageArea"]
 modulate = Color(1, 0, 0, 1)

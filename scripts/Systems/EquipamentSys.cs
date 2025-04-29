@@ -1,18 +1,23 @@
 using System;
 
 public class Equipament{
-    public Equipament(byte id, Element element, float damageModifier, float defenseModifier, float speedModifier){
+    public Equipament(EquipamentDataResource resource, byte id){
         this.id = id;
-        this.element = element;
-        this.DamageModifier = damageModifier;
-        this.DefenseModifier = defenseModifier;
-        this.SpeedModifier = speedModifier;
+        this.element = Element.GetElement(resource.Element);
+        this.DamageModifier = resource.DamageModifier;
+        this.DefenseModifier = resource.DefenseModifier;
+        this.SpeedModifier = resource.SpeedModifier;
     }
-    public byte id {get;}
+
+    public static Equipament GetEquipament(EquipamentDataResource resource, byte id) {
+        if(resource == null) return null;
+        return new Equipament(resource, id);
+    }
     public Element element { get;}
     public float DamageModifier { get;}
     public float DefenseModifier { get;}
     public float SpeedModifier { get;}
+    public byte id { get;}
 
     public ElementsEnum Type() => element.Type();
     public ElementsEnum[] Weaknesses() => element.Weaknesses();
@@ -30,9 +35,8 @@ public class EquipamentSys{
         this.EntitieModifier = EntitieModifier;
     }
 
-    public void AddEquipament(Equipament equipament){
-        if(lastInserted == 2) throw new Exception("Can't add more than 2 equipaments");
-        if(equipament == null) throw new Exception("Can't add null equipament");
+    public bool AddEquipament(Equipament equipament){
+        if(lastInserted == 2 || equipament == null) return false;
 
         foreach (ElementsEnum element in equipament.Resistances()){
             if(element == ElementsEnum.Fire){
@@ -60,6 +64,7 @@ public class EquipamentSys{
 
 
         equipaments[lastInserted++] = equipament;
+        return true;
     }
     public void RemoveEquipament(int index){
         if(index >= lastInserted || index < 0) throw new Exception("Index out of range");
@@ -67,15 +72,6 @@ public class EquipamentSys{
         equipaments[index] = null;
     }
     
-    public void RemoveEquipament(byte id){
-        for(int i = 0; i < lastInserted; i++){
-            if(equipaments[i].id == id){
-                equipaments[i] = null;
-                return;
-            }
-        }
-        throw new Exception("Equipament not found");
-    }
     
     public void RemoveAllEquipaments(){
         for(int i = 0; i < lastInserted; i++){

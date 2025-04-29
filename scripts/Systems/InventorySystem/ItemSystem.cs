@@ -13,21 +13,25 @@ public static class ItemDB{
         while((fileName = dir.GetNext()) != ""){
             ItemResource item = GD.Load<ItemResource>(path + "/" + fileName);
 
-            int level = item.effect == null ? 1 : item.effect.useLevel? item.level : 1;
+            if(itemDB.ContainsKey(item.id))continue;
+
+            int level = item.PotionEffect == null ? 1 : item.PotionEffect.useLevel? item.level : 1;
+
             ItemData data = new(
                 item.name, 
-                item.description, 
+                item.description,
                 item.iconFile, 
                 (Half)item.price, 
                 item.stackMaxSize,
                 item.type, 
-                GetPotionEffect(item.effect, level)
+                GetPotionEffect(item.PotionEffect, level),
+                Equipament.GetEquipament(item.equipamentData, item.id)
             );
-
+            
             itemDB.Add(item.id, data);
         }   
     }
-
+    
     public static PotionEffect GetPotionEffect(PotionEffectResource resource,int level = 1){
         if (resource == null) return null;
 
@@ -81,7 +85,7 @@ public static class ItemDB{
         if(itemDB.ContainsKey(id)){
             return itemDB[id];
         }else{
-            throw new Exception("Item Data Does not Exist");
+            return null;
         }
     }
 }
@@ -102,8 +106,9 @@ public class ItemData{
     public byte stackMaxSize {get;} = 5;
     public ItemType type {get;} = ItemType.Potion;
     public PotionEffect effect {get;}
+    public Equipament equipament {get;}
 
-    public ItemData(string name, string description, Texture2D iconFile, Half price, byte stackMaxSize, ItemType type, PotionEffect effect){
+    public ItemData(string name, string description, Texture2D iconFile, Half price, byte stackMaxSize, ItemType type, PotionEffect effect, Equipament equipament){
         this.name = name;
         this.description = description;
         this.iconFile = iconFile;
@@ -111,5 +116,6 @@ public class ItemData{
         this.stackMaxSize = stackMaxSize;
         this.type = type;
         this.effect = effect;
+        this.equipament = equipament;
     }
 }
