@@ -7,15 +7,16 @@ public partial class GameManager : Node{
     [Export] Camera camera;
 
     public Configurator configurator;
-    public readonly static byte GAMEUNITS = 32;
+    public readonly static byte GAMEUNITS = 16;
 
     public override void _EnterTree()
     {
         ItemDB.SetupItemDB();
+        CraftingSystem.SetupRecipes();
         Instance = this;
 
-        player = GetNode<Player>("Player");
-        camera = GetNode<Camera>("Camera");
+        // player = GetNode<Player>("Player");
+        // camera = GetNode<Camera>("Camera");
 
         configurator = new();
 

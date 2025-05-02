@@ -6,12 +6,12 @@ public partial class Entitie : CharacterBody2D{
     protected float Speed = (GameManager.GAMEUNITS)  * 1000;
 
     protected LifeSystem lifeSystem;
-    protected InventorySystem inventory;
     public EntitieModifier entitieModifier;
-    protected EquipamentSys equipamentSys;
+
+    
     protected Vector2 lastDirection;
 
-    protected Item HandItem = null;
+    protected Slot HandItem = null;
 
     protected Timer DamageTimer;
     float InvencibleTimer = 1f;
@@ -66,17 +66,7 @@ public partial class Entitie : CharacterBody2D{
     
     protected virtual void Ready_(){}
     
-    protected virtual void UsePotion(){
-        if(HandItem == null) return;
-        ItemData handItemData = ItemDB.GetItemData(HandItem.id);
-        if(handItemData == null) return;
-
-        if(handItemData.type != ItemType.Potion) return;
-
-        handItemData.effect.Apply(this);
-        inventory.Remove(HandItem);
-        if(inventory[HandItem.position] == null) HandItem = null;
-    }
+    
     
     protected virtual void StopAttack(){
         this.state = EntitieState.Idle;
@@ -94,8 +84,7 @@ public partial class Entitie : CharacterBody2D{
     }
 
     protected virtual void Attack(){
-        if(lastDirection == Vector2.Zero) return;
-
+        if(lastDirection == Vector2.Zero || state == EntitieState.Attacking) return;
         previousState = state;
         this.state = EntitieState.Attacking;
         AttackTimer.Start();

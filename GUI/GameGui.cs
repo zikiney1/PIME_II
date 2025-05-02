@@ -18,16 +18,16 @@ public partial class GameGui : VBoxContainer{
             GD.Load<Texture2D>(GameManager.GUIPath() + "Main/Heart_empty.png")
         ];
 
-        HeartContainer = GetNode<Control>("GUIContainer/MainGUI/life/HeartsHolder");
+        HeartContainer = GetNode<Control>("MainGUI/life/HeartsHolder");
 
         maxHearts = player.MaxLife()/2;
         Hearts = new TextureRect[maxHearts];
 
         int heartSize = HeartzTextures[0].GetWidth();
-
+        float offset = 10;
         for (int i = 0; i < maxHearts; i++){
             Hearts[i] = new();
-            Hearts[i].Position = new Vector2(i * (heartSize + 5),0);
+            Hearts[i].Position = new Vector2(offset + i * (heartSize + 5),0);
             HeartContainer.AddChild(Hearts[i]);
         }
         UpdateHearts();

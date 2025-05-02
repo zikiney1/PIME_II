@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://bgbhdnjji4e0r"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_aeh4c"]
+[ext_resource type="Resource" uid="uid://7ix6aprtkhap" path="res://Resources/EquipamentData/Resistance_Fire_N1.tres" id="1_ph71x"]
+
+[resource]
+script = ExtResource("1_aeh4c")
+id = 5
+level = 1
+name = "Colar Anti Fogo"
+description = ""
+price = 5.0
+stackMaxSize = 1
+type = 3
+equipamentData = ExtResource("1_ph71x")
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

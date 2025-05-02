@@ -6,6 +6,7 @@
 script = ExtResource("1_j06lu")
 duration = 1.0
 potionType = 0
+useLevel = true
 speedAmount = 0.0
 healAmount = 3
 HealBehavior = 0

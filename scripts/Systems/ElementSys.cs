@@ -5,6 +5,12 @@ public interface Element{
     public float DamageModifier();
     public float DefenseModifier();
     public float SpeedModifier();
+    public static Element GetElement(ElementsEnum type){
+        if(type == ElementsEnum.Fire) return new FireElement();
+        else if(type == ElementsEnum.Water) return new WaterElement();
+        else if(type == ElementsEnum.Rock) return new RockElement();
+        return null;
+    }
 }
 
 public enum ElementsEnum{Fire,Water,Rock};

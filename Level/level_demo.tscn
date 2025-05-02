@@ -2,70 +2,34 @@
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
-[ext_resource type="PackedScene" uid="uid://b3sxaasjc68xf" path="res://Entities/camera/camera.tscn" id="2_2tdjr"]
 [ext_resource type="Script" uid="uid://dc8vr6dck0mi6" path="res://Tests/DamageArea.cs" id="2_mhf4e"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="3_pbyjw"]
+[ext_resource type="Script" uid="uid://dhnilo0a8g0yc" path="res://Entities/camera/Camera.cs" id="5_mhf4e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
-size = Vector2(25, 130)
+size = Vector2(16, 16)
 
 [node name="Level_Demo" type="Node" node_paths=PackedStringArray("player", "camera")]
 script = ExtResource("1_0bltp")
 player = NodePath("Player")
-camera = NodePath("Camera")
+camera = NodePath("Camera2D")
 
 [node name="DamageArea" type="Area2D" parent="."]
-position = Vector2(713, 326)
-scale = Vector2(5.16, 1)
+position = Vector2(156, 95)
 script = ExtResource("2_mhf4e")
 damage = 3
 
 [node name="Icon" type="Sprite2D" parent="DamageArea"]
 modulate = Color(1, 0, 0, 1)
-scale = Vector2(0.193798, 1)
 texture = ExtResource("3_pbyjw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
-position = Vector2(-0.0969086, 0)
 shape = SubResource("RectangleShape2D_4f2ty")
 
 [node name="Player" parent="." instance=ExtResource("1_kw413")]
-position = Vector2(1160, 723)
+position = Vector2(175, 128)
 
-[node name="Camera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_2tdjr")]
-position = Vector2(1150, 635)
-scale = Vector2(0.5, 0.5)
-zoom = Vector2(0.5, 0.5)
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+zoom = Vector2(3, 3)
+script = ExtResource("5_mhf4e")
 player = NodePath("../Player")
-
-[node name="walls" type="Node" parent="."]
-
-[node name="Icon" type="Sprite2D" parent="walls"]
-position = Vector2(40, 182)
-scale = Vector2(5.16, 1)
-texture = ExtResource("3_pbyjw")
-
-[node name="Icon2" type="Sprite2D" parent="walls"]
-position = Vector2(852, 21)
-scale = Vector2(5.16, 1)
-texture = ExtResource("3_pbyjw")
-
-[node name="Icon3" type="Sprite2D" parent="walls"]
-position = Vector2(624.24, 632)
-scale = Vector2(5.16, 1)
-texture = ExtResource("3_pbyjw")
-
-[node name="Icon4" type="Sprite2D" parent="walls"]
-position = Vector2(1436.24, 471)
-scale = Vector2(5.16, 1)
-texture = ExtResource("3_pbyjw")
-
-[node name="Icon5" type="Sprite2D" parent="walls"]
-position = Vector2(-855, 488)
-scale = Vector2(5.16, 1)
-texture = ExtResource("3_pbyjw")
-
-[node name="Icon6" type="Sprite2D" parent="walls"]
-position = Vector2(-110, 838)
-scale = Vector2(5.16, 1)
-texture = ExtResource("3_pbyjw")
