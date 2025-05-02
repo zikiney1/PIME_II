@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://b1po4fiogb6so"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://b1po4fiogb6so"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_7dho2"]
 [ext_resource type="Resource" uid="uid://xe08w0iuqb36" path="res://Resources/potionEffects/InstaHealEffect.tres" id="1_t66ce"]
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_xowwf"]
 
 [resource]
 script = ExtResource("1_7dho2")
@@ -9,6 +10,7 @@ id = 1
 level = 2
 name = "Poção de cura instantanea"
 description = "Uma simples poção de cura instantanea"
+icon = ExtResource("2_xowwf")
 price = 5.0
 stackMaxSize = 3
 type = 0

@@ -14,9 +14,9 @@ public static class CraftingSystem{
         while((fileName = dir.GetNext()) != ""){
             RecipeResource recipe = GD.Load<RecipeResource>(path + "/" + fileName);
             if(recipe == null) continue;
-            if(recipes.ContainsKey(recipe.name)) continue;
-            
-            recipes.Add(recipe.name, new(recipe));
+            if(recipes.ContainsKey(fileName)) continue;
+            if(recipe.result == null) continue;
+            recipes.Add(fileName, new(recipe,fileName));
         }
     }
 
@@ -32,14 +32,14 @@ public static class CraftingSystem{
 
 public class RecipeData{
     public string name {get;}
-    public string description {get;}
     public Ingredient[] ingredients;
     public bool known = false;
+    public ItemResource result;
 
-    public RecipeData(RecipeResource recipe){
-        name = recipe.name;
-        description = recipe.description;
+    public RecipeData(RecipeResource recipe,string fileName){
+        name = fileName;
         ingredients = new Ingredient[recipe.ingredients.Length];
+        result = ItemDB.GetItemData(recipe.result.id);
         for(int i = 0; i < recipe.ingredients.Length; i++){
             ingredients[i] = new();
             ingredients[i].itemId = recipe.ingredients[i].id;
@@ -49,7 +49,7 @@ public class RecipeData{
 }
 
 public class Ingredient{
+    public ItemResource GetItem() => ItemDB.GetItemData(itemId);
     public byte itemId;
     public byte quantity;
-    public ItemResource GetItem() => ItemDB.GetItemData(itemId);
 }

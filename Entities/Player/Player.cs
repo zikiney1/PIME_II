@@ -6,6 +6,7 @@ public partial class Player : Entitie{
     Timer timer;
     
     GameGui GUI;
+    CraftingGui CraftGUI;
 
     bool isDefending = false;
 
@@ -16,7 +17,7 @@ public partial class Player : Entitie{
 
     public override void _EnterTree()
     {
-        Speed = (GameManager.GAMEUNITS)  * 1000;
+        Speed = (GameManager.GAMEUNITS)  * 500;
         entitieModifier = new();
         equipamentSys = new(entitieModifier);
         inventory = new(9);
@@ -35,6 +36,8 @@ public partial class Player : Entitie{
         HitArea = GetNode<Area2D>("HitArea");
         timer = NodeFac.GenTimer(this, 0.5f, StopAttack);
         GUI = GetNode<GameGui>("Canvas/GameGUI");
+        CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
+        CraftGUI.Deactivate();
     }
 
     public override void _PhysicsProcess(double delta){
@@ -43,11 +46,10 @@ public partial class Player : Entitie{
 
     public override void _Process(double delta)
     {
+        if(state == EntitieState.Attacking || CraftGUI.Visible) return;
+        Vector2 direction = InputSystem.GetVector();
 
-        if(state == EntitieState.Attacking) return;
-        Vector2 direction = Input.GetVector("left", "right", "up", "down");
-
-        float speedTotal = ( Speed * entitieModifier.GetSpeedModifier() ) / (MathM.BoolToInt(isDefending) + 1 );
+        float speedTotal = ( Speed * entitieModifier.GetSpeedModifier() ) / (MathM.BoolToInt(Input.IsActionPressed("defend")) + 1 );
         Walk(direction, delta,speedTotal);
 
     }
@@ -60,12 +62,14 @@ public partial class Player : Entitie{
                 isDefending = !isDefending;
             
             if(KeyEvent.IsActionPressed("attack")) Attack();
-            if(KeyEvent.IsActionPressed("use")) UsePotion();
+            else if(KeyEvent.IsActionPressed("use_potion")) UsePotion();
+            else if(KeyEvent.IsActionPressed("use") && !CraftGUI.Visible) CraftGUI.Activate();
+            else if(KeyEvent.IsActionPressed("use") && CraftGUI.Visible) CraftGUI.Deactivate();
         }
     }
 
     protected override void Attack(){
-        HitArea.Position = lastDirection * GameManager.GAMEUNITS * 3;  
+        HitArea.Position = lastDirection * GameManager.GAMEUNITS;  
         base.Attack();
     }
     protected override void StopAttack(){
@@ -77,6 +81,7 @@ public partial class Player : Entitie{
 
     protected override void Die(){
         GD.Print("YOU DIED");
+        GetTree().ReloadCurrentScene();
     }
 
 

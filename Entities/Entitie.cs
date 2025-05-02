@@ -94,8 +94,7 @@ public partial class Entitie : CharacterBody2D{
     }
 
     protected virtual void Attack(){
-        if(lastDirection == Vector2.Zero) return;
-
+        if(lastDirection == Vector2.Zero || state == EntitieState.Attacking) return;
         previousState = state;
         this.state = EntitieState.Attacking;
         AttackTimer.Start();

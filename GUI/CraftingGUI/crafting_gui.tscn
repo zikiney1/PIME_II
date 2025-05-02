@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbe1kek88maxs"]
+[gd_scene load_steps=3 format=3 uid="uid://dbe1kek88maxs"]
 
 [ext_resource type="Script" uid="uid://dow1ijm5speoe" path="res://GUI/CraftingGUI/CraftingGui.cs" id="1_spyvs"]
+[ext_resource type="PackedScene" uid="uid://cuio2qaa2w2y6" path="res://GUI/CraftingGUI/ingridient_icon.tscn" id="2_fd35o"]
 
 [node name="CraftingGUI" type="HBoxContainer"]
 anchors_preset = 15
@@ -11,11 +12,12 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_spyvs")
+IngridientIconScene = ExtResource("2_fd35o")
 
 [node name="SideBar" type="PanelContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.5
+size_flags_stretch_ratio = 0.35
 
 [node name="TextureRect" type="TextureRect" parent="SideBar"]
 layout_mode = 2
@@ -28,10 +30,46 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 
-[node name="RecipesContainer" type="PanelContainer" parent="SideBar/SideBarContainer"]
+[node name="RecipesContainer" type="ItemList" parent="SideBar/SideBarContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text_overrun_behavior = 4
+
+[node name="CraftingWindow" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RecipeContainer" type="PanelContainer" parent="CraftingWindow"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 373.0
+offset_right = 718.0
+offset_bottom = 580.0
+
+[node name="RecipeLayout" type="VBoxContainer" parent="CraftingWindow/RecipeContainer"]
+layout_mode = 2
+
+[node name="Description" type="PanelContainer" parent="CraftingWindow/RecipeContainer/RecipeLayout"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control2" type="Control" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="CraftingWindow/RecipeContainer/RecipeLayout/Description"]
 layout_mode = 2
-size_flags_horizontal = 3
+bbcode_enabled = true
+text = "this is the item description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ingridients" type="HBoxContainer" parent="CraftingWindow/RecipeContainer/RecipeLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Actions" type="HBoxContainer" parent="CraftingWindow/RecipeContainer/RecipeLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Button2" type="Button" parent="CraftingWindow/RecipeContainer/RecipeLayout/Actions"]
+layout_mode = 2
+text = "Craft"

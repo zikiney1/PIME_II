@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://cuio2qaa2w2y6"]
+
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_rbi05"]
+
+[node name="IngridientIcon" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1102.0
+offset_bottom = -598.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_rbi05")
+
+[node name="Text" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 27.0
+offset_right = 67.0
+offset_bottom = 67.0
+text = "XX"

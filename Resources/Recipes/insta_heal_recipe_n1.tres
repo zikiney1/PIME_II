@@ -7,9 +7,7 @@
 
 [resource]
 script = ExtResource("1_gw4ct")
-name = "Receita da mama Amaguarã"
-description = ""
 ingredients = Array[Object]([ExtResource("1_2kke1"), ExtResource("2_mneak")])
-quantity = PackedByteArray(3, 2)
+quantity = PackedByteArray(1, 2)
 result = ExtResource("3_3lnys")
 metadata/_custom_type_script = "uid://bgepf62ui3nwe"
