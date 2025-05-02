@@ -12,6 +12,7 @@ public partial class CraftingGui : HBoxContainer
     [Export] PackedScene IngridientIconScene;
     Player player;
     RecipeData[] recipes;
+    int selected = 0;
 
     public override void _Ready(){
         RecipeList = GetNode<ItemList>("SideBar/SideBarContainer/RecipesContainer");
@@ -28,13 +29,14 @@ public partial class CraftingGui : HBoxContainer
         Visible = true;
         UpdateRecipes();
         if(RecipeList.ItemCount == 0) return;
-        OnSelectRecipe(0);
+        OnSelectRecipe(selected);
 
+        RecipeList.Select(selected);
         CallDeferred(nameof(DeferredFocus));
+
     }
     public void DeferredFocus(){
         RecipeList.GrabFocus();
-        RecipeList.Select(0);
     }
     public void Deactivate(){
         Visible = false;
@@ -75,5 +77,23 @@ public partial class CraftingGui : HBoxContainer
             craftButton.Disabled = true;
         }
     }
+
+    public override void _Input(InputEvent @event)
+    {
+        if(!Visible || recipes == null || recipes.Length == 0) return;
+        if(@event is InputEventKey KeyEvent){
+            
+            int direction = (int)InputSystem.GetVector().Y;
+            
+            if(direction + selected > recipes.Length - 1) selected = recipes.Length - 1;
+            else if(direction + selected < 0) selected = 0;
+            else selected += direction;
+            
+            RecipeList.Select(selected);
+            OnSelectRecipe(selected);
+
+        }
+    }
+
 
 }

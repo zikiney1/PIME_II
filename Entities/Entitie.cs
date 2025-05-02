@@ -7,7 +7,8 @@ public partial class Entitie : CharacterBody2D{
 
     protected LifeSystem lifeSystem;
     public EntitieModifier entitieModifier;
-    protected EquipamentSys equipamentSys;
+
+    
     protected Vector2 lastDirection;
 
     protected Slot HandItem = null;

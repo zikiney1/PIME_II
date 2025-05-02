@@ -15,8 +15,20 @@ public class InventorySystem{
         
         SlotData slotData = new(quantity);
         for(int i = 0; i < items.Length; i++){
-            if(quantity == 0) break;
-            if(items[i] == null){
+            if(quantity <= 0) break;
+            if(items[i] != null && items[i].id == item.id){
+                byte quantityToFit;
+                if(items[i].quantity + quantity > item.stackMaxSize){
+                    quantityToFit = item.stackMaxSize;
+                    quantity -= quantityToFit;
+                }else{
+                    quantityToFit = quantity;
+                }
+                if(quantityToFit <= 0) break;
+                items[i].quantity += quantityToFit;
+                slotData.totalQuantity += quantityToFit;
+                quantity -= quantityToFit;
+            }else if(items[i] == null){
                 byte quantityToFit;
                 if(quantity > item.stackMaxSize){
                     quantityToFit = item.stackMaxSize;
@@ -24,9 +36,10 @@ public class InventorySystem{
                 }else{
                     quantityToFit = quantity;
                 }
-                if(quantityToFit == 0) break;
-                slotData.positions.Add((byte)i);
-                items[i] = new Slot(item.id,quantityToFit);
+                if(quantityToFit <= 0) break;
+                items[i] = new Slot(item.id,(byte)i,quantityToFit);
+                slotData.positions.Add(items[i]);
+                quantity -= quantityToFit;
             }            
         }
         
@@ -41,13 +54,20 @@ public class InventorySystem{
     }
 
     public bool Remove(byte id, byte quantity = 1){
-        if(itemsDic.ContainsKey(id) == false || quantity == 0) return false;
-        foreach(byte position in itemsDic[id].positions){
-            items[position].quantity -= quantity;
+        if (!itemsDic.ContainsKey(id) || quantity == 0)
+            return false;
+
+        var positions = itemsDic[id].positions;
+
+        for (int i = positions.Count - 1; i >= 0; i--){
+            Slot slot = positions[i];
+            items[slot.position].quantity -= quantity;
             itemsDic[id].totalQuantity -= quantity;
-            if(items[position].quantity <= 0){
-                items[position] = null;
-                itemsDic[id].positions.Remove(position);
+
+            if (items[slot.position].quantity <= 0)
+            {
+                positions.RemoveAt(i);
+                items[slot.position] = null;
             }
         }
 
@@ -59,8 +79,7 @@ public class InventorySystem{
         itemsDic[items[position].id].totalQuantity -= quantity;
         if(items[position].quantity <= 0){
             items[position] = null;
-            byte pos = (byte)position;
-            itemsDic[items[position].id].positions.Remove(pos);
+            itemsDic[items[position].id].positions.Remove(items[position]);
         }
         return true;
     }
@@ -76,14 +95,16 @@ public class InventorySystem{
 public class Slot{
     public byte id {get;}
     public byte quantity = 1;
-    public Slot(byte id,byte quantity = 1){
+    public byte position = 0;
+    public Slot(byte id,byte position, byte quantity = 1){
         this.id = id;
         this.quantity = quantity;
+        this.position = position;
     }
 }
 
 public class SlotData{
-    public List<byte> positions;
+    public List<Slot> positions;
     public byte totalQuantity=0;
     public SlotData(byte totalQuantity){
         positions = new();

@@ -13,11 +13,12 @@ public partial class Player : Entitie{
     public void UpdateHearts() => GUI.UpdateHearts();
 
     public InventorySystem inventory;
+    public EquipamentSys equipamentSys;
 
 
     public override void _EnterTree()
     {
-        Speed = (GameManager.GAMEUNITS)  * 500;
+        Speed = GameManager.GAMEUNITS  * 500;
         entitieModifier = new();
         equipamentSys = new(entitieModifier);
         inventory = new(9);
@@ -83,7 +84,6 @@ public partial class Player : Entitie{
 
     protected override void Die(){
         GD.Print("YOU DIED");
-        GetTree().ReloadCurrentScene();
     }
 
 
@@ -107,5 +107,7 @@ public partial class Player : Entitie{
         inventory.Remove(HandItem.id);
         if(HandItem.quantity == 0) HandItem = null;
     }
+
+
 
 }
