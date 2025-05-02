@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cuio2qaa2w2y6"]
+[gd_scene load_steps=2 format=3 uid="uid://cfkwmakq36v3k"]
 
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_rbi05"]
 
 [node name="IngridientIcon" type="Control"]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

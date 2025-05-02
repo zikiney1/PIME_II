@@ -4,24 +4,36 @@ using System;
 public partial class CraftingGui : HBoxContainer
 {
     ItemList RecipeList;
-    RecipeData[] recipes;
     RichTextLabel descriptionText;
     HBoxContainer IngridientsContainer;
     Control IngridientIcon;
+    Button craftButton;
+
     [Export] PackedScene IngridientIconScene;
+    Player player;
+    RecipeData[] recipes;
 
     public override void _Ready(){
         RecipeList = GetNode<ItemList>("SideBar/SideBarContainer/RecipesContainer");
+        RecipeList.ItemSelected += OnSelectRecipe;
+
         descriptionText = GetNode<RichTextLabel>("CraftingWindow/RecipeContainer/RecipeLayout/Description/RichTextLabel");
         IngridientsContainer = GetNode<HBoxContainer>("CraftingWindow/RecipeContainer/RecipeLayout/Ingridients");
-        RecipeList.ItemSelected += OnSelectRecipe;
+        craftButton = GetNode<Button>("CraftingWindow/RecipeContainer/RecipeLayout/Actions/CraftButton");
         
+        player = GetNode<Player>("../..");
         IngridientIcon = IngridientIconScene.Instantiate() as Control;
     }
     public void Activate(){
         Visible = true;
         UpdateRecipes();
         if(RecipeList.ItemCount == 0) return;
+        OnSelectRecipe(0);
+
+        CallDeferred(nameof(DeferredFocus));
+    }
+    public void DeferredFocus(){
+        RecipeList.GrabFocus();
         RecipeList.Select(0);
     }
     public void Deactivate(){
@@ -56,7 +68,12 @@ public partial class CraftingGui : HBoxContainer
 
             IngridientsContainer.AddChild(newIngridientIcon);
         }
-
+        if(CraftingSystem.CanCraft(player.inventory, recipe)){
+            craftButton.Disabled = false;
+        }
+        else{
+            craftButton.Disabled = true;
+        }
     }
 
 }

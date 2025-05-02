@@ -28,6 +28,16 @@ public static class CraftingSystem{
         if(!recipes.ContainsKey(name)) return null;
         return recipes[name];
     }
+    public static void CraftItem(Player player, RecipeData recipe){
+
+    }
+    public static bool CanCraft(InventorySystem inventory, RecipeData recipe){
+        foreach (Ingredient ingredient in recipe.ingredients){
+            if(!inventory.Contains(ingredient.itemId,ingredient.quantity)) return false;
+        }
+
+        return true;
+    }
 }
 
 public class RecipeData{

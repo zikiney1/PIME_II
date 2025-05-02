@@ -12,7 +12,7 @@ public partial class Player : Entitie{
 
     public void UpdateHearts() => GUI.UpdateHearts();
 
-    
+    public InventorySystem inventory;
 
 
     public override void _EnterTree()
@@ -24,7 +24,9 @@ public partial class Player : Entitie{
         lifeSystem = new(entitieModifier, 5,10);
         lifeSystem.WhenDies += Die;
 
-        inventory.Add(new Item(1));
+        inventory.Add(ItemDB.GetItemData(1));
+        inventory.Add(ItemDB.GetItemData(2),2);
+        inventory.Add(ItemDB.GetItemData(3),2);
         HandItem = inventory[0];
 
         equipamentSys.AddEquipament(ItemDB.GetItemData(5).equipamentData);
@@ -92,6 +94,18 @@ public partial class Player : Entitie{
 
     public override void whenHeal(){
         UpdateHearts();
+    }
+
+    void UsePotion(){
+        if(HandItem == null) return;
+        ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+        if(handItemData == null || handItemData.effect == null) return;
+
+        if(handItemData.type != ItemType.Potion) return;
+
+        handItemData.effect.Apply(this);
+        inventory.Remove(HandItem.id);
+        if(HandItem.quantity == 0) HandItem = null;
     }
 
 }

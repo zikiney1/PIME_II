@@ -1,90 +1,92 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class InventorySystem{
-    public Item[] items;
+    public Slot[] items;
+    public Dictionary<byte, SlotData> itemsDic;
     public InventorySystem(byte slotQuantity){
-        items = new Item[slotQuantity];
+        items = new Slot[slotQuantity];
+        itemsDic = new();
     }
 
-    public bool Add(Item item, byte position){
-        if(items[position] != null|| item == null || position > items.Length-1) return false;
-        if(items[position].id == item.id ){
-            items[position].AddItemToStack(item.quantity);
-        }else{
-            items[position] = item;
-            items[position].position = position;
-        }
-        return true;
-    }
-
-    public bool Add(Item item){
-        if(ContainsItem(item)){
-            for(int i = 0; i < items.Length; i++){
-                if(items[i].id ==item.id){
-                    bool sucessful = items[i].AddItemToStack(item.quantity);
-                    if(sucessful){
-                        items[i].position = (byte)i;
-                        return true;
-                    }
-                }
-            }
-        }else{
-            for(int i = 0; i < items.Length; i++){
-                if(items[i] == null){
-                    items[i] = item;
-                    items[i].position = (byte)i;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public bool ContainsItem(Item item) => items[item.position] != null && items[item.position].id == item.id;
-
-    public bool ContainsItemInQuantity(Item item, byte quantity){
-        return ContainsItem(item) && item.quantity >= quantity;
-    }
-
-    public bool Remove(byte position, byte quantityToRemove=1){
-        if(position > items.Length-1) return false;
-        if(items[position] == null) return true;
+    public bool Add(ItemResource item, byte quantity = 1){
+        if(items.Length == itemsDic.Count || quantity == 0) return false;
         
-        items[position].quantity -= quantityToRemove;
-        if(items[position].quantity <= 0 )
-            items[position] = null;
+        SlotData slotData = new(quantity);
+        for(int i = 0; i < items.Length; i++){
+            if(quantity == 0) break;
+            if(items[i] == null){
+                byte quantityToFit;
+                if(quantity > item.stackMaxSize){
+                    quantityToFit = item.stackMaxSize;
+                    quantity -= item.stackMaxSize;
+                }else{
+                    quantityToFit = quantity;
+                }
+                if(quantityToFit == 0) break;
+                slotData.positions.Add((byte)i);
+                items[i] = new Slot(item.id,quantityToFit);
+            }            
+        }
+        
+        if(itemsDic.ContainsKey(item.id)){
+            itemsDic[item.id].positions.AddRange(slotData.positions);
+            itemsDic[item.id].totalQuantity += slotData.totalQuantity;
+        }else{
+            itemsDic.Add(item.id, slotData);
+        }
+
         return true;
     }
 
-    public bool Remove(Item item, byte quantityToRemove=1){
-        if(item == null) return false;
-
-        if(items[item.position] != null && items[item.position].id == item.id){
-            items[item.position].quantity -= quantityToRemove;
-            if(items[item.position].quantity <= 0 )
-                items[item.position] = null;
-            return true;
+    public bool Remove(byte id, byte quantity = 1){
+        if(itemsDic.ContainsKey(id) == false || quantity == 0) return false;
+        foreach(byte position in itemsDic[id].positions){
+            items[position].quantity -= quantity;
+            itemsDic[id].totalQuantity -= quantity;
+            if(items[position].quantity <= 0){
+                items[position] = null;
+                itemsDic[id].positions.Remove(position);
+            }
         }
-        return false;
-    }
 
-    public Item this[byte index] => items[index];
+        return true;
+    }
+    public bool Remove (int position, byte quantity = 1){
+        if(items[position] == null || quantity == 0) return false;
+        items[position].quantity -= quantity;
+        itemsDic[items[position].id].totalQuantity -= quantity;
+        if(items[position].quantity <= 0){
+            items[position] = null;
+            byte pos = (byte)position;
+            itemsDic[items[position].id].positions.Remove(pos);
+        }
+        return true;
+    }
+    public bool Remove(ItemResource item, byte quantity = 1) => Remove(item.id, quantity);
+
+    public bool Contains(byte id, byte quantity = 1) => itemsDic.ContainsKey(id) && itemsDic[id].totalQuantity >= quantity;
+
+    public Slot this[byte index] => items[index];
     public ItemResource GetItemData(int position) => ItemDB.GetItemData(items[position].id);
 }
 
 
-public class Item{
+public class Slot{
     public byte id {get;}
     public byte quantity = 1;
-    public byte position = 1;
-    public Item(byte id,byte quantity = 1){
+    public Slot(byte id,byte quantity = 1){
         this.id = id;
         this.quantity = quantity;
     }
-    public bool AddItemToStack(byte quantity=1){
-        if(quantity < ItemDB.GetItemData(id).stackMaxSize) this.quantity++;
-        else return false;
-        return true;
+}
+
+public class SlotData{
+    public List<byte> positions;
+    public byte totalQuantity=0;
+    public SlotData(byte totalQuantity){
+        positions = new();
+        this.totalQuantity = totalQuantity;
     }
 }
