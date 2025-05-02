@@ -91,7 +91,7 @@ public partial class CraftingGui : HBoxContainer
             
             RecipeList.Select(selected);
             OnSelectRecipe(selected);
-
+            if(KeyEvent.IsActionPressed("confirm")) CraftingSystem.CraftItem(player.inventory, recipes[selected]);
         }
     }
 
