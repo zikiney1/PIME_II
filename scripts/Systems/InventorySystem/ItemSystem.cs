@@ -96,5 +96,6 @@ public enum ItemType{
     Potion,
     Equipament,
     Seed,
-    Ingredient
+    Ingredient,
+    Resource
 }

@@ -4,8 +4,8 @@ using System;
 public partial class GameGui : VBoxContainer{
     public Player player;
     public Texture2D[] HeartzTextures;
-    public Control HeartContainer;
-    TextureRect[] Hearts;
+    public HBoxContainer HeartContainer;
+    HeartIcon[] Hearts;
 
     int maxHearts = 0;
 
@@ -18,16 +18,14 @@ public partial class GameGui : VBoxContainer{
             GD.Load<Texture2D>(GameManager.GUIPath() + "Main/Heart_empty.png")
         ];
 
-        HeartContainer = GetNode<Control>("MainGUI/life/HeartsHolder");
+        HeartContainer = GetNode<HBoxContainer>("MainGUI/life/HeartsHolder");
 
         maxHearts = player.MaxLife()/2;
-        Hearts = new TextureRect[maxHearts];
+        Hearts = new HeartIcon[maxHearts];
 
         int heartSize = HeartzTextures[0].GetWidth();
-        float offset = 10;
         for (int i = 0; i < maxHearts; i++){
-            Hearts[i] = new();
-            Hearts[i].Position = new Vector2(offset + i * (heartSize + 5),0);
+            Hearts[i] = new(heartSize,HeartzTextures);
             HeartContainer.AddChild(Hearts[i]);
         }
         UpdateHearts();
@@ -35,18 +33,27 @@ public partial class GameGui : VBoxContainer{
 
     public void UpdateHearts(){
         for (int i = 0; i < maxHearts; i++)
-            UpdateTexture(i, player.CurrentLife());
+            Hearts[i].Update(player.CurrentLife(), i);
     }
+}
 
 
-    void UpdateTexture(int index, int visibleHalves){
-        int halvesLeftForThisHeart = visibleHalves - index * 2;
+
+public partial class HeartIcon : TextureRect{
+    Texture2D[] HeartzTextures;
+    public HeartIcon(float minSize,Texture2D[] HeartzTextures){
+        CustomMinimumSize = new Vector2(minSize, minSize);
+        StretchMode = StretchModeEnum.Keep;
+        this.HeartzTextures = HeartzTextures;
+    }
+    public void Update(int life,int index){
+        int halvesLeftForThisHeart = life - index * 2;
 
         if(halvesLeftForThisHeart >= 2)
-            Hearts[index].Texture = HeartzTextures[0];
+            Texture = HeartzTextures[0];
         else if (halvesLeftForThisHeart == 1)
-            Hearts[index].Texture = HeartzTextures[1];
+            Texture = HeartzTextures[1];
         else
-            Hearts[index].Texture = HeartzTextures[2];
+            Texture = HeartzTextures[2];
     }
 }

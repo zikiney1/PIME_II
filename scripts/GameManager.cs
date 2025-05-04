@@ -13,6 +13,7 @@ public partial class GameManager : Node{
     {
         ItemDB.SetupItemDB();
         CraftingSystem.SetupRecipes();
+        PlantingSystem.SetupPlantSystem();
         Instance = this;
 
         // player = GetNode<Player>("Player");

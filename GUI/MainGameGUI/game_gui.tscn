@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bpxj72d1rhigg"]
 
-[ext_resource type="Script" uid="uid://dy6qxe67h3abk" path="res://GUI/GameGui.cs" id="1_p34v0"]
+[ext_resource type="Script" uid="uid://dy6qxe67h3abk" path="res://GUI/MainGameGUI/GameGui.cs" id="1_p34v0"]
 
 [node name="GameGUI" type="VBoxContainer"]
 anchors_preset = 15
@@ -27,9 +27,10 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 
-[node name="HeartsHolder" type="Control" parent="MainGUI/life"]
+[node name="HeartsHolder" type="HBoxContainer" parent="MainGUI/life"]
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 1
 
 [node name="MEU_UNICO_PROPOSITO_DE_VIDA_E_DIVIDR_A_UI;-;" type="Control" parent="MainGUI"]
 layout_mode = 2

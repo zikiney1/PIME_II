@@ -78,8 +78,8 @@ public partial class Entitie : CharacterBody2D{
         lastDirection = new();
         previousState = state;
 
-        DamageTimer = NodeFac.GenTimer(this, InvencibleTimer, WhenInvencibleTimerEnds);
-        AttackTimer = NodeFac.GenTimer(this, AttackSpeed, StopAttack);
+        DamageTimer = NodeMisc.GenTimer(this, InvencibleTimer, WhenInvencibleTimerEnds);
+        AttackTimer = NodeMisc.GenTimer(this, AttackSpeed, StopAttack);
         Ready_();
     }
 

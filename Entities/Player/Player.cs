@@ -3,8 +3,11 @@ using System;
 
 public partial class Player : Entitie{
     Area2D HitArea;
-    Timer timer;
+    Timer StopAttackTimer;
+    Timer PlantZoneUpdater;
     
+    public Action WhenPlantUpdate;
+
     GameGui GUI;
     CraftingGui CraftGUI;
 
@@ -14,6 +17,11 @@ public partial class Player : Entitie{
 
     public InventorySystem inventory;
     public EquipamentSys equipamentSys;
+    public PlantZoneData plantZoneData = new (3,3,[
+        100,70,100,
+        100,20,100,
+        100,50,60
+    ]);
 
 
     public override void _EnterTree()
@@ -31,16 +39,28 @@ public partial class Player : Entitie{
         HandItem = inventory[0];
 
         equipamentSys.AddEquipament(ItemDB.GetItemData(5).equipamentData);
+
+
+        WhenPlantUpdate+= () =>{
+            plantZoneData.Update();
+            PlantZoneUpdater.Start();
+        };
+        PlantZoneUpdater = NodeMisc.GenTimer(this,1f, () =>{
+            WhenPlantUpdate?.Invoke();
+        });
+        PlantZoneUpdater.Start();
     }
 
 
     protected override void Ready_()
     {
         HitArea = GetNode<Area2D>("HitArea");
-        timer = NodeFac.GenTimer(this, 0.5f, StopAttack);
+        StopAttackTimer = NodeMisc.GenTimer(this, 0.5f, StopAttack);
         GUI = GetNode<GameGui>("Canvas/GameGUI");
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
         CraftGUI.Deactivate();
+
+        plantZoneData.Add("plant_test",3,0);
     }
 
     public override void _PhysicsProcess(double delta){
@@ -107,7 +127,4 @@ public partial class Player : Entitie{
         inventory.Remove(HandItem.id);
         if(HandItem.quantity == 0) HandItem = null;
     }
-
-
-
 }
