@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cdg0jp7odllo"]
+[gd_scene load_steps=10 format=3 uid="uid://cdg0jp7odllo"]
 
 [ext_resource type="Script" uid="uid://bnqm2p5umlph6" path="res://Entities/Player/Player.cs" id="1_cabni"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_ww0jn"]
@@ -12,6 +12,12 @@ size = Vector2(16, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1des2"]
 size = Vector2(8, 8)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_an6q6"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t38ms"]
+size = Vector2(64, 64)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_cabni")
 
@@ -19,6 +25,9 @@ script = ExtResource("1_cabni")
 shape = SubResource("RectangleShape2D_vweq0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ww0jn")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
 texture = ExtResource("2_ww0jn")
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
@@ -45,3 +54,13 @@ shape = SubResource("RectangleShape2D_1des2")
 
 [node name="CraftingGUI" parent="Canvas" instance=ExtResource("5_an6q6")]
 visible = false
+
+[node name="PlantRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlantRange"]
+shape = SubResource("RectangleShape2D_an6q6")
+
+[node name="InteractableRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableRange"]
+shape = SubResource("RectangleShape2D_t38ms")

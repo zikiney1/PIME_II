@@ -100,6 +100,12 @@ public class SoilTileData{
         WhenPlantSet.Invoke(plantData);
         return true;
     }
+
+    public bool AddSoilLife(byte amount){
+        if(soilLife + amount > 100) return false;
+        soilLife += amount;
+        return true;
+    }
 }
 
 public class PlantData{

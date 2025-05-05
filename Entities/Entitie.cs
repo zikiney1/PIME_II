@@ -26,6 +26,7 @@ public partial class Entitie : CharacterBody2D{
         Walking,
         Attacking,
         Dead,
+        Lock
     }
     protected EntitieState state = EntitieState.Idle;
     protected EntitieState previousState;

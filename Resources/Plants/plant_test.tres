@@ -11,6 +11,6 @@
 script = ExtResource("1_tehm2")
 GrowthProcess = Array[Texture2D]([ExtResource("2_hlidi"), ExtResource("3_gatti"), ExtResource("4_wvuls"), ExtResource("5_tcicw")])
 DeadPlant = ExtResource("1_c03yt")
-growthDurationSeconds = 20
+growthDurationSeconds = 3
 resultQuantity = 2
 metadata/_custom_type_script = "uid://ctetg1bf2kml4"

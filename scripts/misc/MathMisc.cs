@@ -12,9 +12,6 @@ public static class MathM
             }
         }
     }
-    public static int IndexFromPortion(int value,int totalValue , int maxValue){
-        return (int)Math.Floor((1f - (value / (float)maxValue)) * (totalValue - 1));
-    }
 }
 
 

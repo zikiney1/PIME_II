@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://c00sibf58x1mm"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_5s7hy"]
+[ext_resource type="Texture2D" uid="uid://dpqam1dj1uvao" path="res://assets/ItemsIcons/adubo_organico.png" id="1_6pq8u"]
+
+[resource]
+script = ExtResource("1_5s7hy")
+id = 7
+level = 1
+name = "Adubo"
+description = ""
+icon = ExtResource("1_6pq8u")
+price = 5.0
+stackMaxSize = 20
+type = 4
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

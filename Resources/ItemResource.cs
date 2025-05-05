@@ -2,7 +2,7 @@ using Godot;
 
 [GlobalClass]
 public partial class ItemResource : Resource{
-    [Export] public byte id = 1;
+    [Export(PropertyHint.Range, "0,255")] public byte id = 0;
     [Export] public byte level = 1;
     [Export] public string name = "";
     [Export(PropertyHint.MultilineText)] public string description = "";
