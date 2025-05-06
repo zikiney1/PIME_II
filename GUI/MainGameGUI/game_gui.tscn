@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bpxj72d1rhigg"]
+[gd_scene load_steps=4 format=3 uid="uid://bpxj72d1rhigg"]
 
 [ext_resource type="Script" uid="uid://dy6qxe67h3abk" path="res://GUI/MainGameGUI/GameGui.cs" id="1_p34v0"]
+[ext_resource type="Texture2D" uid="uid://c2neks5ml2p5u" path="res://assets/ItemsIcons/Portrait.png" id="2_r4c4e"]
+[ext_resource type="Texture2D" uid="uid://dpqam1dj1uvao" path="res://assets/ItemsIcons/adubo_organico.png" id="3_xg4vt"]
 
 [node name="GameGUI" type="VBoxContainer"]
 anchors_preset = 15
@@ -25,7 +27,7 @@ size_flags_stretch_ratio = 0.25
 [node name="offset" type="Control" parent="MainGUI/life"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.3
+size_flags_stretch_ratio = 0.4
 
 [node name="HeartsHolder" type="HBoxContainer" parent="MainGUI/life"]
 layout_mode = 2
@@ -37,10 +39,55 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
 
-[node name="Itens" type="Control" parent="MainGUI"]
+[node name="ItemRegion" type="VBoxContainer" parent="MainGUI"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.35
+
+[node name="Control" type="Control" parent="MainGUI/ItemRegion"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="ItemName" type="RichTextLabel" parent="MainGUI/ItemRegion"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Nome do Item"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ItemLayout" type="HBoxContainer" parent="MainGUI/ItemRegion"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+alignment = 1
+
+[node name="Portrait" type="TextureRect" parent="MainGUI/ItemRegion/ItemLayout"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+texture = ExtResource("2_r4c4e")
+expand_mode = 2
+
+[node name="ItemIcon" type="TextureRect" parent="MainGUI/ItemRegion/ItemLayout/Portrait"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("3_xg4vt")
+
+[node name="QuantityLabel" type="RichTextLabel" parent="MainGUI/ItemRegion/ItemLayout/Portrait"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 31.0
+offset_right = 68.0
+offset_bottom = 71.0
+text = "XX"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="GameContainter" type="Control" parent="."]
 layout_mode = 2

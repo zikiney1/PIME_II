@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpqam1dj1uvao"
-path="res://.godot/imported/adubo_organico.png-c8130972f0dd04ff06bbca5881c260a6.ctex"
+uid="uid://c2neks5ml2p5u"
+path="res://.godot/imported/Portrait.png-1d9f4f368b69124dd52ff97eb89fad84.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ItemsIcons/adubo_organico.png"
-dest_files=["res://.godot/imported/adubo_organico.png-c8130972f0dd04ff06bbca5881c260a6.ctex"]
+source_file="res://assets/ItemsIcons/Portrait.png"
+dest_files=["res://.godot/imported/Portrait.png-1d9f4f368b69124dd52ff97eb89fad84.ctex"]
 
 [params]
 
@@ -25,10 +25,10 @@ mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=false
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

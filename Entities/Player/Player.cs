@@ -3,7 +3,6 @@ using System;
 
 public partial class Player : Entitie{
     Area2D HitArea;
-    public Area2D PlantRange;
     Area2D InteractableRange;
 
     Timer StopAttackTimer;
@@ -20,6 +19,7 @@ public partial class Player : Entitie{
     bool isDefending = false;
     bool canPlant = true;
     byte handItemIndex = 0;
+    public float PlantRange = GameManager.GAMEUNITS * 1.5f;
 
     public void UpdateHearts() => GUI.UpdateHearts();
 
@@ -44,6 +44,7 @@ public partial class Player : Entitie{
         inventory.Add(ItemDB.GetItemData(7),10);//adubo
 
         inventory.Add(ItemDB.GetItemData(1));
+        inventory.Add(ItemDB.GetItemData(10),1);
         inventory.Add(ItemDB.GetItemData(2),2);
         inventory.Add(ItemDB.GetItemData(3),2);
         HandItem = inventory[handItemIndex];
@@ -77,19 +78,12 @@ public partial class Player : Entitie{
         CraftGUI.Deactivate();
 
         plantZoneData.Add("plant_test",3,0);
-        PlantRange = GetNode<Area2D>("PlantRange");
         InteractableRange = GetNode<Area2D>("InteractableRange");
 
-        PlantRange.AreaEntered += (Area2D area) => {
-            if(area is PlantingZone zone){
-                zone.isInRange = true;
-            }
-        };
-        PlantRange.AreaExited += (Area2D area) => {
-            if(area is PlantingZone zone){
-                zone.isInRange = false;
-            }
-        };
+
+        ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+        GUI.UpdateHandItem(handItemData.name,handItemData.icon,HandItem.quantity);
+
     }
 
     public override void _PhysicsProcess(double delta){
@@ -109,7 +103,7 @@ public partial class Player : Entitie{
 
     public override void _Input(InputEvent @event)
     {
-        if(state != EntitieState.Lock) return;
+        if(state == EntitieState.Lock) return;
         if(@event is InputEventKey KeyEvent){
             if(KeyEvent.IsActionPressed("defend")) 
                 isDefending = !isDefending;
@@ -119,40 +113,46 @@ public partial class Player : Entitie{
             else if(KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if(KeyEvent.IsActionPressed("use") && !CraftGUI.Visible) CraftGUI.Activate();
             else if(KeyEvent.IsActionPressed("use") && CraftGUI.Visible) CraftGUI.Deactivate();
-            else if(KeyEvent.IsActionPressed("change_item")) ChangeItem();
+            else if(KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
         }
     }
-    void ChangeItem(){
+    void ChangeHandItem(){
         handItemIndex++;
-        if(handItemIndex >= byte.MaxValue) handItemIndex = 0;
-        HandItem = inventory[(byte)(handItemIndex % inventory.Length)];
-        GD.Print("handItemIndex: " + handItemIndex);
+        if(handItemIndex >= inventory.Length) handItemIndex = 0;
+        HandItem = inventory[handItemIndex];
+
+        if(HandItem == null){
+            ChangeHandItem();
+        }else{
+            ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+            GUI.UpdateHandItem(handItemData.name,handItemData.icon,HandItem.quantity);
+            
+        }
+        
     }
 
     public void InteractWithSoilTile(SoilTileData data,byte quantity = 1){
         if(HandItem == null) return;
         if(ItemDB.GetItemData(HandItem.id).type == ItemType.Seed){
-            Plant(data,quantity);
+            Plant(data);
         }else{
             Fertilize(data,quantity);
         }
     }
 
-    void Plant(SoilTileData data,byte quantity){
-        ItemResource HandItem = UseHandItem(ItemType.Seed);
-        if(HandItem == null) return;
-        state = EntitieState.Lock;
-        PlantTimer.Start();
+    void Plant(SoilTileData data){
+        ItemResource HandItemResource = UseHandItem(ItemType.Seed);
+        if( HandItemResource == null || data.ContainsPlant() || !canPlant) return;
+        if(HandItemResource.plantData == null ) return;
 
+        data.SetPlant(HandItemResource.plantData);
     }
+
     void Fertilize(SoilTileData data,byte quantity){
         if(HandItem == null || !canPlant) return;
         if(HandItem.id != 7) return ;
+
         if(!data.AddSoilLife((byte)(quantity * 3))) return;
-        GD.Print(data.soilLife);
-
-        PlantCoolDownTimer.Start();
-
         UseHandItem(ItemType.Resource,quantity);
     }
 
@@ -173,10 +173,16 @@ public partial class Player : Entitie{
 
         if(handItemData == null) return null;
 
-        if(handItemData.type != type) return null;
+        if(handItemData.type != type || !inventory.Contains(HandItem.id,quantity)) return null;
         
         if (!inventory.Remove(HandItem.id,quantity)) return null;
         if(inventory[handItemIndex] == null || HandItem.quantity == 0) HandItem = null;
+
+        if(HandItem != null){
+            GUI.UpdateHandItem(handItemData.name,handItemData.icon,HandItem.quantity);
+        }else{
+            GUI.UpdateHandItem("",null,0);
+        }
 
         return handItemData;
     }

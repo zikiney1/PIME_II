@@ -96,10 +96,12 @@ public class SoilTileData{
     public bool SetPlant(PlantResource plant){
         if(plant == null || plantData != null) return false;
         plantData = new(plant,0);
-        if(WhenPlantSet == null) return false;
-        WhenPlantSet.Invoke(plantData);
+        if(WhenPlantSet != null)
+            WhenPlantSet.Invoke(plantData);
         return true;
     }
+
+    public bool ContainsPlant() => plantData != null;
 
     public bool AddSoilLife(byte amount){
         if(soilLife + amount > 100) return false;

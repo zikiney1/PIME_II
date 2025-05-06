@@ -1,16 +1,14 @@
 using Godot;
 using System;
 
-public partial class PlantingZone : Area2D
+public partial class PlantingZone : Node2D
 {
     [Export] public Player player;
-    [Export] public float playerRange = 3.5f;
+    public float playerRange = 3f;
     [Export]public Texture2D SelectRegion;
     PlantZoneData data;
     [Export(PropertyHint.ArrayType, "Texture2D")] Texture2D[] SoilTextureStates;
     SoilTile[] Soils;
-    public bool isInRange = false;
-    private Vector2I lastPlayerTile = new(-1, -1);
 
     public override void _EnterTree(){
         data = player.plantZoneData;
@@ -27,9 +25,6 @@ public partial class PlantingZone : Area2D
             player.plantZoneData[i].WhenPlantSet += Soils[i].SetPlant;
         }
         data.WhenUpdate += Update;
-        RectangleShape2D shape = new();
-        shape.Size = new Vector2(data.Columns * GameManager.GAMEUNITS, data.Rows * GameManager.GAMEUNITS);
-        GetNode<CollisionShape2D>("CollisionShape2D").Shape = shape;
     }
 
 
@@ -39,47 +34,29 @@ public partial class PlantingZone : Area2D
             soil.UpdatePlant();
         }
     }
-    
     public override void _Process(double delta)
     {
-        if (!isInRange) return;
-
-        Vector2 local = (player.GlobalPosition - GlobalPosition) / GameManager.GAMEUNITS;
-        Vector2I currentTile = new(Mathf.FloorToInt(local.X), Mathf.FloorToInt(local.Y));
-
-        if (currentTile != lastPlayerTile)
-        {
-            lastPlayerTile = currentTile;
-            SetSoilsInRange();
+        if(!MathM.IsInRange(player.GlobalPosition, GlobalPosition, GameManager.GAMEUNITS * data.Columns)){
+            foreach (SoilTile soil in Soils) soil.SelectSprite.Visible = false;
+            return;
         }
+            
+        
 
         foreach (SoilTile soil in Soils)
         {
-            soil.SelectSprite.Visible = soil.isInRange && soil.IsHoovering();
+            Vector2 SoilMiddle = soil.GlobalPosition + new Vector2(GameManager.GAMEUNITS / 2, GameManager.GAMEUNITS / 2);
+            Vector2 PlayerMiddle = player.GlobalPosition + new Vector2(GameManager.GAMEUNITS / 2, GameManager.GAMEUNITS / 2);
+
+            soil.isInRange = MathM.IsInRange(PlayerMiddle, SoilMiddle, 32);
+
+            if(soil.isInRange && soil.IsHoovering()) soil.SelectSprite.Visible = true;
+            else soil.SelectSprite.Visible = false;
+
         }
     }
 
-
-    public void SetSoilsInRange()
-    {
-        int rTiles = Mathf.CeilToInt(playerRange / GameManager.GAMEUNITS);
-        Vector2 local = (player.GlobalPosition - GlobalPosition) / GameManager.GAMEUNITS;
-        int px = Mathf.FloorToInt(local.X), py = Mathf.FloorToInt(local.Y);
-
-        int minX = Mathf.Clamp(px - rTiles, 0, data.Columns - 1);
-        int maxX = Mathf.Clamp(px + rTiles, 0, data.Columns - 1);
-        int minY = Mathf.Clamp(py - rTiles, 0, data.Rows - 1);
-        int maxY = Mathf.Clamp(py + rTiles, 0, data.Rows - 1);
-
-        // reset
-        foreach (SoilTile soil in Soils) soil.isInRange = false;
-
-        // só tiles no retângulo
-        for (int x = minX; x <= maxX; x++)
-            for (int y = minY; y <= maxY; y++)
-                Soils[y * data.Columns + x].isInRange = true;
-    }
-
+    
 }
 
 public partial class SoilTile : Sprite2D{
@@ -160,13 +137,6 @@ public partial class SoilTile : Sprite2D{
         if(@event is InputEventMouseButton mouseButton){
             if(mouseButton.ButtonIndex == MouseButton.Right && mouseButton.Pressed && IsHoovering()){
                 player.InteractWithSoilTile(data);
-            }
-        }
-        if(@event is InputEventMouseMotion mouseMotion){
-            if(IsHoovering()){
-                SelectSprite.Visible = true;
-            }else{
-                SelectSprite.Visible = false;
             }
         }
     }

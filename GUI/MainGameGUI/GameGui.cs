@@ -5,6 +5,9 @@ public partial class GameGui : VBoxContainer{
     public Player player;
     public Texture2D[] HeartzTextures;
     public HBoxContainer HeartContainer;
+    public RichTextLabel HandItemName;
+    public RichTextLabel HandItemQuantity;
+    public TextureRect HandItemIcon;
     HeartIcon[] Hearts;
 
     int maxHearts = 0;
@@ -19,6 +22,10 @@ public partial class GameGui : VBoxContainer{
         ];
 
         HeartContainer = GetNode<HBoxContainer>("MainGUI/life/HeartsHolder");
+
+        HandItemName = GetNode<RichTextLabel>("MainGUI/ItemRegion/ItemName");
+        HandItemIcon = GetNode<TextureRect>("MainGUI/ItemRegion/ItemLayout/Portrait/ItemIcon");
+        HandItemQuantity = GetNode<RichTextLabel>("MainGUI/ItemRegion/ItemLayout/Portrait/QuantityLabel");
 
         maxHearts = player.MaxLife()/2;
         Hearts = new HeartIcon[maxHearts];
@@ -35,7 +42,17 @@ public partial class GameGui : VBoxContainer{
         for (int i = 0; i < maxHearts; i++)
             Hearts[i].Update(player.CurrentLife(), i);
     }
+
+    public void UpdateHandItem(string name,Texture2D icon, int quantity){
+        HandItemIcon.Texture = icon;
+        HandItemName.Text = name;
+        if(quantity >= 1)
+            HandItemQuantity.Text = quantity.ToString();
+        else
+            HandItemQuantity.Text = "";
+    }
 }
+
 
 
 

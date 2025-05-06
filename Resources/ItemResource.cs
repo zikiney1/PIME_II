@@ -12,6 +12,7 @@ public partial class ItemResource : Resource{
     [Export] public ItemType type = ItemType.Ingredient;
     [Export] public PotionEffectResource PotionEffect = null;
     [Export] public EquipamentData equipamentData = null;
+    [Export] public PlantResource plantData = null;
     public PotionEffect effect;
 
 }

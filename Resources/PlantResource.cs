@@ -6,7 +6,6 @@ public partial class PlantResource : Resource
 {
     [Export] public Texture2D[] GrowthProcess;
     [Export] public Texture2D DeadPlant;
-    [Export] public ItemResource seed;
     [Export] public short growthDurationSeconds;
 
     [Export] public ItemResource result;
