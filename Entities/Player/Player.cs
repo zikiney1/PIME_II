@@ -116,6 +116,20 @@ public partial class Player : Entitie{
             else if(KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
         }
     }
+
+    public bool Add(ItemResource item,byte quantity = 1){
+        bool result = inventory.Add(item,quantity);
+        if(HandItem.id == item.id)
+            UpdatePortrait();
+        return result;
+    }
+
+    void UpdatePortrait(){
+        ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+        GUI.UpdateHandItem(handItemData.name,handItemData.icon,HandItem.quantity);
+    }
+
+
     void ChangeHandItem(){
         handItemIndex++;
         if(handItemIndex >= inventory.Length) handItemIndex = 0;
@@ -124,9 +138,7 @@ public partial class Player : Entitie{
         if(HandItem == null){
             ChangeHandItem();
         }else{
-            ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
-            GUI.UpdateHandItem(handItemData.name,handItemData.icon,HandItem.quantity);
-            
+            UpdatePortrait();
         }
         
     }

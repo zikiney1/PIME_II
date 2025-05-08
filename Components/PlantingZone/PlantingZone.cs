@@ -10,6 +10,8 @@ public partial class PlantingZone : Node2D
     [Export(PropertyHint.ArrayType, "Texture2D")] Texture2D[] SoilTextureStates;
     SoilTile[] Soils;
 
+    [Export] public GameManager gameManager;
+
     public override void _EnterTree(){
         data = player.plantZoneData;
         Soils = new SoilTile[data.Columns * data.Rows];
@@ -63,7 +65,7 @@ public partial class SoilTile : Sprite2D{
     public SoilTileData data;
     Texture2D[] SoilTexture;
     Texture2D[] PlantTexture;
-    PlantData plantData;
+    PlantData plantData => data.plantData;
 
     PlantingZone Father;
     Player player;
@@ -72,6 +74,7 @@ public partial class SoilTile : Sprite2D{
     public Sprite2D PlantSprite;
     public Sprite2D SelectSprite;
     public bool isInRange = false;
+
     public SoilTile(PlantingZone Father ,Texture2D[] SoilTexture,SoilTileData data,int x,int y){
         this.Father = Father;
         player = Father.player;
@@ -92,12 +95,16 @@ public partial class SoilTile : Sprite2D{
         if(plantData == null) return;
         if(plantData.plant == null) return;
 
-        this.plantData = plantData;
+        data.plantData = plantData;
         PlantTexture = plantData.plant.GrowthProcess;
         
-        PlantSprite = new();
-        PlantSprite.Position = Vector2.Zero;
-        AddChild(PlantSprite);
+        if(PlantSprite == null){
+            PlantSprite = new();
+            PlantSprite.Position = Vector2.Zero;
+            AddChild(PlantSprite);
+        }else{
+            PlantSprite.Texture = null;
+        }
         UpdatePlant();
     }
 
@@ -112,8 +119,8 @@ public partial class SoilTile : Sprite2D{
 
     public void UpdatePlant(){
         if(plantData == null) return;
-        if (PlantTexture.Length == 0 || plantData.isDead) return;
-        if(plantData.plant == null) return;
+        if (PlantTexture.Length == 0 || plantData.isDead || plantData.plant == null) return;            
+        
 
         if(plantData.progress >= plantData.plant.growthDurationSeconds && plantData.plant.DeadPlant != null){
             PlantSprite.Texture = plantData.plant.DeadPlant;
@@ -137,6 +144,12 @@ public partial class SoilTile : Sprite2D{
         if(@event is InputEventMouseButton mouseButton){
             if(mouseButton.ButtonIndex == MouseButton.Right && mouseButton.Pressed && IsHoovering()){
                 player.InteractWithSoilTile(data);
+            }
+            else if(mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed && IsHoovering() && data.plantData != null){
+                GD.Print(data.position);
+                Father.gameManager.SpawnItem(GlobalPosition, data.GetPlantResult(), data.GetPlantResultQuantity());
+                data.RemovePlant();
+                PlantSprite.Texture = null;
             }
         }
     }

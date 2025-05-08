@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 public partial class GameManager : Node{
 
@@ -9,16 +10,25 @@ public partial class GameManager : Node{
     public Configurator configurator;
     public readonly static byte GAMEUNITS = 16;
 
+    public Pooling pooling;
+
+    public DropItem SpawnItem(Vector2 position, ItemResource item, int quantity){
+        return pooling.GrabFroomPool(position, item, quantity);
+    }
+    public void DespawnItem(DropItem dropItem){
+        pooling.PutBackToPool(dropItem);
+    } 
+
     public override void _EnterTree()
     {
+        pooling = new ();
+        AddChild(pooling);
+
         ItemDB.SetupItemDB();
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
+
         Instance = this;
-
-        // player = GetNode<Player>("Player");
-        // camera = GetNode<Camera>("Camera");
-
         configurator = new();
 
         player.GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").ProcessMode = ProcessModeEnum.Always;
@@ -26,6 +36,8 @@ public partial class GameManager : Node{
     }
 
     public static string GUIPath() => "res://assets/GUI/";
+
+    
 
     public void GameOver(){
         GetTree().ChangeSceneToFile("res://Scenes/GameOver.tscn");

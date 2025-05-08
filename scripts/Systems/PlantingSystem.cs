@@ -73,6 +73,10 @@ public class SoilTileData{
     public PlantData plantData;
     public Action<PlantData> WhenPlantSet;
 
+    public ItemResource GetPlantResult() => plantData?.plant?.result;
+    public PlantResource GetPlant() => plantData?.plant;
+    public byte GetPlantResultQuantity() => plantData?.plant?.resultQuantity ?? 0;
+
     public SoilTileData(byte position, byte soilLife,PlantResource plant, short progress = 0){
         this.position = position;
         this.soilLife = soilLife;
@@ -98,6 +102,11 @@ public class SoilTileData{
         plantData = new(plant,0);
         if(WhenPlantSet != null)
             WhenPlantSet.Invoke(plantData);
+        return true;
+    }
+    public bool RemovePlant(){
+        if(plantData == null) return false;
+        plantData = null;
         return true;
     }
 

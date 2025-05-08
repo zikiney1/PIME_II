@@ -46,6 +46,7 @@ public partial class GameGui : VBoxContainer{
     public void UpdateHandItem(string name,Texture2D icon, int quantity){
         HandItemIcon.Texture = icon;
         HandItemName.Text = name;
+        
         if(quantity >= 1)
             HandItemQuantity.Text = quantity.ToString();
         else

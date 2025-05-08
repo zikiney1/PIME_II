@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b11r3da1hkx1d"]
+
+[ext_resource type="Script" uid="uid://cmn810id1sfnr" path="res://Components/DropItem/DropItem.cs" id="1_hso2v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hso2v"]
+size = Vector2(32, 32)
+
+[node name="DropItem" type="Area2D"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_hso2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hso2v")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

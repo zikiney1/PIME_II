@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=15 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dhnilo0a8g0yc" path="res://Components/camera/Camera.cs" id="5_mhf4e"]
 [ext_resource type="Texture2D" uid="uid://fm5nu7257tie" path="res://assets/Planting/soil_tile_3.png" id="5_xesv0"]
 [ext_resource type="Texture2D" uid="uid://bck6an7qb6io0" path="res://assets/Planting/soil_tile_4.png" id="6_2kxrb"]
+[ext_resource type="PackedScene" uid="uid://b11r3da1hkx1d" path="res://Components/DropItem/drop_item.tscn" id="12_xesv0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
 size = Vector2(16, 16)
@@ -22,11 +23,12 @@ script = ExtResource("1_0bltp")
 player = NodePath("Player")
 camera = NodePath("Camera2D")
 
-[node name="PlantingZone" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_4f2ty")]
+[node name="PlantingZone" parent="." node_paths=PackedStringArray("player", "gameManager") instance=ExtResource("2_4f2ty")]
 position = Vector2(200, 80)
 player = NodePath("../Player")
 SelectRegion = ExtResource("3_n4pgo")
 SoilTextureStates = Array[Texture2D]([ExtResource("3_wgv7f"), ExtResource("4_n4pgo"), ExtResource("5_xesv0"), ExtResource("6_2kxrb")])
+gameManager = NodePath("..")
 
 [node name="DamageArea" type="Area2D" parent="."]
 position = Vector2(156, 95)
@@ -53,3 +55,6 @@ player = NodePath("../Player")
 visible = false
 tile_set = SubResource("TileSet_mhf4e")
 format = 2
+
+[node name="DropItem" parent="." instance=ExtResource("12_xesv0")]
+position = Vector2(141, 126)
