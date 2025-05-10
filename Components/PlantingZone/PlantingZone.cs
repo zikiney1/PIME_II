@@ -96,7 +96,7 @@ public partial class SoilTile : Sprite2D{
         if(plantData.plant == null) return;
 
         data.plantData = plantData;
-        PlantTexture = plantData.plant.GrowthProcess;
+        PlantTexture = data.GrowthProcess();
         
         if(PlantSprite == null){
             PlantSprite = new();
@@ -119,14 +119,14 @@ public partial class SoilTile : Sprite2D{
 
     public void UpdatePlant(){
         if(plantData == null) return;
-        if (PlantTexture.Length == 0 || plantData.isDead || plantData.plant == null) return;            
+        if (PlantTexture.Length == 0 || data.IsDead() || plantData.plant == null) return;            
         
 
-        if(plantData.progress >= plantData.plant.growthDurationSeconds && plantData.plant.DeadPlant != null){
-            PlantSprite.Texture = plantData.plant.DeadPlant;
+        if(plantData.progress >= data.GrowthDuration() && data.DeadTexture() != null){
+            PlantSprite.Texture = data.DeadTexture();
             plantData.isDead = true;
         }else{
-            double ratio = plantData.progress / (double)plantData.plant.growthDurationSeconds;
+            double ratio = plantData.progress / data.GrowthDuration();
             int index = (int)Math.Floor(ratio * (PlantTexture.Length - 1));
             index = Math.Clamp(index, 0, PlantTexture.Length - 1);
             PlantSprite.Texture = PlantTexture[index];
@@ -146,12 +146,16 @@ public partial class SoilTile : Sprite2D{
                 player.InteractWithSoilTile(data);
             }
             else if(mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed && IsHoovering() && data.plantData != null){
-                GD.Print(data.position);
-                Father.gameManager.SpawnItem(GlobalPosition, data.GetPlantResult(), data.GetPlantResultQuantity());
-                data.RemovePlant();
-                PlantSprite.Texture = null;
+                CollectPlant();
             }
         }
+    }
+
+    void CollectPlant(){
+        Father.gameManager.SpawnItem(GlobalPosition, data.GetPlantResult(), data.GetPlantResultQuantity());
+        Father.gameManager.SpawnItem(GlobalPosition, data.GetSeed(), 1 );
+        data.RemovePlant();
+        PlantSprite.Texture = null;
     }
 }
 

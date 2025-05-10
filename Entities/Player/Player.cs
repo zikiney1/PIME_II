@@ -51,7 +51,6 @@ public partial class Player : Entitie{
 
         equipamentSys.AddEquipament(ItemDB.GetItemData(5).equipamentData);
 
-
         WhenPlantUpdate += () =>{
             plantZoneData.Update();
             PlantZoneUpdater.Start();

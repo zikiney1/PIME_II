@@ -32,12 +32,13 @@ public partial class DropItem : Area2D
     }
 
     public void SpawnItem(Vector2 position,ItemResource item, int quantity){
-        this.Position = position;
+        this.GlobalPosition = position;
         startPosition = this.Position;
         this.item = item;
         this.quantity = quantity;
         sprite.Texture = item.icon;
         isActivated = true;
+
         BodyEntered += (body) => {
             if(body is Player p){
                 p.Add(item, (byte)quantity);

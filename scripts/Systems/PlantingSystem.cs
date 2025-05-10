@@ -18,8 +18,8 @@ public static class PlantingSystem{
             if(plant == null) continue;
             if(
                 plant.GrowthProcess == null || 
-                // plant.seed == null || 
-                // plant.result == null ||
+                plant.result == null ||
+                plant.resultQuantity <= 0 ||
                 plantDB.ContainsKey(fileName)
             ) continue;
 
@@ -76,6 +76,12 @@ public class SoilTileData{
     public ItemResource GetPlantResult() => plantData?.plant?.result;
     public PlantResource GetPlant() => plantData?.plant;
     public byte GetPlantResultQuantity() => plantData?.plant?.resultQuantity ?? 0;
+    public Texture2D DeadTexture() => plantData?.plant?.DeadPlant;
+    public Texture2D[] GrowthProcess() => plantData?.plant?.GrowthProcess;
+    public short GetProgress() => plantData?.progress ?? 0;
+    public short GrowthDuration() => plantData?.plant?.growthDurationSeconds ?? 0;
+    public bool IsDead() => plantData?.isDead ?? false;
+    public ItemResource GetSeed() => plantData?.plant?.seed ?? null;
 
     public SoilTileData(byte position, byte soilLife,PlantResource plant, short progress = 0){
         this.position = position;

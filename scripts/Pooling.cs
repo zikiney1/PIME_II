@@ -7,12 +7,15 @@ public partial class Pooling : Node2D
 {
     List<DropItem> poolItems = new();
     List<DropItem> activeItems = new();
+    Random rnd = new();
     public Pooling(){
 
     }
 
     public DropItem GrabFroomPool(Vector2 position, ItemResource item, int quantity){
         DropItem dropItem;
+
+        position += new Vector2((float)rnd.NextDouble(), (float)rnd.NextDouble() + 0.5f);
 
         if(poolItems.Count > 0){
             dropItem = poolItems.Last();
