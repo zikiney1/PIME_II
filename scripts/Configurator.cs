@@ -33,6 +33,9 @@ public class Configurator{
         data[KEYCONFIG].Add("ATTACK", "Space");
         data[KEYCONFIG].Add("DEFEND", "Shift");
         data[KEYCONFIG].Add("USE", "E");
+        data[KEYCONFIG].Add("CONFIRM", "Enter");
+        data[KEYCONFIG].Add("INVENTORY", "Tab");
+        data[KEYCONFIG].Add("CHANGE_ITEM", "T");
         
         return data;
     }

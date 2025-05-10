@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jjqteghryssn"
-path="res://.godot/imported/HealingPotion.png-9696cb040400ddbf477d3f41b0952588.ctex"
+uid="uid://bck6an7qb6io0"
+path="res://.godot/imported/soil_tile_4.png-42f8ba493d7539264e04502e68ff2691.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/GUI/Crafting/HealingPotion.png"
-dest_files=["res://.godot/imported/HealingPotion.png-9696cb040400ddbf477d3f41b0952588.ctex"]
+source_file="res://assets/Planting/soil_tile_4.png"
+dest_files=["res://.godot/imported/soil_tile_4.png-42f8ba493d7539264e04502e68ff2691.ctex"]
 
 [params]
 
@@ -25,7 +25,7 @@ mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=false
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false

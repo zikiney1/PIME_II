@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_7dho2"]
 [ext_resource type="Resource" uid="uid://xe08w0iuqb36" path="res://Resources/potionEffects/InstaHealEffect.tres" id="1_t66ce"]
-[ext_resource type="Texture2D" uid="uid://jjqteghryssn" path="res://assets/GUI/Crafting/HealingPotion.png" id="2_xowwf"]
+[ext_resource type="Texture2D" uid="uid://jjqteghryssn" path="res://assets/ItemsIcons/HealingPotion.png" id="2_xowwf"]
 
 [resource]
 script = ExtResource("1_7dho2")

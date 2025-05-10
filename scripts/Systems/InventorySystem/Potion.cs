@@ -72,7 +72,7 @@ public class TimedEffect : PotionEffect{
         const string timedEffectName = "TimedEffect";
         base.Apply(entitie);
         if(entitie.HasNode(timedEffectName)) timerEffect = entitie.GetNode<Timer>(timedEffectName);
-        else timerEffect = NodeFac.GenTimer(entitie, duration, whenStop);
+        else timerEffect = NodeMisc.GenTimer(entitie, duration, whenStop);
 
         timerEffect.Name = timedEffectName;
         entitie.AddChild(timerEffect);

@@ -21,7 +21,7 @@ public static class ItemDB{
             item.effect = GetPotionEffect(item.PotionEffect, level);
             if(item.equipamentData != null) item.equipamentData.SetElement();
             
-
+            if(item.plantData != null) item.plantData.seed = item;
             
             itemDB.Add(item.id, item);
         }   
@@ -96,5 +96,6 @@ public enum ItemType{
     Potion,
     Equipament,
     Seed,
-    Ingredient
+    Ingredient,
+    Resource
 }

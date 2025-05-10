@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class InventorySystem{
     public Slot[] items;
     public Dictionary<byte, SlotData> itemsDic;
+    public byte Length => (byte)items.Length;
     public InventorySystem(byte slotQuantity){
         items = new Slot[slotQuantity];
         itemsDic = new();
@@ -54,7 +55,7 @@ public class InventorySystem{
     }
 
     public bool Remove(byte id, byte quantity = 1){
-        if (!itemsDic.ContainsKey(id) || quantity == 0)
+        if (!itemsDic.ContainsKey(id) || quantity == 0 || itemsDic[id].totalQuantity < quantity)
             return false;
 
         var positions = itemsDic[id].positions;

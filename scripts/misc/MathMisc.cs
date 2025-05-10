@@ -12,6 +12,9 @@ public static class MathM
             }
         }
     }
+    public static bool IsInRange(Vector2 vecA, Vector2 vecB, float radius){
+        return vecA.DistanceTo(vecB) <= radius;
+    }
 
 }
 

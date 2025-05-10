@@ -14,6 +14,7 @@ public partial class CraftingGui : HBoxContainer
     RecipeData[] recipes;
     int selected = 0;
 
+
     public override void _Ready(){
         RecipeList = GetNode<ItemList>("SideBar/SideBarContainer/RecipesContainer");
         RecipeList.ItemSelected += OnSelectRecipe;
