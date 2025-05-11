@@ -12,14 +12,14 @@ public partial class Player : Entitie{
     Timer PlantCoolDownTimer;
     
     public Action WhenPlantUpdate;
-    [Export] PlantingZone PlantZone;
+    [Export] public PlantingZone PlantZone;
 
     GameGui GUI;
     CraftingGui CraftGUI;
 
     bool isDefending = false;
     bool canPlant = true;
-    byte handItemIndex = 0;
+    public byte handItemIndex = 0;
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
 
     public void UpdateHearts() => GUI.UpdateHearts();
@@ -27,12 +27,8 @@ public partial class Player : Entitie{
     public InventorySystem inventory;
     public EquipamentSys equipamentSys;
     public PlantZoneData plantZoneData;
-    // public PlantZoneData plantZoneData = new (3,3,[
-    //     100,70,100,
-    //     70,20,100,
-    //     100,50,60
-    // ]);
 
+    public void Save(Vector2 pos) => SaveData.Save(this,pos);
 
     public override void _EnterTree()
     {
@@ -41,22 +37,11 @@ public partial class Player : Entitie{
         equipamentSys = new(entitieModifier);
 
         inventory = new(9);
-        // lifeSystem = new(5,10);
-        LoadSaveFile();
+        SaveData.LoadSaveFile(this);
         plantZoneData.WhenUpdate += PlantZone.Update;
 
 
         lifeSystem.WhenDies += Die;
-
-        // inventory.Add(ItemDB.GetItemData(7),10);//adubo
-
-        // inventory.Add(ItemDB.GetItemData(1));
-        // inventory.Add(ItemDB.GetItemData(10),1);
-        // inventory.Add(ItemDB.GetItemData(2),2);
-        // inventory.Add(ItemDB.GetItemData(3),2);
-
-        // equipamentSys.AddEquipament(ItemDB.GetItemData(5).equipamentData);
-
 
         WhenPlantUpdate += () =>{
             plantZoneData.Update();
@@ -84,7 +69,6 @@ public partial class Player : Entitie{
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
         CraftGUI.Deactivate();
 
-        // plantZoneData.Add("plant_test",3,0);
         InteractableRange = GetNode<Area2D>("InteractableRange");
 
 
@@ -121,17 +105,22 @@ public partial class Player : Entitie{
                 isDefending = !isDefending;
             
             if(KeyEvent.IsActionPressed("attack")) Attack();
-            // else if(KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if(KeyEvent.IsActionPressed("use_potion")) UsePotion();
-            else if(KeyEvent.IsActionPressed("use") && !CraftGUI.Visible) CraftGUI.Activate();
-            else if(KeyEvent.IsActionPressed("use") && CraftGUI.Visible) CraftGUI.Deactivate();
             else if(KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
 
-
-            if(KeyEvent.Keycode == Key.P){
-                Save();
-            }
         }
+    }
+
+    public void InteractCraft(){
+        if(CraftGUI.Visible) {
+            CraftGUI.Deactivate();
+            state = EntitieState.Idle;
+        }
+        else {
+            CraftGUI.Activate();
+            state = EntitieState.Lock;
+        }
+
     }
 
     public bool Add(ItemResource item,byte quantity = 1){
@@ -215,10 +204,6 @@ public partial class Player : Entitie{
 
         return handItemData;
     }
-
-
-
-
     protected override void Attack(){
         HitArea.Position = lastDirection * GameManager.GAMEUNITS;  
         base.Attack();
@@ -236,107 +221,5 @@ public partial class Player : Entitie{
     public override void whenHeal(){
         UpdateHearts();
     }
-
-
-    public void LoadSaveFile(){
-        if(SaveData.saveFilePath == "") return;
-        
-        FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Read);
-        string[] lines = file.GetAsText().Replace("\r","").Split('\n');
-
-        file.Close();
-
-        lifeSystem = new(byte.Parse(lines[0]),10);
-        handItemIndex = byte.Parse(lines[1]);
-
-        string[] inventoryItems = lines[2].Split('|');
-        foreach(string item in inventoryItems){
-            if(item == "") continue;
-            string[] itemData = item.Split(';');
-            byte position = byte.Parse(itemData[0]);
-            byte id = byte.Parse(itemData[1]);
-            byte quantity = byte.Parse(itemData[2]);
-
-            inventory.Add(position,id,quantity);
-        }
-
-        string[] equipaments = lines[3].Split('|');
-        foreach(string equipament in equipaments){
-            if(equipament == "") continue;
-            byte id = byte.Parse(equipament);
-            equipamentSys.AddEquipament(ItemDB.GetItemData(id).equipamentData);
-        }
-
-        string[] soilsLifesRaw = lines[4].Split(';');
-        byte[] soilsLifes = new byte[soilsLifesRaw.Length-1];
-        for(int i=0;i<soilsLifes.Length;i++){
-            if(soilsLifesRaw[i].Trim() == "") continue;
-            soilsLifes[i] = byte.Parse(soilsLifesRaw[i]);
-        }
-        plantZoneData = new PlantZoneData(3,3,soilsLifes);
-        if(PlantZone != null) PlantZone.Setup();
-
-        string[] plants = lines[5].Split('|');
-        foreach(string plant in plants){
-            if(plant == "") continue;
-            string[] itemData = plant.Split(';');
-            string name = itemData[0];
-            int position = int.Parse(itemData[1]);
-            short progress = short.Parse(itemData[2]);
-            plantZoneData.Add(name,position,progress);
-        }
-
-    }
-
-    public void Save(){
-        if(SaveData.saveFilePath == "") return;
-        
-        FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
-        string content = "";
-
-        content += lifeSystem.CurrentLife() + "\n";
-        content += handItemIndex + "\n";
-
-        string inventoryContent = "";
-        foreach(Slot slot in inventory.items){
-            if(slot == null) continue;
-            inventoryContent += $"{slot.position};{slot.id};{slot.quantity}|";
-        }
-        content += inventoryContent + "\n";
-
-        string equipamentsContent = "";
-        foreach(EquipamentData equipament in equipamentSys.equipaments){
-            if(equipament == null) continue;
-            equipamentsContent += $"{equipament.GetId()}|";
-        }
-        content += equipamentsContent + "\n";
-
-        string soilsLifesContent = "";
-        foreach(SoilTileData soil in plantZoneData.SoilsData){
-            if(soil == null) continue;
-            soilsLifesContent += $"{soil.soilLife};";
-        }
-        content += soilsLifesContent + "\n";
-
-        string plantsContent = "";
-
-        var soilWithPlants = plantZoneData.SoilsData.Where(soil => soil != null && soil.plantData != null);
-
-        foreach(SoilTileData soil in soilWithPlants){
-            PlantData plant = soil.plantData;
-            PlantResource plantData = plant?.plant;
-            plantsContent += $"{plantData.name};{soil.position};{plant.progress}|";
-        }
-        content += plantsContent + "\n";
-
-
-        file.StoreString(content);
-
-
-        file.Close();
-
-    }
-
-
 
 }

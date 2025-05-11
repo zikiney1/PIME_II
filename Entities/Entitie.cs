@@ -5,7 +5,7 @@ public partial class Entitie : CharacterBody2D{
 
     protected float Speed = (GameManager.GAMEUNITS)  * 1000;
 
-    protected LifeSystem lifeSystem;
+    public LifeSystem lifeSystem;
     public EntitieModifier entitieModifier;
 
     

@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cf44ck1h3xwkp"]
+
+[ext_resource type="Script" uid="uid://br2d5osfd3w85" path="res://Components/InteractableArea/CraftZone/CraftZone.cs" id="1_yceil"]
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_88gww"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vt8a2"]
+size = Vector2(32, 32)
+
+[node name="CraftZone" type="Area2D"]
+script = ExtResource("1_yceil")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_88gww")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vt8a2")
