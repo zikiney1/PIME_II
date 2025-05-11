@@ -12,4 +12,5 @@ public partial class PlantResource : Resource
     [Export] public byte resultQuantity;
 
     public ItemResource seed;
+    public string name;
 }

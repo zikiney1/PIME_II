@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class Player : Entitie{
     Area2D HitArea;
@@ -11,45 +12,36 @@ public partial class Player : Entitie{
     Timer PlantCoolDownTimer;
     
     public Action WhenPlantUpdate;
-
+    [Export] public PlantingZone PlantZone;
 
     GameGui GUI;
     CraftingGui CraftGUI;
 
     bool isDefending = false;
     bool canPlant = true;
-    byte handItemIndex = 0;
+    public byte handItemIndex = 0;
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
 
     public void UpdateHearts() => GUI.UpdateHearts();
 
     public InventorySystem inventory;
     public EquipamentSys equipamentSys;
-    public PlantZoneData plantZoneData = new (3,3,[
-        100,70,100,
-        70,20,100,
-        100,50,60
-    ]);
+    public PlantZoneData plantZoneData;
 
+    public void Save(Vector2 pos) => SaveData.Save(this,pos);
 
     public override void _EnterTree()
     {
         Speed = GameManager.GAMEUNITS  * 500;
         entitieModifier = new();
         equipamentSys = new(entitieModifier);
+
         inventory = new(9);
-        lifeSystem = new(entitieModifier, 5,10);
+        SaveData.LoadSaveFile(this);
+        plantZoneData.WhenUpdate += PlantZone.Update;
+
+
         lifeSystem.WhenDies += Die;
-
-        inventory.Add(ItemDB.GetItemData(7),10);//adubo
-
-        inventory.Add(ItemDB.GetItemData(1));
-        inventory.Add(ItemDB.GetItemData(10),1);
-        inventory.Add(ItemDB.GetItemData(2),2);
-        inventory.Add(ItemDB.GetItemData(3),2);
-        HandItem = inventory[handItemIndex];
-
-        equipamentSys.AddEquipament(ItemDB.GetItemData(5).equipamentData);
 
         WhenPlantUpdate += () =>{
             plantZoneData.Update();
@@ -60,6 +52,7 @@ public partial class Player : Entitie{
         });
         PlantZoneUpdater.Start();
 
+        HandItem = inventory[handItemIndex];
 
     }
 
@@ -76,11 +69,15 @@ public partial class Player : Entitie{
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
         CraftGUI.Deactivate();
 
-        plantZoneData.Add("plant_test",3,0);
         InteractableRange = GetNode<Area2D>("InteractableRange");
 
 
+
+        if(HandItem == null) {
+            ChangeHandItem();
+        }
         ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+
         GUI.UpdateHandItem(handItemData.name,handItemData.icon,HandItem.quantity);
 
     }
@@ -108,12 +105,22 @@ public partial class Player : Entitie{
                 isDefending = !isDefending;
             
             if(KeyEvent.IsActionPressed("attack")) Attack();
-            // else if(KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if(KeyEvent.IsActionPressed("use_potion")) UsePotion();
-            else if(KeyEvent.IsActionPressed("use") && !CraftGUI.Visible) CraftGUI.Activate();
-            else if(KeyEvent.IsActionPressed("use") && CraftGUI.Visible) CraftGUI.Deactivate();
             else if(KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
+
         }
+    }
+
+    public void InteractCraft(){
+        if(CraftGUI.Visible) {
+            CraftGUI.Deactivate();
+            state = EntitieState.Idle;
+        }
+        else {
+            CraftGUI.Activate();
+            state = EntitieState.Lock;
+        }
+
     }
 
     public bool Add(ItemResource item,byte quantity = 1){
@@ -197,10 +204,6 @@ public partial class Player : Entitie{
 
         return handItemData;
     }
-
-
-
-
     protected override void Attack(){
         HitArea.Position = lastDirection * GameManager.GAMEUNITS;  
         base.Attack();
@@ -218,4 +221,5 @@ public partial class Player : Entitie{
     public override void whenHeal(){
         UpdateHearts();
     }
+
 }

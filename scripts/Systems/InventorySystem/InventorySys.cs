@@ -54,6 +54,22 @@ public class InventorySystem{
         return true;
     }
 
+    public bool Add(int position, byte itemId, byte quantity = 1){
+        if(items.Length == itemsDic.Count || quantity == 0 || position < 0 || position >= items.Length) return false;
+        
+        if(items[position] == null){
+            items[position] = new Slot(itemId,(byte)position,quantity);
+            itemsDic[itemId] = new SlotData(quantity);
+            itemsDic[itemId].positions.Add(items[position]);
+        }else if(items[position].id == itemId){
+            items[position].quantity += quantity;
+            itemsDic[itemId].totalQuantity += quantity;
+        }
+        return true;
+    }
+
+    public bool Add(int position, ItemResource item, byte quantity = 1) => Add(position, item.id, quantity);
+
     public bool Remove(byte id, byte quantity = 1){
         if (!itemsDic.ContainsKey(id) || quantity == 0 || itemsDic[id].totalQuantity < quantity)
             return false;

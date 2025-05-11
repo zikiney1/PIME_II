@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=16 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" uid="uid://dhnilo0a8g0yc" path="res://Components/camera/Camera.cs" id="5_mhf4e"]
 [ext_resource type="Texture2D" uid="uid://fm5nu7257tie" path="res://assets/Planting/soil_tile_3.png" id="5_xesv0"]
 [ext_resource type="Texture2D" uid="uid://bck6an7qb6io0" path="res://assets/Planting/soil_tile_4.png" id="6_2kxrb"]
+[ext_resource type="PackedScene" uid="uid://cf44ck1h3xwkp" path="res://Components/InteractableArea/CraftZone/CraftZone.tscn" id="12_xesv0"]
+[ext_resource type="PackedScene" uid="uid://b6e57l2772r5g" path="res://Components/InteractableArea/saveStation/SaveStation.tscn" id="13_2kxrb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
 size = Vector2(16, 16)
@@ -41,8 +43,9 @@ texture = ExtResource("3_pbyjw")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
 shape = SubResource("RectangleShape2D_4f2ty")
 
-[node name="Player" parent="." instance=ExtResource("1_kw413")]
+[node name="Player" parent="." node_paths=PackedStringArray("PlantZone") instance=ExtResource("1_kw413")]
 position = Vector2(175, 128)
+PlantZone = NodePath("../PlantingZone")
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(192, 108)
@@ -54,3 +57,15 @@ player = NodePath("../Player")
 visible = false
 tile_set = SubResource("TileSet_mhf4e")
 format = 2
+
+[node name="CraftZone" parent="." node_paths=PackedStringArray("player") instance=ExtResource("12_xesv0")]
+position = Vector2(94, 142)
+player = NodePath("../Player")
+
+[node name="SaveStation" parent="." node_paths=PackedStringArray("SavePosition", "player") instance=ExtResource("13_2kxrb")]
+position = Vector2(149, 193)
+SavePosition = NodePath("Node2D")
+player = NodePath("../Player")
+
+[node name="Node2D" type="Node2D" parent="SaveStation"]
+position = Vector2(0, -14)

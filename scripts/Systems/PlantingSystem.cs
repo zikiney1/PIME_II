@@ -23,6 +23,8 @@ public static class PlantingSystem{
                 plantDB.ContainsKey(fileName)
             ) continue;
 
+            plant.name = fileName;
+
             plantDB.Add(fileName, plant);
         }
     }

@@ -5,7 +5,7 @@ public partial class Entitie : CharacterBody2D{
 
     protected float Speed = (GameManager.GAMEUNITS)  * 1000;
 
-    protected LifeSystem lifeSystem;
+    public LifeSystem lifeSystem;
     public EntitieModifier entitieModifier;
 
     
@@ -47,14 +47,14 @@ public partial class Entitie : CharacterBody2D{
     }
     public void Damage(EntitieModifier entitieModifier,int amount = 1) {
         if(!canReciveDamage) return;
-        lifeSystem.GetDamage(entitieModifier,amount);
+        lifeSystem.GetDamage(this.entitieModifier,entitieModifier,amount);
      
         WhenTakeDamage();
         DamageTimer.Start();
     }
     public void Damage(ElementsEnum element,int amount = 1){
         if(!canReciveDamage) return;
-        lifeSystem.GetDamage(element,amount);
+        lifeSystem.GetDamage(this.entitieModifier,element,amount);
      
         WhenTakeDamage();
         DamageTimer.Start();
