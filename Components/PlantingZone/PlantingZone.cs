@@ -13,6 +13,9 @@ public partial class PlantingZone : Node2D
     [Export] public GameManager gameManager;
 
     public override void _EnterTree(){
+    }
+    
+    public void Setup(){
         data = player.plantZoneData;
         Soils = new SoilTile[data.Columns * data.Rows];
         for(int i = 0; i < Soils.Length; i++){
@@ -28,6 +31,7 @@ public partial class PlantingZone : Node2D
         }
         data.WhenUpdate += Update;
     }
+
 
 
     public void Update(){

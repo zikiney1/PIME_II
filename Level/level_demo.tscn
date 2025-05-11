@@ -41,8 +41,9 @@ texture = ExtResource("3_pbyjw")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
 shape = SubResource("RectangleShape2D_4f2ty")
 
-[node name="Player" parent="." instance=ExtResource("1_kw413")]
+[node name="Player" parent="." node_paths=PackedStringArray("PlantZone") instance=ExtResource("1_kw413")]
 position = Vector2(175, 128)
+PlantZone = NodePath("../PlantingZone")
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(192, 108)
