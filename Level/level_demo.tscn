@@ -40,7 +40,7 @@ gameManager = NodePath("..")
 [node name="DamageArea" type="Area2D" parent="."]
 position = Vector2(156, 95)
 script = ExtResource("2_mhf4e")
-damage = 3
+damage = 10
 
 [node name="Icon" type="Sprite2D" parent="DamageArea"]
 modulate = Color(1, 0, 0, 1)

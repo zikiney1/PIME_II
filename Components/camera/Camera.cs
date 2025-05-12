@@ -21,6 +21,10 @@ public partial class Camera : Camera2D
         SetScreenPosition();
     }
 
+    /// <summary>
+    /// Adjusts the camera's global position to center around the player's current grid-based position,
+    /// ensuring smooth transitions by aligning the camera to the calculated grid center based on the player's position.
+    /// </summary>
     public void SetScreenPosition(){
         Vector2 playerPos = player.GlobalPosition;
         Vector2 ScreenSize = GetViewportRect().Size / (Zoom * 1.1f);

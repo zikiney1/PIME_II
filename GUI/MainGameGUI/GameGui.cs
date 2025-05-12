@@ -12,6 +12,17 @@ public partial class GameGui : VBoxContainer{
 
     int maxHearts = 0;
 
+    
+    /// <summary>
+    /// Initializes the game GUI by setting up the player node, loading heart textures,
+    /// and configuring the heart container and hand item display.
+    /// </summary>
+    /// <remarks>
+    /// This method retrieves the player node, loads textures for heart icons, and initializes
+    /// the heart container with HeartIcon instances based on the player's maximum life.
+    /// Additionally, it sets up the GUI elements for displaying the player's current hand item,
+    /// including the item name, icon, and quantity.
+    /// </remarks>
     public void Setup(){
         player = GetNode<Player>("../..");
 

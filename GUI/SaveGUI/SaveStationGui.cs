@@ -43,6 +43,10 @@ public partial class SaveStationGui : CenterContainer
         Deactivate();
     }
 
+    /// <summary>
+    /// Retrieves the names of all checkpoints in the save station GUI.
+    /// </summary>
+    /// <returns>An array of checkpoint names.</returns>
     public string[] ToNames(){
         string[] names = new string[checkPointList.Count];
         for(int i = 0; i < checkPointList.Count; i++){
@@ -50,7 +54,13 @@ public partial class SaveStationGui : CenterContainer
         }
         return names;
     }
-
+    
+    /// <summary>
+    /// Changes the selected index in the save station GUI by the given index,
+    /// wrapping around to the start or end of the list if the given index is
+    /// out of range.
+    /// </summary>
+    /// <param name="index">The index to change the selected index by.</param>
     void changeIndex(int index = 0){
         selectedIndex += index;
         if(selectedIndex >= checkPointList.Count){
@@ -61,6 +71,11 @@ public partial class SaveStationGui : CenterContainer
         SelectedStation.Text = checkPointList[selectedIndex].Name;
     }
 
+    
+        /// <summary>
+        /// Activates the save station GUI, adding the given save station, making the GUI visible, setting the focus to the Save button, and setting the selected index to 0.
+        /// </summary>
+        /// <param name="saveStation">The save station to add.</param>
     public void Activate(SaveStation saveStation){
         AddStation(saveStation);
         Visible = true;
@@ -94,6 +109,15 @@ public partial class SaveStationGui : CenterContainer
         }
     }
 
+        /// <summary>
+        /// Handles the input events for the save station GUI. If the GUI is not visible, the function does nothing.
+        /// 
+        /// If the input is a key event, it handles the following cases:
+        /// <list type="bullet">
+        /// <item>Up/Down keys: changes the focus between the save and exit buttons</item>
+        /// <item>Left/Right keys and the focus is on the selected station: changes the selected station</item>
+        /// </list>
+        /// </summary>
     public override void _Input(InputEvent @event)
     {
         if(!Visible) return;

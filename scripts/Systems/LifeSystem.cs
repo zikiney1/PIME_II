@@ -5,7 +5,6 @@ public class LifeSystem{
     byte currentLife;
     byte maxLife;
     public Action WhenDies;
-    // EntitieModifier entitieResistence;
     public LifeSystem(byte currentLife, byte maxLife){
         this.currentLife = currentLife;
         this.maxLife = maxLife;
@@ -13,24 +12,18 @@ public class LifeSystem{
     }
     public void Heal(int amount = 1) => currentLife += (byte)Math.Clamp(amount,1,maxLife-currentLife);
 
-    public void GetDamage(EntitieModifier entitieModifier, EntitieModifier otherModifier, int amount = 1){
-        float totalModifier = 1;
-
-        totalModifier += otherModifier.GetFireDamageModifier() - entitieModifier.GetFireResistenceModifier();
-        totalModifier += otherModifier.GetWaterDamageModifier() - entitieModifier.GetWaterResistenceModifier();
-        totalModifier += otherModifier.GetRockDamageModifier() - entitieModifier.GetRockResistenceModifier();
-
-        GetDamage(totalModifier,amount);
-    }
-
-    public void GetDamage(EntitieModifier entitieResistence,ElementsEnum element, int amount = 1){
-        if(element == ElementsEnum.Fire) GetDamage((float)entitieResistence.GetFireResistenceModifier(),amount);
-        else if(element == ElementsEnum.Water) GetDamage((float)entitieResistence.GetWaterResistenceModifier(),amount);
-        else if(element == ElementsEnum.Rock) GetDamage((float)entitieResistence.GetRockResistenceModifier(),amount);
-    }
-
+    /// <summary>
+    /// Applies a damage to the LifeSystem, with an optional modifier to reduce the damage.
+    /// If the modifier makes the damage 0 or less, a minimum of 1 damage is applied.
+    /// When the LifeSystem reaches 0 life, the WhenDies action is called.
+    /// </summary>
+    /// <param name="modifier">The modifier to reduce the damage. 0 means no reduction, 1 means total reduction.</param>
+    /// <param name="amount">The base amount of damage to apply. Defaults to 1.</param>
     public void GetDamage(float modifier, int amount = 1){
         byte totalDamage = (byte)Math.Floor(amount * (1 - modifier));
+        if(totalDamage <= 0){
+            totalDamage = 1;
+        }
 
         if(currentLife - totalDamage <= 0) {
             if(WhenDies != null) WhenDies();

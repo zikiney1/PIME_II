@@ -33,6 +33,14 @@ public partial class CraftingGui : HBoxContainer
         };
         Deactivate();
     }
+
+    /// <summary>
+    /// Activates the crafting GUI, updates the list of recipes, and selects the current recipe.
+    /// </summary>
+    /// <remarks>
+    /// This function makes the crafting GUI visible, refreshes the recipes, and selects the currently selected recipe. 
+    /// If there are no recipes in the list, it exits early. It also defers focus to the recipe list.
+    /// </remarks>
     public void Activate(){
         Visible = true;
         UpdateRecipes();
@@ -50,6 +58,14 @@ public partial class CraftingGui : HBoxContainer
         Visible = false;
         recipes = null;
     }
+    /// <summary>
+    /// Updates the recipes in the GUI to be the ones from the crafting system.
+    /// </summary>
+    /// <remarks>
+    /// This function is called whenever the player gains or loses a recipe.
+    /// It clears the items in the ItemList and adds all the known recipes to it.
+    /// It ignores any recipes that are not known.
+    /// </remarks>
     public void UpdateRecipes(){
         recipes = CraftingSystem.GetRecipes();
         RecipeList.Clear();
@@ -65,6 +81,17 @@ public partial class CraftingGui : HBoxContainer
         }
     }
 
+    /// <summary>
+    /// Updates the ingridient display to show the ingredients of the selected recipe.
+    /// </summary>
+    /// <param name="index">The index of the recipe to show in the list of recipes.</param>
+    /// <remarks>
+    /// This function is called whenever the selected recipe is changed.
+    /// It sets the text of the description field to the description of the recipe.
+    /// It clears the ingridient display and adds a TextureRect and RichTextLabel for each ingridient in the recipe.
+    /// The RichTextLabel shows the quantity of the ingridient.
+    /// It also sets the disabled flag of the craft button to true if the player does not have enough of the ingridients to craft the recipe.
+    /// </remarks>
     public void OnSelectRecipe(long index){
         RecipeData recipe = recipes[index];
         

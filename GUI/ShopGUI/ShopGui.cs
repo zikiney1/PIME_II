@@ -43,6 +43,21 @@ public partial class ShopGui : VBoxContainer
         Deactivate();
     }
 
+    /// <summary>
+    /// Activates the shop GUI, making it visible and setting the shop items.
+    /// </summary>
+    /// <param name="items">The items to display in the shop.</param>
+    /// <remarks>
+    /// <para>
+    /// This function makes the shop GUI visible and sets the items in the shop item list.
+    /// </para>
+    /// <para>
+    /// If the items parameter is null, it does nothing and logs an error.
+    /// </para>
+    /// <para>
+    /// It also selects the currently selected item in the item list.
+    /// </para>
+    /// </remarks>
     public void Activate(ItemResource[] items){
         if(items == null){
             GD.PushError("shopItems is null");
@@ -59,6 +74,12 @@ public partial class ShopGui : VBoxContainer
         Visible = false;
     }
 
+    
+    /// <summary>
+    /// Updates the shop GUI item list and button texts based on the current mode (buy or sell).
+    /// In buy mode, it populates the item list with shop items, displaying their price and name.
+    /// In sell mode, it populates the item list with player inventory items, displaying their sell price and name.
+    /// </summary>
     public void Update(){
         itemList.Clear();
         if(inBuyMode){
@@ -82,6 +103,11 @@ public partial class ShopGui : VBoxContainer
     }
 
 
+    /// <summary>
+    /// Updates the description text with the description of the selected item.
+    /// If in buy mode, it uses the description of the selected shop item.
+    /// If not in buy mode, it uses the description of the selected player item.
+    /// </summary>
     public void OnSelectItem(){
         if(inBuyMode){
             descriptionText.Text = shopItems[selected].description;
@@ -90,6 +116,11 @@ public partial class ShopGui : VBoxContainer
         }
     }
 
+    /// <summary>
+    /// Handles when the confirm button is pressed.
+    /// If in buy mode, if the player has enough gold, the item is bought and added to the player's inventory.
+    /// If not in buy mode, the item is removed from the player's inventory and the gold is added to the player.
+    /// </summary>
     public void WhenConfirm(){
         ItemResource item = shopItems[selected];
         if(inBuyMode){
@@ -104,6 +135,31 @@ public partial class ShopGui : VBoxContainer
         }
     }
 
+    /// <summary>
+    /// Handles user input for the shop GUI.
+    /// </summary>
+    /// <param name="event">The input event to handle.</param>
+    /// <remarks>
+    /// This function handles key presses for the shop GUI.
+    /// <list type="bullet">
+    /// <item>
+    /// <term>Up and Down arrows</term>
+    /// <description>Select the previous or next item in the shop.</description>
+    /// </item>
+    /// <item>
+    /// <term>Left and Right arrows</term>
+    /// <description>Navigate between the item list, confirm button, and exit button.</description>
+    /// </item>
+    /// <item>
+    /// <term>Confirm button</term>
+    /// <description>Buy or sell the selected item.</description>
+    /// </item>
+    /// <item>
+    /// <term>Exit button</term>
+    /// <description>Exit the shop.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
     public override void _Input(InputEvent @event)
     {
         if(!Visible || shopItems == null || shopItems.Length == 0) return;

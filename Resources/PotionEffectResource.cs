@@ -12,12 +12,9 @@ public partial class PotionEffectResource : Resource{
     [Export(PropertyHint.Range, "0,10")] public byte damageAmount = 0;
     [Export] public PotionBuilder.PotionType DamageBehavior = PotionBuilder.PotionType.Instant;
     
-    [Export] public ElementsEnum resistanceElement = ElementsEnum.Fire;
-    [Export] public float resistanceAmount = 0;
+    [Export] public float defenseAmount = 0;
     [Export] public bool AffectOtherResistance = false;
 
-    [Export] public ElementsEnum WeakElement = ElementsEnum.Fire;
-    [Export] public float weaknessAmount = 0;
 
 
 }
