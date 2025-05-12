@@ -5,6 +5,10 @@ public static class SaveData{
 
     public static string saveFilePath = "res://Data/saveData/save.txt";
 
+    /// <summary>
+    /// Loads a save file and sets up the Player with the values from the save file.
+    /// </summary>
+    /// <param name="player">The player to set up.</param>
     public static void LoadSaveFile(Player player){
         if(saveFilePath == "") return;
         
@@ -63,6 +67,16 @@ public static class SaveData{
 
     }
 
+    /// <summary>
+    /// Saves the current state of the player to a file.
+    /// </summary>
+    /// <param name="player">The player whose state is to be saved.</param>
+    /// <param name="pos">The current position of the player in the game world.</param>
+    /// <remarks>
+    /// This function writes the player's life, inventory, equipaments, soil life, planted crops, 
+    /// position, known checkpoints, and discovered recipes to the save file. The data is serialized 
+    /// in a specific format for later retrieval.
+    /// </remarks>
     public static void Save(Player player,Vector2 pos){
         if(saveFilePath == "") return;
         

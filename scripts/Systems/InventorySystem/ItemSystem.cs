@@ -4,6 +4,17 @@ using System.Collections.Generic;
 public static class ItemDB{
     public static Dictionary<byte, ItemResource> itemDB = new();
 
+        /// <summary>
+    /// Sets up the item database by loading all the items in the <c>res://Resources/Items/</c> directory.
+    /// </summary>
+    /// <remarks>
+    /// This function is called by the GameManager when it is initialized.
+    /// It loads all the items in the <c>res://Resources/Items/</c> directory and adds them to the item database.
+    /// If an item is already in the database, it is skipped.
+    /// If an item has a potion effect, the potion effect is scaled up by the item's level.
+    /// If an item has an equipament data, the stack max size is set to 1.
+    /// If an item has a plant data, the seed is set to the item itself.
+    /// </remarks>
     public static void SetupItemDB(){
         const string path = "res://Resources/Items/";
         DirAccess dir = DirAccess.Open(path);
@@ -20,7 +31,6 @@ public static class ItemDB{
 
             item.effect = GetPotionEffect(item.PotionEffect, level);
             if(item.equipamentData != null){
-                item.equipamentData.SetElement();
                 if(item.stackMaxSize != 1) item.stackMaxSize = 1;
             }
             
@@ -30,6 +40,12 @@ public static class ItemDB{
         }   
     }
     
+    /// <summary>
+    /// Creates a PotionEffect from a PotionEffectResource, scaled up by the given level.
+    /// </summary>
+    /// <param name="resource">The PotionEffectResource to create the PotionEffect from.</param>
+    /// <param name="level">The level to scale the PotionEffect by. Defaults to 1.</param>
+    /// <returns>The created PotionEffect.</returns>
     public static PotionEffect GetPotionEffect(PotionEffectResource resource,int level = 1){
         if (resource == null) return null;
 
@@ -49,20 +65,8 @@ public static class ItemDB{
             }
         }
 
-        if(resource.AffectOtherResistance && resource.resistanceAmount > 0){
-            Element element;
-            if(resource.resistanceElement == ElementsEnum.Fire) element = new FireElement();
-            else if(resource.resistanceElement == ElementsEnum.Water) element = new WaterElement();
-            else element = new RockElement();
-
-            pb.Resistence(element, resource.resistanceAmount);
-        }else{
-            if(resource.resistanceAmount > 0){
-                pb.Resistence(resource.resistanceElement, resource.resistanceAmount);
-            }
-            if(resource.weaknessAmount > 0){
-                pb.Resistence(resource.WeakElement, resource.weaknessAmount);
-            }
+        if(resource.defenseAmount > 0){
+            pb.Resistence(resource.defenseAmount);
         }
 
         if(resource.speedAmount > 0){
@@ -72,6 +76,13 @@ public static class ItemDB{
         return pb.Build();
     }
 
+    /// <summary>
+    /// Returns the amount modified by the level.
+    /// The returned value is the amount plus the amount divided by 5, times the level minus one, rounded to the nearest integer.
+    /// </summary>
+    /// <param name="amount">The amount to modify.</param>
+    /// <param name="level">The level to use for the modification.</param>
+    /// <returns>The modified amount.</returns>
     public static int AmountWithLevel(int amount,int level){
         return amount + (int)Math.Round((float)(amount/5) * (level-1));
     }

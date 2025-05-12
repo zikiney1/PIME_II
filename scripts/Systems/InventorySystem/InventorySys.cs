@@ -12,6 +12,14 @@ public class InventorySystem{
     public InventorySystem(){
     }
 
+    /// <summary>
+    /// Adds a certain quantity of an item to the inventory.
+    /// If the item already exists in the inventory, its quantity is increased by the given amount.
+    /// If the item does not exist, it is added to the inventory and the quantity set to the given amount.
+    /// </summary>
+    /// <param name="item">The item to add to the inventory.</param>
+    /// <param name="quantity">The quantity of the item to add. Defaults to 1.</param>
+    /// <returns>True if the item already existed in the inventory, otherwise false.</returns>
     public bool Add(ItemResource item, byte quantity = 1){
         if(item == null) return false;
         if(itemPositions.ContainsKey(item.id)){
@@ -29,6 +37,14 @@ public class InventorySystem{
         }
     }
     public bool Add(byte id, byte quantity = 1) => Add(ItemDB.GetItemData(id),quantity);
+    
+    /// <summary>
+    /// Removes the specified quantity of an item from the inventory using its ID.
+    /// If the item's quantity reaches zero or below, it is removed from the inventory.
+    /// </summary>
+    /// <param name="id">The ID of the item to remove.</param>
+    /// <param name="quantity">The quantity of the item to remove. Defaults to 1.</param>
+    /// <returns>True if the item was successfully removed or its quantity was decreased, otherwise false.</returns>
     public bool Remove(byte id, byte quantity = 1){
         if(itemPositions.ContainsKey(id)){
             byte index = itemPositions[id];

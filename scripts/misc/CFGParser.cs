@@ -55,6 +55,23 @@ public class CfgData{
 
 
 public static class CFGParser{
+    /// <summary>
+    /// Parse a configuration file into a CfgData object.
+    /// The configuration file should be in the format of:
+    /// [section]
+    /// key=value
+    /// [section]
+    /// key=value
+    /// Each section should start with a "[" and end with a "]"
+    /// and have a space between the section name and the "["
+    /// and between the "]" and the next line.
+    /// Each key-value pair should be separated by a "="
+    /// and have a space between the key and the "="
+    /// and between the "=" and the value.
+    /// Any line that starts with "#" is considered a comment and is ignored.
+    /// </summary>
+    /// <param name="path">The path to the configuration file</param>
+    /// <returns>A CfgData object that contains the configuration data</returns>
     public static CfgData Parse(string path){
         CfgData data = new();
         
@@ -95,6 +112,12 @@ public static class CFGParser{
     }
     
 
+    /// <summary>
+    /// Writes a configuration data to a file.
+    /// </summary>
+    /// <param name="cfgData">The configuration data to write.</param>
+    /// <param name="path">The path to the file to write to.</param>
+    /// <returns>True if successful, false otherwise.</returns>
     public static bool ToFile(CfgData cfgData, string path){
         if(cfgData == null) return false;
         try{
