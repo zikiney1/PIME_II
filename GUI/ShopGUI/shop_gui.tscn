@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2aklh64ns43h"]
+
+[ext_resource type="Script" uid="uid://df0vnwld32t6d" path="res://GUI/ShopGUI/ShopGui.cs" id="1_jyx6i"]
+
+[node name="ShopGUI" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_jyx6i")
+
+[node name="CharacterArea" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CharacterArea"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="CharacterArea/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.9
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CharacterArea/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+alignment = 2
+
+[node name="MudaModo" type="Button" parent="CharacterArea/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 1
+text = "Vender"
+
+[node name="ShopArea" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.45
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ShopArea"]
+layout_mode = 2
+
+[node name="ItemList" type="ItemList" parent="ShopArea/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+allow_reselect = true
+
+[node name="SideBar" type="VBoxContainer" parent="ShopArea/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Description" type="RichTextLabel" parent="ShopArea/HBoxContainer/SideBar"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Descrição do item"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ShopArea/HBoxContainer/SideBar"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="Confirm" type="Button" parent="ShopArea/HBoxContainer/SideBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+text = "Comprar"
+
+[node name="Sair" type="Button" parent="ShopArea/HBoxContainer/SideBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+text = "Sair"

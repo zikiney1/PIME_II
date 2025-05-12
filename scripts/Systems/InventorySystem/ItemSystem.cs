@@ -21,7 +21,7 @@ public static class ItemDB{
             item.effect = GetPotionEffect(item.PotionEffect, level);
             if(item.equipamentData != null){
                 item.equipamentData.SetElement();
-                item.equipamentData.item = item;
+                if(item.stackMaxSize != 1) item.stackMaxSize = 1;
             }
             
             if(item.plantData != null) item.plantData.seed = item;

@@ -20,18 +20,17 @@ public static class SaveData{
         foreach(string item in inventoryItems){
             if(item == "") continue;
             string[] itemData = item.Split(';');
-            byte position = byte.Parse(itemData[0]);
-            byte id = byte.Parse(itemData[1]);
-            byte quantity = byte.Parse(itemData[2]);
+            byte id = byte.Parse(itemData[0]);
+            byte quantity = byte.Parse(itemData[1]);
 
-            player.inventory.Add(position,id,quantity);
+            player.inventory.Add(id,quantity);
         }
 
         string[] equipaments = lines[3].Split('|');
         foreach(string equipament in equipaments){
             if(equipament == "") continue;
             byte id = byte.Parse(equipament);
-            player.equipamentSys.AddEquipament(ItemDB.GetItemData(id).equipamentData);
+            player.equipamentSys.AddEquipament(id);
         }
 
         string[] soilsLifesRaw = lines[4].Split(';');
@@ -56,6 +55,12 @@ public static class SaveData{
         Vector2 newPosition = new(int.Parse(playerPositionRaw[0]),int.Parse(playerPositionRaw[1]));
         player.GlobalPosition = newPosition;
 
+        string[] checkpoints = lines[7].Split('|');
+        player.UpdateKnowsCheckPoints(checkpoints);
+
+        string[] recepies = lines[8].Split('|');
+        CraftingSystem.DiscoverMultiples(recepies);
+
     }
 
     public static void Save(Player player,Vector2 pos){
@@ -68,16 +73,16 @@ public static class SaveData{
         content += player.handItemIndex + "\n";
 
         string inventoryContent = "";
-        foreach(Slot slot in player.inventory.items){
-            if(slot == null) continue;
-            inventoryContent += $"{slot.position};{slot.id};{slot.quantity}|";
+        foreach(ItemData item in player.inventory.items){
+            if(item == null) continue;
+            inventoryContent += $"{item.id};{item.quantity}|";
         }
         content += inventoryContent + "\n";
 
         string equipamentsContent = "";
-        foreach(EquipamentData equipament in player.equipamentSys.equipaments){
+        foreach(ItemResource equipament in player.equipamentSys.equipaments){
             if(equipament == null) continue;
-            equipamentsContent += $"{equipament.GetId()}|";
+            equipamentsContent += $"{equipament.id}|";
         }
         content += equipamentsContent + "\n";
 
@@ -99,8 +104,15 @@ public static class SaveData{
         }
         content += plantsContent + "\n";
 
-        content += $"{Math.Round(pos.X,0)}|{Math.Round(pos.Y,0)}";
+        content += $"{Math.Round(pos.X,0)}|{Math.Round(pos.Y,0)}\n";
 
+        content += string.Join('|',player.KnowCheckPoints());
+
+        content += string.Join("|",
+                        CraftingSystem.GetRecipes()
+                        .Where(x => x.known)
+                        .Select(x => x.name)
+        );
 
         file.StoreString(content);
 

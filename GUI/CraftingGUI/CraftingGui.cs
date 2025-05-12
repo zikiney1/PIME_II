@@ -25,6 +25,13 @@ public partial class CraftingGui : HBoxContainer
         
         player = GetNode<Player>("../..");
         IngridientIcon = IngridientIconScene.Instantiate() as Control;
+
+        RecipeList.ItemSelected += (index) => {
+            selected = (int)index;
+            RecipeList.Select(selected);
+            OnSelectRecipe(selected);
+        };
+        Deactivate();
     }
     public void Activate(){
         Visible = true;
@@ -47,7 +54,7 @@ public partial class CraftingGui : HBoxContainer
         recipes = CraftingSystem.GetRecipes();
         RecipeList.Clear();
         foreach (RecipeData recipe in recipes){
-            // if(recipe.known) continue;
+            if(!recipe.known) continue;
 
             ItemResource result = recipe.result;
             try{
@@ -83,11 +90,13 @@ public partial class CraftingGui : HBoxContainer
     {
         if(!Visible || recipes == null || recipes.Length == 0) return;
         if(@event is InputEventKey KeyEvent){
+            RecipeList.ReleaseFocus();
+
             
             int direction = (int)InputSystem.GetVector().Y;
             
-            if(direction + selected > recipes.Length - 1) selected = recipes.Length - 1;
-            else if(direction + selected < 0) selected = 0;
+            if(direction + selected > recipes.Length - 1) selected = 0;
+            else if(direction + selected < 0) selected = recipes.Length - 1;
             else selected += direction;
             
             RecipeList.Select(selected);

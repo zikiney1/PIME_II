@@ -8,8 +8,6 @@ public partial class EquipamentData : Resource
     [Export] public float SpeedModifier;
     [Export] ElementsEnum elementType;
     Element element;
-    public ItemResource item;
-    public byte GetId() => item.id;
 
     public EquipamentData SetElement(){
         element = Element.GetElement(elementType);

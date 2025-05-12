@@ -11,7 +11,6 @@ public partial class Entitie : CharacterBody2D{
     
     protected Vector2 lastDirection;
 
-    protected Slot HandItem = null;
 
     protected Timer DamageTimer;
     float InvencibleTimer = 1f;
