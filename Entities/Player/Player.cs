@@ -16,10 +16,12 @@ public partial class Player : Entitie{
 
     GameGui GUI;
     CraftingGui CraftGUI;
+    ShopGui ShopGUI;
 
     bool isDefending = false;
     bool canPlant = true;
     public byte handItemIndex = 0;
+    protected ItemData HandItem = null;
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
 
     public void UpdateHearts() => GUI.UpdateHearts();
@@ -30,13 +32,15 @@ public partial class Player : Entitie{
 
     public void Save(Vector2 pos) => SaveData.Save(this,pos);
 
+    public float gold = 100;
+
     public override void _EnterTree()
     {
         Speed = GameManager.GAMEUNITS  * 500;
         entitieModifier = new();
         equipamentSys = new(entitieModifier);
 
-        inventory = new(9);
+        inventory = new();
         SaveData.LoadSaveFile(this);
         plantZoneData.WhenUpdate += PlantZone.Update;
 
@@ -67,7 +71,8 @@ public partial class Player : Entitie{
 
         GUI = GetNode<GameGui>("Canvas/GameGUI");
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
-        CraftGUI.Deactivate();
+        ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
+        
 
         InteractableRange = GetNode<Area2D>("InteractableRange");
 
@@ -111,6 +116,17 @@ public partial class Player : Entitie{
         }
     }
 
+    public void InteractMerchant(ItemResource[] shopItems){
+        if(ShopGUI.Visible) {
+            ShopGUI.Deactivate();
+            state = EntitieState.Idle;
+        }
+        else {
+            ShopGUI.Activate(shopItems);
+            state = EntitieState.Lock;
+        }
+    }
+
     public void InteractCraft(){
         if(CraftGUI.Visible) {
             CraftGUI.Deactivate();
@@ -125,6 +141,12 @@ public partial class Player : Entitie{
 
     public bool Add(ItemResource item,byte quantity = 1){
         bool result = inventory.Add(item,quantity);
+        if(HandItem.id == item.id)
+            UpdatePortrait();
+        return result;
+    }
+    public bool Remove(ItemResource item,byte quantity = 1) {
+        bool result = inventory.Remove(item.id,quantity);
         if(HandItem.id == item.id)
             UpdatePortrait();
         return result;

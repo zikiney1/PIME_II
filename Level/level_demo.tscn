@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=21 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -13,6 +13,11 @@
 [ext_resource type="Texture2D" uid="uid://bck6an7qb6io0" path="res://assets/Planting/soil_tile_4.png" id="6_2kxrb"]
 [ext_resource type="PackedScene" uid="uid://cf44ck1h3xwkp" path="res://Components/InteractableArea/CraftZone/CraftZone.tscn" id="12_xesv0"]
 [ext_resource type="PackedScene" uid="uid://b6e57l2772r5g" path="res://Components/InteractableArea/saveStation/SaveStation.tscn" id="13_2kxrb"]
+[ext_resource type="PackedScene" uid="uid://pas7jkbmhrut" path="res://Components/InteractableArea/Merchant/Merchant.tscn" id="14_jv3ig"]
+[ext_resource type="Resource" uid="uid://c00sibf58x1mm" path="res://Resources/Items/Adubo_eco.tres" id="15_modcj"]
+[ext_resource type="Resource" uid="uid://ck6o847m6ngwi" path="res://Resources/Items/Ingridient_test1.tres" id="16_86kg1"]
+[ext_resource type="Resource" uid="uid://ccavfkxd0oc42" path="res://Resources/Items/Ingridient_test2.tres" id="17_t2slw"]
+[ext_resource type="Resource" uid="uid://b1po4fiogb6so" path="res://Resources/Items/InstaHealPotionN2.tres" id="18_86b7u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
 size = Vector2(16, 16)
@@ -69,3 +74,8 @@ player = NodePath("../Player")
 
 [node name="Node2D" type="Node2D" parent="SaveStation"]
 position = Vector2(0, -14)
+
+[node name="Merchant" parent="." node_paths=PackedStringArray("player") instance=ExtResource("14_jv3ig")]
+position = Vector2(91, 72)
+shopItems = Array[Object]([ExtResource("15_modcj"), ExtResource("16_86kg1"), ExtResource("17_t2slw"), ExtResource("18_86b7u")])
+player = NodePath("../Player")

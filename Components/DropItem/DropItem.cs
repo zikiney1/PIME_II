@@ -14,7 +14,6 @@ public partial class DropItem : Area2D
 
     Sprite2D sprite;
 
-    bool isActivated = false;
     
 
     public override void _Ready(){
@@ -37,13 +36,11 @@ public partial class DropItem : Area2D
         this.item = item;
         this.quantity = quantity;
         sprite.Texture = item.icon;
-        isActivated = true;
 
         BodyEntered += (body) => {
             if(body is Player p){
                 p.Add(item, (byte)quantity);
                 polling.PutBackToPool(this);
-                isActivated = false;
             }
         };
     }
@@ -52,7 +49,6 @@ public partial class DropItem : Area2D
 
     public override void _Process(double delta)
     {
-        if(!isActivated) return;
         time += (float)delta;
         float yOffset = Mathf.Sin(time * frequency) * amplitude;
         Position = new Vector2(startPosition.X, startPosition.Y + yOffset);

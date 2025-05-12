@@ -20,18 +20,17 @@ public static class SaveData{
         foreach(string item in inventoryItems){
             if(item == "") continue;
             string[] itemData = item.Split(';');
-            byte position = byte.Parse(itemData[0]);
-            byte id = byte.Parse(itemData[1]);
-            byte quantity = byte.Parse(itemData[2]);
+            byte id = byte.Parse(itemData[0]);
+            byte quantity = byte.Parse(itemData[1]);
 
-            player.inventory.Add(position,id,quantity);
+            player.inventory.Add(id,quantity);
         }
 
         string[] equipaments = lines[3].Split('|');
         foreach(string equipament in equipaments){
             if(equipament == "") continue;
             byte id = byte.Parse(equipament);
-            player.equipamentSys.AddEquipament(ItemDB.GetItemData(id).equipamentData);
+            player.equipamentSys.AddEquipament(id);
         }
 
         string[] soilsLifesRaw = lines[4].Split(';');
@@ -68,16 +67,16 @@ public static class SaveData{
         content += player.handItemIndex + "\n";
 
         string inventoryContent = "";
-        foreach(Slot slot in player.inventory.items){
-            if(slot == null) continue;
-            inventoryContent += $"{slot.position};{slot.id};{slot.quantity}|";
+        foreach(ItemData item in player.inventory.items){
+            if(item == null) continue;
+            inventoryContent += $"{item.id};{item.quantity}|";
         }
         content += inventoryContent + "\n";
 
         string equipamentsContent = "";
-        foreach(EquipamentData equipament in player.equipamentSys.equipaments){
+        foreach(ItemResource equipament in player.equipamentSys.equipaments){
             if(equipament == null) continue;
-            equipamentsContent += $"{equipament.GetId()}|";
+            equipamentsContent += $"{equipament.id}|";
         }
         content += equipamentsContent + "\n";
 
