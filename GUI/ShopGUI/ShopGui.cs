@@ -56,7 +56,7 @@ public partial class ShopGui : VBoxContainer
     }
 
     public void Deactivate(){
-        // Visible = false;
+        Visible = false;
     }
 
     public void Update(){
@@ -111,10 +111,7 @@ public partial class ShopGui : VBoxContainer
             
             if(KeyEvent.IsActionPressed("confirm")) {
                 if(column == 1) WhenConfirm();
-                else if(column == 2) Deactivate();
-                return;
-            }else if(KeyEvent.IsActionPressed("use")) {
-                Deactivate();
+                else if(column == 2) player.InteractMerchant(null);
                 return;
             }else if(KeyEvent.IsActionPressed("inventory")) {
                 inBuyMode = !inBuyMode;

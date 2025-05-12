@@ -70,7 +70,7 @@ position = Vector2(94, 142)
 player = NodePath("../Player")
 
 [node name="Merchant" parent="." node_paths=PackedStringArray("player") instance=ExtResource("14_jv3ig")]
-position = Vector2(91, 72)
+position = Vector2(93, 36)
 shopItems = Array[Object]([ExtResource("15_modcj"), ExtResource("16_86kg1"), ExtResource("17_t2slw"), ExtResource("18_86b7u")])
 player = NodePath("../Player")
 
