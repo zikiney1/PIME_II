@@ -4,10 +4,15 @@ using System;
 public partial class SaveStation : Interactable
 {
     [Export] Node2D SavePosition;
-    [Export] Vector2 savePos;
+    public Vector2 savePos;
+
+    Node2D SaveScreen;
+    public string name;
 
     public override void _Ready(){
         base._Ready();
+        
+        name = Name;
         if(SavePosition == null){
             GD.PushError("SavePosition is null");
             Node2D possible = GetNode<Node2D>("Node2D");
@@ -20,6 +25,6 @@ public partial class SaveStation : Interactable
     }
     public override void Interact()
     {
-        player.Save(savePos);
+        player.InteractSaveStation(this);
     }
 }

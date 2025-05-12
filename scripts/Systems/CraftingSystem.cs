@@ -11,17 +11,31 @@ public static class CraftingSystem{
         if(dir == null) return;
         dir.ListDirBegin();
         string fileName;
+        string name = "";
         while((fileName = dir.GetNext()) != ""){
             RecipeResource recipe = GD.Load<RecipeResource>(path + "/" + fileName);
             if(recipe == null) continue;
-            if(recipes.ContainsKey(fileName)) continue;
+            name = fileName.Replace(".tres","");
+            if(recipes.ContainsKey(name)) continue;
             if(recipe.result == null) continue;
-            recipes.Add(fileName, new(recipe,fileName));
+            recipes.Add(name, new(recipe,name));
         }
     }
 
     public static RecipeData[] GetRecipes(){
         return recipes.Values.ToArray();
+    }
+
+    public static bool DiscoverRecipe(string name){
+        if(!recipes.ContainsKey(name)) return false;
+        recipes[name].known = true;
+        return true;
+    }
+    public static void DiscoverMultiples(string[] names){
+        foreach(string name in names){
+            if(name.Trim() == "") continue;
+            DiscoverRecipe(name);
+        }
     }
 
     public static RecipeData GetRecipe(string name){

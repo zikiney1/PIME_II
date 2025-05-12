@@ -55,6 +55,12 @@ public static class SaveData{
         Vector2 newPosition = new(int.Parse(playerPositionRaw[0]),int.Parse(playerPositionRaw[1]));
         player.GlobalPosition = newPosition;
 
+        string[] checkpoints = lines[7].Split('|');
+        player.UpdateKnowsCheckPoints(checkpoints);
+
+        string[] recepies = lines[8].Split('|');
+        CraftingSystem.DiscoverMultiples(recepies);
+
     }
 
     public static void Save(Player player,Vector2 pos){
@@ -98,8 +104,15 @@ public static class SaveData{
         }
         content += plantsContent + "\n";
 
-        content += $"{Math.Round(pos.X,0)}|{Math.Round(pos.Y,0)}";
+        content += $"{Math.Round(pos.X,0)}|{Math.Round(pos.Y,0)}\n";
 
+        content += string.Join('|',player.KnowCheckPoints());
+
+        content += string.Join("|",
+                        CraftingSystem.GetRecipes()
+                        .Where(x => x.known)
+                        .Select(x => x.name)
+        );
 
         file.StoreString(content);
 

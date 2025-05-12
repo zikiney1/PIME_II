@@ -12,7 +12,7 @@ public partial class GameGui : VBoxContainer{
 
     int maxHearts = 0;
 
-    public override void _Ready(){
+    public void Setup(){
         player = GetNode<Player>("../..");
 
         HeartzTextures = [

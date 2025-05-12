@@ -1,8 +1,10 @@
 using Godot;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 public partial class Player : Entitie{
+    [Export] public PlantingZone PlantZone;
+    [Export] public SaveStationManager checkPointManager;
     Area2D HitArea;
     Area2D InteractableRange;
 
@@ -12,11 +14,11 @@ public partial class Player : Entitie{
     Timer PlantCoolDownTimer;
     
     public Action WhenPlantUpdate;
-    [Export] public PlantingZone PlantZone;
 
     GameGui GUI;
     CraftingGui CraftGUI;
     ShopGui ShopGUI;
+    SaveStationGui saveGUI;
 
     bool isDefending = false;
     bool canPlant = true;
@@ -24,26 +26,46 @@ public partial class Player : Entitie{
     protected ItemData HandItem = null;
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
 
-    public void UpdateHearts() => GUI.UpdateHearts();
 
     public InventorySystem inventory;
     public EquipamentSys equipamentSys;
     public PlantZoneData plantZoneData;
 
     public void Save(Vector2 pos) => SaveData.Save(this,pos);
+    public void UpdateHearts() => GUI.UpdateHearts();
+    public void AddStation(SaveStation saveStation) => saveGUI.AddStation(saveStation);
+    public void UpdateKnowsCheckPoints(string[] names) => checkPointManager.UpdateKnows(names);
+    public string[] KnowCheckPoints() => saveGUI.ToNames();
 
     public float gold = 100;
 
     public override void _EnterTree()
     {
-        Speed = GameManager.GAMEUNITS  * 500;
         entitieModifier = new();
+        inventory = new();
         equipamentSys = new(entitieModifier);
 
-        inventory = new();
+        HitArea = GetNode<Area2D>("HitArea");
+        
+        StopAttackTimer = NodeMisc.GenTimer(this, 0.5f, StopAttack);
+        PlantTimer = NodeMisc.GenTimer(this,3f, StopPlanting);
+        PlantCoolDownTimer = NodeMisc.GenTimer(this,0.5f, ()=> canPlant = true);
+
+        GUI = GetNode<GameGui>("Canvas/GameGUI");
+        CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
+        ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
+        saveGUI = GetNode<SaveStationGui>("Canvas/SaveStationGUI");
+        InteractableRange = GetNode<Area2D>("InteractableRange");
+
+    }
+
+
+    protected override void Ready_(){
+        Speed = GameManager.GAMEUNITS  * 500;
+
         SaveData.LoadSaveFile(this);
         plantZoneData.WhenUpdate += PlantZone.Update;
-
+        GUI.Setup();
 
         lifeSystem.WhenDies += Die;
 
@@ -57,33 +79,14 @@ public partial class Player : Entitie{
         PlantZoneUpdater.Start();
 
         HandItem = inventory[handItemIndex];
-
-    }
-
-
-    protected override void Ready_(){
         
-        HitArea = GetNode<Area2D>("HitArea");
-        
-        StopAttackTimer = NodeMisc.GenTimer(this, 0.5f, StopAttack);
-        PlantTimer = NodeMisc.GenTimer(this,3f, StopPlanting);
-        PlantCoolDownTimer = NodeMisc.GenTimer(this,0.5f, ()=> canPlant = true);
-
-        GUI = GetNode<GameGui>("Canvas/GameGUI");
-        CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
-        ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
-        
-
-        InteractableRange = GetNode<Area2D>("InteractableRange");
-
-
-
         if(HandItem == null) {
             ChangeHandItem();
         }
         ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
 
         GUI.UpdateHandItem(handItemData.name,handItemData.icon,HandItem.quantity);
+
 
     }
 
@@ -137,6 +140,17 @@ public partial class Player : Entitie{
             state = EntitieState.Lock;
         }
 
+    }
+
+    public void InteractSaveStation(SaveStation saveStation){
+        if(saveGUI.Visible) {
+            saveGUI.Deactivate();
+            state = EntitieState.Idle;
+        }
+        else {
+            saveGUI.Activate(saveStation);
+            state = EntitieState.Lock;
+        }
     }
 
     public bool Add(ItemResource item,byte quantity = 1){
@@ -198,6 +212,10 @@ public partial class Player : Entitie{
 
     public void StopPlanting(){
         state = EntitieState.Idle;
+    }
+    public void Teleport(Vector2 pos){
+        state = EntitieState.Idle;
+        Position = pos;
     }
 
     void UsePotion(){
