@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cdg0jp7odllo"]
+[gd_scene load_steps=12 format=3 uid="uid://cdg0jp7odllo"]
 
 [ext_resource type="Script" uid="uid://bnqm2p5umlph6" path="res://Entities/Player/Player.cs" id="1_cabni"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_ww0jn"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bpxj72d1rhigg" path="res://GUI/MainGameGUI/game_gui.tscn" id="4_1des2"]
 [ext_resource type="PackedScene" uid="uid://dyeqkrd2byixm" path="res://GUI/SaveGUI/save_station_gui.tscn" id="4_hj1c0"]
 [ext_resource type="PackedScene" uid="uid://c2aklh64ns43h" path="res://GUI/ShopGUI/shop_gui.tscn" id="4_t38ms"]
+[ext_resource type="PackedScene" uid="uid://nk7j4lfur5sk" path="res://GUI/DialogGUI/DialogGUI.tscn" id="4_x44r4"]
 [ext_resource type="PackedScene" uid="uid://dbe1kek88maxs" path="res://GUI/CraftingGUI/crafting_gui.tscn" id="5_an6q6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vweq0"]
@@ -45,6 +46,9 @@ texture = ExtResource("2_ww0jn")
 shape = SubResource("RectangleShape2D_1des2")
 
 [node name="Canvas" type="CanvasLayer" parent="."]
+
+[node name="DialogGUI" parent="Canvas" instance=ExtResource("4_x44r4")]
+visible = false
 
 [node name="SaveStationGUI" parent="Canvas" instance=ExtResource("4_hj1c0")]
 visible = false

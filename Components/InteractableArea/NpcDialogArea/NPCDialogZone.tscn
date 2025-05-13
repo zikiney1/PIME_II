@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bdsw4lic044d2"]
+
+[ext_resource type="Script" uid="uid://dsth2oah7kxl5" path="res://Components/InteractableArea/NpcDialogArea/NpcDialogZone.cs" id="1_be7ia"]
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_88gww"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vt8a2"]
+size = Vector2(16, 16)
+
+[node name="NPCDialogZone" type="Area2D"]
+script = ExtResource("1_be7ia")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_88gww")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vt8a2")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=25 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -19,6 +19,9 @@
 [ext_resource type="Resource" uid="uid://ccavfkxd0oc42" path="res://Resources/Items/Ingridient_test2.tres" id="17_t2slw"]
 [ext_resource type="Resource" uid="uid://b1po4fiogb6so" path="res://Resources/Items/InstaHealPotionN2.tres" id="18_86b7u"]
 [ext_resource type="Script" uid="uid://nryvcqplfxb1" path="res://Components/InteractableArea/saveStation/SaveStationManager.cs" id="18_86kg1"]
+[ext_resource type="PackedScene" uid="uid://bdsw4lic044d2" path="res://Components/InteractableArea/NpcDialogArea/NPCDialogZone.tscn" id="20_t2slw"]
+[ext_resource type="Resource" uid="uid://dld0vuesnff83" path="res://Dialogo/Resources/teste.tres" id="21_86b7u"]
+[ext_resource type="Resource" uid="uid://bx1kebuoaht0i" path="res://Dialogo/Resources/teste2.tres" id="22_74k5p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
 size = Vector2(16, 16)
@@ -101,3 +104,8 @@ player = NodePath("../../Player")
 
 [node name="Node2D" type="Node2D" parent="SaveStationManager/Teste_3"]
 position = Vector2(0, -14)
+
+[node name="NPCDialogZone" parent="." node_paths=PackedStringArray("player") instance=ExtResource("20_t2slw")]
+position = Vector2(50, 197)
+dialogResource = Array[Object]([ExtResource("21_86b7u"), ExtResource("22_74k5p")])
+player = NodePath("../Player")
