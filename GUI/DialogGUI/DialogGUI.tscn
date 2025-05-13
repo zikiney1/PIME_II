@@ -1,0 +1,111 @@
+[gd_scene load_steps=3 format=3 uid="uid://nk7j4lfur5sk"]
+
+[ext_resource type="Script" uid="uid://dvsrnehknodrx" path="res://GUI/DialogGUI/DialogGui.cs" id="1_nms6u"]
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_a712r"]
+
+[node name="DialogGUI" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nms6u")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="RichTextLabel" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.09
+
+[node name="Control" type="Control" parent="RichTextLabel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.12
+
+[node name="Name" type="RichTextLabel" parent="RichTextLabel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+bbcode_enabled = true
+text = "Name of the Character"
+vertical_alignment = 2
+
+[node name="Control3" type="Control" parent="RichTextLabel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Portrait" type="TextureRect" parent="RichTextLabel"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_stretch_ratio = 0.1
+texture = ExtResource("2_a712r")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Control2" type="Control" parent="RichTextLabel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.12
+
+[node name="DialogArea" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="Control" type="Control" parent="DialogArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.15
+
+[node name="PanelContainer" type="PanelContainer" parent="DialogArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GridContainer" type="HBoxContainer" parent="DialogArea/PanelContainer"]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="DialogArea/PanelContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.03
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogArea/PanelContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control2" type="Control" parent="DialogArea/PanelContainer/GridContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Dialog" type="RichTextLabel" parent="DialogArea/PanelContainer/GridContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Texto Exemplo De Dialogo"
+
+[node name="Control" type="Control" parent="DialogArea/PanelContainer/GridContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Control" type="Control" parent="DialogArea/PanelContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.03
+
+[node name="Control2" type="Control" parent="DialogArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.15
+
+[node name="Control2" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.03

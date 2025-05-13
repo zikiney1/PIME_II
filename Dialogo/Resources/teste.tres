@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DialogResource" load_steps=3 format=3 uid="uid://dld0vuesnff83"]
+
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_c0p6m"]
+[ext_resource type="Script" uid="uid://c5fjg4sxycg5m" path="res://Resources/DialogResource.cs" id="1_edalu"]
+
+[resource]
+script = ExtResource("1_edalu")
+DialogSequencePath = "res://Dialogo/teste/dialogoTeste.txt"
+CharacterName = "Gabriel"
+portrait = ExtResource("1_c0p6m")
+metadata/_custom_type_script = "uid://c5fjg4sxycg5m"

@@ -19,6 +19,7 @@ public partial class Player : Entitie{
     CraftingGui CraftGUI;
     ShopGui ShopGUI;
     SaveStationGui saveGUI;
+    DialogGui dialogGui;
 
     bool isDefending = false;
     bool canPlant = true;
@@ -57,7 +58,7 @@ public partial class Player : Entitie{
         ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
         saveGUI = GetNode<SaveStationGui>("Canvas/SaveStationGUI");
         InteractableRange = GetNode<Area2D>("InteractableRange");
-
+        dialogGui = GetNode<DialogGui>("Canvas/DialogGUI");
     }
 
 
@@ -120,6 +121,17 @@ public partial class Player : Entitie{
 
         }
     }
+
+    public void InteractDialog(DialogResource[] dialog){
+        if(dialogGui.Visible){
+            dialogGui.Deactivate();
+            state = EntitieState.Idle;
+        }else{
+            dialogGui.Activate(dialog);
+            state = EntitieState.Lock;
+        }
+    }
+
 
     public void InteractMerchant(ItemResource[] shopItems){
         if(ShopGUI.Visible) {

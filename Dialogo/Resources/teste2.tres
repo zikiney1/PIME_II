@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DialogResource" load_steps=3 format=3 uid="uid://bx1kebuoaht0i"]
+
+[ext_resource type="Texture2D" uid="uid://jjqteghryssn" path="res://assets/ItemsIcons/HealingPotion.png" id="1_8c05p"]
+[ext_resource type="Script" uid="uid://c5fjg4sxycg5m" path="res://Resources/DialogResource.cs" id="1_v51jl"]
+
+[resource]
+script = ExtResource("1_v51jl")
+DialogSequencePath = "uid://bhw0u2ryq78c6"
+CharacterName = "Rafael"
+portrait = ExtResource("1_8c05p")
+metadata/_custom_type_script = "uid://c5fjg4sxycg5m"
