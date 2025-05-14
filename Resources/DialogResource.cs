@@ -7,7 +7,6 @@ public partial class DialogResource : Resource
     [Export(PropertyHint.File)] public string DialogSequencePath;
     [Export] public string CharacterName;
     [Export] public Texture2D portrait;
-    [Export] public DialogResource whenFinish;
     string[] DialogSequence;
 
     public string[] GetSequence(){

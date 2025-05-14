@@ -37,7 +37,8 @@ public partial class Pooling : Node2D
         dropItem.SpawnItem(position, item, quantity);
 
         dropItem.Visible = true;
-        dropItem.ProcessMode = ProcessModeEnum.Pausable;
+        dropItem.SetPhysicsProcess(true);
+        dropItem.SetProcess(true);
 
         return dropItem;
     }
@@ -49,7 +50,9 @@ public partial class Pooling : Node2D
     public void PutBackToPool(DropItem dropItem){
         activeItems.Remove(dropItem);
         poolItems.Add(dropItem);
-        dropItem.ProcessMode = ProcessModeEnum.Disabled;
+        dropItem.SetPhysicsProcess(false);
+        dropItem.SetProcess(false);
+
         dropItem.Visible = false;
     }
 }

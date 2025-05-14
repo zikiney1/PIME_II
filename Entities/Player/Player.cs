@@ -26,6 +26,7 @@ public partial class Player : Entitie{
     public byte handItemIndex = 0;
     protected ItemData HandItem = null;
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
+    public float gold = 1;
 
     
     public PotionModifier potionModifier = new();
@@ -40,19 +41,18 @@ public partial class Player : Entitie{
     public void UpdateKnowsCheckPoints(string[] names) => checkPointManager.UpdateKnows(names);
     public string[] KnowCheckPoints() => saveGUI.ToNames();
 
-    public float gold = 100;
 
     public override void _EnterTree()
     {
         inventory = new();
         equipamentSys = new();
 
-        HitArea = GetNode<Area2D>("HitArea");
         
         StopAttackTimer = NodeMisc.GenTimer(this, 0.5f, StopAttack);
         PlantTimer = NodeMisc.GenTimer(this,3f, StopPlanting);
         PlantCoolDownTimer = NodeMisc.GenTimer(this,0.5f, ()=> canPlant = true);
 
+        HitArea = GetNode<Area2D>("HitArea");
         GUI = GetNode<GameGui>("Canvas/GameGUI");
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
         ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
@@ -122,16 +122,15 @@ public partial class Player : Entitie{
         }
     }
 
-    public void InteractDialog(DialogResource[] dialog){
+    public void InteractDialog(DialogResource[] dialog,string EventAtEnd){
         if(dialogGui.Visible){
             dialogGui.Deactivate();
             state = EntitieState.Idle;
         }else{
-            dialogGui.Activate(dialog);
+            dialogGui.Activate(dialog,EventAtEnd);
             state = EntitieState.Lock;
         }
     }
-
 
     public void InteractMerchant(ItemResource[] shopItems){
         if(ShopGUI.Visible) {
@@ -320,6 +319,23 @@ public partial class Player : Entitie{
 
         return handItemData;
     }
+
+
+    public void AddGold(int amount){
+        gold += amount;
+        GUI.UpdateGold();
+    }
+
+    public bool RemoveGold(int amount){
+        if(gold - amount < 0) return false;
+        gold -= amount;
+        GUI.UpdateGold();
+        return true;
+    }
+    public bool CanPurchase(int amount){
+        return gold - amount >= 0;
+    }
+
     /// <summary>
     /// Executes an attack by setting the hit area position and modifying the attack speed
     /// based on equipment and potion modifiers.

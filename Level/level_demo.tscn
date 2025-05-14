@@ -69,11 +69,11 @@ tile_set = SubResource("TileSet_mhf4e")
 format = 2
 
 [node name="CraftZone" parent="." node_paths=PackedStringArray("player") instance=ExtResource("12_xesv0")]
-position = Vector2(94, 142)
+position = Vector2(89, 119)
 player = NodePath("../Player")
 
 [node name="Merchant" parent="." node_paths=PackedStringArray("player") instance=ExtResource("14_jv3ig")]
-position = Vector2(93, 36)
+position = Vector2(54, 69)
 shopItems = Array[Object]([ExtResource("15_modcj"), ExtResource("16_86kg1"), ExtResource("17_t2slw"), ExtResource("18_86b7u")])
 player = NodePath("../Player")
 
@@ -108,4 +108,5 @@ position = Vector2(0, -14)
 [node name="NPCDialogZone" parent="." node_paths=PackedStringArray("player") instance=ExtResource("20_t2slw")]
 position = Vector2(50, 197)
 dialogResource = Array[Object]([ExtResource("21_86b7u"), ExtResource("22_74k5p")])
+EventAtEnd = "GetGold"
 player = NodePath("../Player")
