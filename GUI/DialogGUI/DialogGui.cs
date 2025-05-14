@@ -15,6 +15,8 @@ public partial class DialogGui : VBoxContainer
     Sequencer<DialogResource> resourceSequence;
     Sequencer<string> DialogSequence;
 
+    string EventAtEnd = "";
+
     public override void _Ready()
     {
         dialogText = GetNode<RichTextLabel>("DialogArea/PanelContainer/GridContainer/VBoxContainer/Dialog");
@@ -48,12 +50,13 @@ public partial class DialogGui : VBoxContainer
     /// This method makes the dialog GUI visible and initializes the resource sequence with the provided dialog resources. 
     /// If the dialog is null, it signals the player to end the interaction.
     /// </remarks>
-    public void Activate(DialogResource[] dialog){
+    public void Activate(DialogResource[] dialog,string EventAtEnd){
         Visible = true;
         if (dialog == null){
-            player.InteractDialog(null);
+            player.InteractDialog(null,"");
             return;
         }
+        this.EventAtEnd = EventAtEnd;
         resourceSequence = new(dialog);
         SetResource(resourceSequence.Current());
         
@@ -141,7 +144,8 @@ public partial class DialogGui : VBoxContainer
     /// </remarks>
     void Next(){
         if(resourceSequence.isFinished && DialogSequence.isFinished){
-            player.InteractDialog(null);
+            player.InteractDialog(null,"");
+            EventHandler.EmitEvent(EventAtEnd);
         }else if(!DialogSequence.isFinished){
             SetDialog(DialogSequence.Next());
         }else{
@@ -156,12 +160,10 @@ public partial class DialogGui : VBoxContainer
         {
             if (keyEvent.IsActionPressed("confirm"))
             {
-                if (!endedAnimation)
-                {
+                if (!endedAnimation){
                     cancelAnimation();
                 }
-                else
-                {
+                else{
                     Next();
                 }
             }

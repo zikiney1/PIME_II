@@ -28,8 +28,22 @@ size_flags_stretch_ratio = 0.9
 [node name="HBoxContainer" type="HBoxContainer" parent="CharacterArea/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.1
+size_flags_stretch_ratio = 0.15
 alignment = 2
+
+[node name="Alert(no mone)" type="RichTextLabel" parent="CharacterArea/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(145, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "[pulse freq=0.5 color=#ffffff40 ease=-2.0][shake rate=2.0 level=2 connected=1]Você não tem 
+Moedas suficiente"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="CharacterArea/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
 
 [node name="MudaModo" type="Button" parent="CharacterArea/VBoxContainer/HBoxContainer"]
 layout_mode = 2

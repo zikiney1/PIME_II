@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bpxj72d1rhigg"]
+[gd_scene load_steps=5 format=3 uid="uid://bpxj72d1rhigg"]
 
 [ext_resource type="Script" uid="uid://dy6qxe67h3abk" path="res://GUI/MainGameGUI/GameGui.cs" id="1_p34v0"]
 [ext_resource type="Texture2D" uid="uid://c2neks5ml2p5u" path="res://assets/ItemsIcons/Portrait.png" id="2_r4c4e"]
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_xg4vt"]
 [ext_resource type="Texture2D" uid="uid://dpqam1dj1uvao" path="res://assets/ItemsIcons/adubo_organico.png" id="3_xg4vt"]
 
 [node name="GameGUI" type="VBoxContainer"]
@@ -39,10 +40,45 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
 
+[node name="VBoxContainer" type="VBoxContainer" parent="MainGUI"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="Control" type="Control" parent="MainGUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainGUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+alignment = 1
+
+[node name="CoinIcon" type="TextureRect" parent="MainGUI/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+texture = ExtResource("2_xg4vt")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="CoinAmount" type="RichTextLabel" parent="MainGUI/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = " XXXX"
+vertical_alignment = 1
+
+[node name="Control2" type="Control" parent="MainGUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+
 [node name="ItemRegion" type="VBoxContainer" parent="MainGUI"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.35
+size_flags_stretch_ratio = 0.2
 
 [node name="Control" type="Control" parent="MainGUI/ItemRegion"]
 layout_mode = 2

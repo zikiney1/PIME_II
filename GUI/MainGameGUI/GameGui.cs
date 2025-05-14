@@ -7,6 +7,7 @@ public partial class GameGui : VBoxContainer{
     public HBoxContainer HeartContainer;
     public RichTextLabel HandItemName;
     public RichTextLabel HandItemQuantity;
+    public RichTextLabel CoinAmount;
     public TextureRect HandItemIcon;
     HeartIcon[] Hearts;
 
@@ -37,6 +38,7 @@ public partial class GameGui : VBoxContainer{
         HandItemName = GetNode<RichTextLabel>("MainGUI/ItemRegion/ItemName");
         HandItemIcon = GetNode<TextureRect>("MainGUI/ItemRegion/ItemLayout/Portrait/ItemIcon");
         HandItemQuantity = GetNode<RichTextLabel>("MainGUI/ItemRegion/ItemLayout/Portrait/QuantityLabel");
+        CoinAmount = GetNode<RichTextLabel>("MainGUI/VBoxContainer/HBoxContainer/CoinAmount");
 
         maxHearts = player.MaxLife()/2;
         Hearts = new HeartIcon[maxHearts];
@@ -47,6 +49,7 @@ public partial class GameGui : VBoxContainer{
             HeartContainer.AddChild(Hearts[i]);
         }
         UpdateHearts();
+        UpdateGold();
     }
 
     public void UpdateHearts(){
@@ -62,6 +65,11 @@ public partial class GameGui : VBoxContainer{
             HandItemQuantity.Text = quantity.ToString();
         else
             HandItemQuantity.Text = "";
+    }
+
+
+    public void UpdateGold(){
+        CoinAmount.Text = " "+player.gold.ToString();
     }
 }
 

@@ -8,7 +8,7 @@ public partial class ShopGui : VBoxContainer
     Button exitButton;
     RichTextLabel descriptionText;
     Button changeModeButton;
-    public Player player;
+    RichTextLabel AlertText;
 
     public ItemResource[] shopItems;
     public ItemResource[] playerInventory;
@@ -18,13 +18,25 @@ public partial class ShopGui : VBoxContainer
     int selected = 2;
     int column = 0;
 
+    public Player player;
+    Timer AlertAnimation;
+    Timer AlertEnd;
+    int currentLetter=0;
+
     public override void _Ready(){
         itemList = GetNode<ItemList>("ShopArea/HBoxContainer/ItemList");
         descriptionText = GetNode<RichTextLabel>("ShopArea/HBoxContainer/SideBar/Description");
         confirmButton = GetNode<Button>("ShopArea/HBoxContainer/SideBar/HBoxContainer/Confirm");
         exitButton = GetNode<Button>("ShopArea/HBoxContainer/SideBar/HBoxContainer/Sair");
         changeModeButton = GetNode<Button>("CharacterArea/VBoxContainer/HBoxContainer/MudaModo");
+        AlertText = GetNode<RichTextLabel>("CharacterArea/VBoxContainer/HBoxContainer/Alert(no mone)");
 
+        AlertText.Visible = false;
+        AlertAnimation = NodeMisc.GenTimer(this, 0.03f, AlertAnimationTick);
+        AlertEnd = NodeMisc.GenTimer(this, 2f, ()=>{
+            AlertText.Visible=false;
+            currentLetter = 0;
+        });
         
         player = GetNode<Player>("../..");
 
@@ -86,7 +98,7 @@ public partial class ShopGui : VBoxContainer
             confirmButton.Text = "Comprar";
             changeModeButton.Text = "Vender";
             foreach(ItemResource item in shopItems){
-                int i = itemList.AddItem(item.price + "G - " + item.name,item.icon);
+                itemList.AddItem(item.price + "G - " + item.name,item.icon);
             }
         }else{
             confirmButton.Text = "Vender";
@@ -124,15 +136,31 @@ public partial class ShopGui : VBoxContainer
     public void WhenConfirm(){
         ItemResource item = shopItems[selected];
         if(inBuyMode){
-            if(player.gold >= item.price){
-                player.gold -= item.price;
+            if(player.CanPurchase(item.price)){
+                player.RemoveGold(item.price);
                 player.Add(item);
+            }else{
+                AlertText.Visible = true;
+                AlertAnimation.Start();
+                AlertEnd.Stop();
+                currentLetter = 0;
+                AlertText.VisibleCharacters = currentLetter;
             }
         }else{
             player.Remove(item);
-            player.gold += item.price * sellModifier;
+            player.AddGold((int)Math.Round(item.price * sellModifier,0));
             Update();
         }
+    }
+
+    void AlertAnimationTick(){
+        if(currentLetter >= AlertText.GetTotalCharacterCount()){
+            AlertEnd.Start();
+            return;
+        }
+        currentLetter++;
+        AlertText.VisibleCharacters = currentLetter;
+        AlertAnimation.Start();
     }
 
     /// <summary>
@@ -166,9 +194,9 @@ public partial class ShopGui : VBoxContainer
         if(@event is InputEventKey KeyEvent){
             
             if(KeyEvent.IsActionPressed("confirm")) {
-                if(column == 1) WhenConfirm();
-                else if(column == 2) player.InteractMerchant(null);
-                return;
+                if(column == 2) player.InteractMerchant(null);
+                else WhenConfirm();
+                // return;
             }else if(KeyEvent.IsActionPressed("inventory")) {
                 inBuyMode = !inBuyMode;
                 Update();
