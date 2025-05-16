@@ -27,6 +27,7 @@ public partial class Player : Entitie{
     protected ItemData HandItem = null;
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
     public float gold = 1;
+    Vector2 direction = Vector2.Zero;
 
     
     public PotionModifier potionModifier = new();
@@ -99,7 +100,7 @@ public partial class Player : Entitie{
     public override void _Process(double delta)
     {
         if(state == EntitieState.Attacking || CraftGUI.Visible || state == EntitieState.Lock) return;
-        Vector2 direction = InputSystem.GetVector();
+        direction = InputSystem.GetVector();
 
         float speedModifier = equipamentSys.speed + potionModifier.speed +1;
         float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(Input.IsActionPressed("defend")) + 1 );
@@ -118,6 +119,12 @@ public partial class Player : Entitie{
             if(KeyEvent.IsActionPressed("attack")) Attack();
             else if(KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if(KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
+            else if(KeyEvent.Keycode == Key.H) {
+                Projectile pj = new();
+
+                pj.Shoot(direction);
+                AddChild(pj);
+            }
 
         }
     }
@@ -175,8 +182,9 @@ public partial class Player : Entitie{
     /// <returns>True if the item was added to an existing stack, otherwise false.</returns>
     public bool Add(ItemResource item,byte quantity = 1){
         bool result = inventory.Add(item,quantity);
-        if(HandItem.id == item.id)
-            UpdatePortrait();
+        if(HandItem != null)
+            if(HandItem.id == item.id)
+                UpdatePortrait();
         return result;
     }
     /// <summary>

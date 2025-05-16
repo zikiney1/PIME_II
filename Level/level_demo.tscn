@@ -40,8 +40,9 @@ SelectRegion = ExtResource("3_n4pgo")
 SoilTextureStates = Array[Texture2D]([ExtResource("3_wgv7f"), ExtResource("4_n4pgo"), ExtResource("5_xesv0"), ExtResource("6_2kxrb")])
 gameManager = NodePath("..")
 
-[node name="DamageArea" type="Area2D" parent="."]
+[node name="DamageArea" type="Area2D" parent="." groups=["EneymGroup"]]
 position = Vector2(156, 95)
+collision_layer = 4
 script = ExtResource("2_mhf4e")
 damage = 10
 
@@ -54,6 +55,7 @@ shape = SubResource("RectangleShape2D_4f2ty")
 
 [node name="Player" parent="." node_paths=PackedStringArray("PlantZone", "checkPointManager") instance=ExtResource("1_kw413")]
 position = Vector2(175, 128)
+collision_mask = 14
 PlantZone = NodePath("../PlantingZone")
 checkPointManager = NodePath("../SaveStationManager")
 
@@ -70,10 +72,12 @@ format = 2
 
 [node name="CraftZone" parent="." node_paths=PackedStringArray("player") instance=ExtResource("12_xesv0")]
 position = Vector2(89, 119)
+collision_layer = 2
 player = NodePath("../Player")
 
 [node name="Merchant" parent="." node_paths=PackedStringArray("player") instance=ExtResource("14_jv3ig")]
 position = Vector2(54, 69)
+collision_layer = 2
 shopItems = Array[Object]([ExtResource("15_modcj"), ExtResource("16_86kg1"), ExtResource("17_t2slw"), ExtResource("18_86b7u")])
 player = NodePath("../Player")
 
@@ -83,6 +87,7 @@ player = NodePath("../Player")
 
 [node name="Teste_2" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition", "player") instance=ExtResource("13_2kxrb")]
 position = Vector2(297, 193)
+collision_layer = 2
 SavePosition = NodePath("Node2D")
 player = NodePath("../../Player")
 
@@ -91,6 +96,7 @@ position = Vector2(0, -14)
 
 [node name="Teste_1" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition", "player") instance=ExtResource("13_2kxrb")]
 position = Vector2(149, 193)
+collision_layer = 2
 SavePosition = NodePath("Node2D")
 player = NodePath("../../Player")
 
@@ -99,6 +105,7 @@ position = Vector2(0, -14)
 
 [node name="Teste_3" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition", "player") instance=ExtResource("13_2kxrb")]
 position = Vector2(29, 133)
+collision_layer = 2
 SavePosition = NodePath("Node2D")
 player = NodePath("../../Player")
 
@@ -107,6 +114,7 @@ position = Vector2(0, -14)
 
 [node name="NPCDialogZone" parent="." node_paths=PackedStringArray("player") instance=ExtResource("20_t2slw")]
 position = Vector2(50, 197)
+collision_layer = 2
 dialogResource = Array[Object]([ExtResource("21_86b7u"), ExtResource("22_74k5p")])
 EventAtEnd = "GetGold"
 player = NodePath("../Player")
