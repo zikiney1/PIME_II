@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=27 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -22,11 +22,15 @@
 [ext_resource type="PackedScene" uid="uid://bdsw4lic044d2" path="res://Components/InteractableArea/NpcDialogArea/NPCDialogZone.tscn" id="20_t2slw"]
 [ext_resource type="Resource" uid="uid://dld0vuesnff83" path="res://Dialogo/Resources/teste.tres" id="21_86b7u"]
 [ext_resource type="Resource" uid="uid://bx1kebuoaht0i" path="res://Dialogo/Resources/teste2.tres" id="22_74k5p"]
+[ext_resource type="PackedScene" uid="uid://d3nwgnwjpb005" path="res://Entities/Enemy/Atirador/Atirador.tscn" id="23_m6der"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
 size = Vector2(16, 16)
 
 [sub_resource type="TileSet" id="TileSet_mhf4e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m6der"]
+size = Vector2(16, 16)
 
 [node name="Level_Demo" type="Node" node_paths=PackedStringArray("player", "camera")]
 script = ExtResource("1_0bltp")
@@ -118,3 +122,26 @@ collision_layer = 2
 dialogResource = Array[Object]([ExtResource("21_86b7u"), ExtResource("22_74k5p")])
 EventAtEnd = "GetGold"
 player = NodePath("../Player")
+
+[node name="Enemys" type="Node" parent="."]
+
+[node name="Atirador" parent="Enemys" node_paths=PackedStringArray("gameManager", "player") instance=ExtResource("23_m6der")]
+position = Vector2(53, 373)
+collision_layer = 4
+collision_mask = 9
+gameManager = NodePath("../..")
+player = NodePath("../../Player")
+
+[node name="obstaculos" type="Node" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="obstaculos"]
+position = Vector2(75, 349)
+scale = Vector2(5.68637, -0.850634)
+collision_layer = 8
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="obstaculos/StaticBody2D"]
+shape = SubResource("RectangleShape2D_m6der")
+
+[node name="Icon" type="Sprite2D" parent="obstaculos/StaticBody2D"]
+texture = ExtResource("3_pbyjw")

@@ -153,10 +153,8 @@ public partial class SoilTile : Sprite2D{
     /// </remarks>
     public void UpdateTexture(){
         if (SoilTexture.Length == 0) return;
-        double ratio = (double)data.soilLife / MAXSOILLIFE;
-        int index = (int)Math.Floor(ratio * (SoilTexture.Length - 1));
+        int index = (int)Math.Floor((1f - (data.soilLife / (float)MAXSOILLIFE)) * (SoilTexture.Length - 1));
         index = Math.Clamp(index, 0, SoilTexture.Length - 1);
-
         Texture = SoilTexture[index];
     }
 

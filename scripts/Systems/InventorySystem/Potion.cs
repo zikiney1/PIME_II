@@ -151,7 +151,6 @@ public class PotionBuilder{
     public PotionBuilder TakeDamageOverTime(int amount = 1, int level = 1){
         effect.whenUpdate += () => {
             effect.player.Damage(AmountWithLevel(amount,level));
-            effect.player.TakeDamageUpdate();
         };
         return this;
     }
@@ -166,7 +165,6 @@ public class PotionBuilder{
     public PotionBuilder TakeDamageInstant(int amount = 1, int level = 1){
         effect.whenApply += (Player player) => {
             player.Damage(AmountWithLevel(amount,level));
-            effect.player.WhenTakeDamage();
         };
         return this;
     }
@@ -183,7 +181,6 @@ public class PotionBuilder{
     public PotionBuilder HealOverTime(int amount = 1, int level = 1){
         effect.whenUpdate += () => {
             effect.player.Heal(AmountWithLevel(amount,level));
-            effect.player.HealUpdate();
         };
         return this;
     }
@@ -198,7 +195,6 @@ public class PotionBuilder{
     public PotionBuilder HealInstant(int amount = 1, int level = 1){
         effect.whenApply += (Player player) => {
             player.Heal(AmountWithLevel(amount,level));
-            effect.player.whenHeal();
         };
         return this;
     }

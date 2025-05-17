@@ -12,13 +12,15 @@ public partial class GameManager : Node{
 
     public Pooling pooling;
 
-    
+    public PlayerProjectile PlayerShoot(Vector2 position, Vector2 direction) =>  pooling.GetPlayerProjectile(position,direction);
+
+    public EnemyProjectile EnemyShoot(Vector2 position, Vector2 direction) => pooling.GetEnemyProjectile(position,direction);
 
     public DropItem SpawnItem(Vector2 position, ItemResource item, int quantity){
-        return pooling.GrabFroomPool(position, item, quantity);
+        return pooling.GrabItem(position, item, quantity);
     }
     public void DespawnItem(DropItem dropItem){
-        pooling.PutBackToPool(dropItem);
+        pooling.ReturnItem(dropItem);
     } 
 
     public override void _EnterTree()

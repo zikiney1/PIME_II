@@ -7,9 +7,80 @@ public partial class Pooling : Node2D
 {
     List<DropItem> poolItems = new();
     List<DropItem> activeItems = new();
-    Random rnd = new();
-    public Pooling(){
+    List<PlayerProjectile> playerProjectilesActive = new();
+    List<PlayerProjectile> playerProjectilesDeactive = new();
+    List<EnemyProjectile> enemyProjectilesActive = new();
+    List<EnemyProjectile> enemyProjectilesDeactive = new();
 
+    Random rnd = new();
+    public override void _Ready()
+    {
+        base._Ready();
+        for (int i = 0; i < 20; i++){
+            PlayerProjectile ppj = new();
+            ppj.pooling = this;
+            ppj.DeActivate();
+            
+            playerProjectilesDeactive.Add(ppj);
+            this.AddChild(ppj);
+        }
+
+        for (int i = 0; i < 20; i++){
+            EnemyProjectile epj = new();
+            epj.pooling = this;
+            epj.DeActivate();
+            
+            enemyProjectilesDeactive.Add(epj);
+            this.AddChild(epj);
+        }
+    }
+
+    public PlayerProjectile GetPlayerProjectile(Vector2 position, Vector2 direction){
+        PlayerProjectile ppj;
+
+        if(playerProjectilesDeactive.Count > 0){
+            ppj = playerProjectilesDeactive.Last();
+            playerProjectilesDeactive.RemoveAt(playerProjectilesDeactive.Count - 1);
+            ppj.Activate();
+        }else{
+            ppj = new();
+            ppj.pooling = this;
+            this.AddChild(ppj);
+        }
+        ppj.direction = direction;
+        ppj.GlobalPosition = position;
+        ppj.Rotation = (float)(direction.Angle() + (Math.PI / 2));
+        playerProjectilesActive.Add(ppj);
+        return ppj;
+    }
+    public void ReturnPlayerProjectile(PlayerProjectile ppj){
+        ppj.DeActivate();
+        playerProjectilesActive.Remove(ppj);
+        playerProjectilesDeactive.Add(ppj);
+    }
+
+    public EnemyProjectile GetEnemyProjectile(Vector2 position, Vector2 direction){
+        EnemyProjectile epj;
+
+        if(enemyProjectilesDeactive.Count > 0){
+            epj = enemyProjectilesDeactive.Last();
+            enemyProjectilesDeactive.RemoveAt(enemyProjectilesDeactive.Count - 1);
+            epj.Activate();
+        }else{
+            epj = new();
+            epj.pooling = this;
+            this.AddChild(epj);
+        }
+        epj.direction = direction;
+        epj.GlobalPosition = position;
+        epj.Rotation = (float)(direction.Angle() + (Math.PI / 2));
+        enemyProjectilesActive.Add(epj);
+        return epj;
+    }
+    public void ReturnEnemyProjectile(EnemyProjectile epj){
+        epj.DeActivate();
+        enemyProjectilesActive.Remove(epj);
+        enemyProjectilesDeactive.Add(epj);
     }
 
     /// <summary>
@@ -20,7 +91,7 @@ public partial class Pooling : Node2D
     /// <param name="item">The item to spawn the DropItem with.</param>
     /// <param name="quantity">The quantity of the item to spawn the DropItem with.</param>
     /// <returns>The spawned DropItem.</returns>
-    public DropItem GrabFroomPool(Vector2 position, ItemResource item, int quantity){
+    public DropItem GrabItem(Vector2 position, ItemResource item, int quantity){
         DropItem dropItem;
 
         position += new Vector2((float)rnd.NextDouble(), (float)rnd.NextDouble() + 0.5f);
@@ -47,7 +118,7 @@ public partial class Pooling : Node2D
     /// Returns a DropItem back to the pool, disabling its processing and visibility.
     /// </summary>
     /// <param name="dropItem">The DropItem to return to the pool.</param>
-    public void PutBackToPool(DropItem dropItem){
+    public void ReturnItem(DropItem dropItem){
         activeItems.Remove(dropItem);
         poolItems.Add(dropItem);
         dropItem.SetPhysicsProcess(false);

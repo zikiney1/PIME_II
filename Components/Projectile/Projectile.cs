@@ -9,6 +9,7 @@ public partial class Projectile : Area2D
     public int damage = 1;
     public float speed = 200f;
     public VisibleOnScreenNotifier2D visibleNotifier;
+    public Pooling pooling;
 
     public override void _Ready()
     {
@@ -16,23 +17,16 @@ public partial class Projectile : Area2D
         sprite = new();
         visibleNotifier = new();
 
-        sprite.Texture = GD.Load<Texture2D>("res://icon.svg");
-        ResizeCollision();
-
-
         AddChild(sprite);
         AddChild(collision);
         AddChild(visibleNotifier);
 
-        visibleNotifier.ScreenExited += DeSpawn;
+        visibleNotifier.ScreenExited += () => {this.DeSpawn();};
+        BodyEntered += (body)=>{this.WhenEnterBody(body);};
+
+        DeActivate();
     }
 
-    protected void ResizeCollision(){
-        collision.Shape = new RectangleShape2D(){
-            Size = new Vector2(sprite.Texture.GetWidth(),sprite.Texture.GetHeight())
-        };
-
-    }
 
     public override void _Process(double delta)
     {
@@ -42,12 +36,26 @@ public partial class Projectile : Area2D
         GlobalPosition += speed * direction * (float)delta;
     }
 
-    public void Shoot(Vector2 direction){
-        this.direction = direction;
+    public void SetTexture(Texture2D texture){
+        sprite.Texture = texture;
+        collision.Shape = new RectangleShape2D(){
+            Size = new Vector2(sprite.Texture.GetWidth(),sprite.Texture.GetHeight())
+        };
+    }
+
+    public void Activate(){
+        Visible = true;
+        SetProcess(true);
+        SetPhysicsProcess(true);
+    }
+    public void DeActivate(){
+        Visible = false;
+        SetProcess(false);
+        SetPhysicsProcess(false);
     }
 
 
-    public void DeSpawn(){
-        QueueFree();
-    }
+    public virtual void WhenEnterBody(Node2D body){}
+
+    public virtual void DeSpawn(){}
 }

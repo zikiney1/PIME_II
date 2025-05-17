@@ -54,7 +54,7 @@ public partial class DropItem : Area2D
         BodyEntered += (body) => {
             if(body is Player p){
                 p.Add(item, (byte)quantity);
-                polling.PutBackToPool(this);
+                polling.ReturnItem(this);
             }
         };
     }

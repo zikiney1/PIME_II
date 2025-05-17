@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3nwgnwjpb005"]
+
+[ext_resource type="Script" uid="uid://cs8ok54xxs2xm" path="res://Entities/Enemy/Atirador/Atirador.cs" id="1_43x3s"]
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_tgg3u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_43x3s"]
+size = Vector2(16, 16)
+
+[node name="Atirador" type="StaticBody2D"]
+script = ExtResource("1_43x3s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_43x3s")
+
+[node name="Icon" type="Sprite2D" parent="."]
+self_modulate = Color(0.776471, 0.137255, 0.431373, 1)
+texture = ExtResource("1_tgg3u")
