@@ -41,6 +41,7 @@ public partial class Player : CharacterBody2D
     public float gold = 1;
     float Speed = (GameManager.GAMEUNITS) * 1000;
     Vector2 lastDirection;
+    Vector2 MouseDirection;
 
     ItemData HandItem = null;
     public PotionModifier potionModifier = new();
@@ -66,12 +67,14 @@ public partial class Player : CharacterBody2D
     public int CurrentLife() => lifeSystem.CurrentLife();
     public int MaxLife() => lifeSystem.MaxLife();
 
+    public Texture2D BulletTexture = GD.Load<Texture2D>("res://assets/Sprites/test/player_projectile.png");
+    public float bulletSpeed = 300f;
 
     public override void _EnterTree()
     {
         inventory = new();
         equipamentSys = new();
-        fightSystem = new(this, 0.3f , 1f);
+        fightSystem = new(this, 0.4f, 1f);
 
         fightSystem.WhenStopAttack += StopAttack;
 
@@ -120,7 +123,7 @@ public partial class Player : CharacterBody2D
 
         GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
 
-
+        HitArea.BodyEntered += whenHitEnemy;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -136,17 +139,20 @@ public partial class Player : CharacterBody2D
 
         float speedModifier = equipamentSys.speed + potionModifier.speed + 1;
         float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(Input.IsActionPressed("defend")) + 1);
-        
-        if(direction != Vector2.Zero){
+
+        if (direction != Vector2.Zero)
+        {
             state = PlayerState.Walking;
             Velocity = direction * speedTotal * (float)delta;
             lastDirection = direction;
-        }else{
+        }
+        else
+        {
             state = PlayerState.Idle;
             Velocity = Vector2.Zero;
         }
 
-		MoveAndSlide();
+        MoveAndSlide();
 
     }
 
@@ -159,26 +165,39 @@ public partial class Player : CharacterBody2D
             if (KeyEvent.IsActionPressed("defend"))
                 isDefending = !isDefending;
 
+            // if (KeyEvent.IsActionPressed("attack") && playerWeapon == PlayerWeapon.Sword) Attack();
             if (KeyEvent.IsActionPressed("attack")) Attack();
             else if (KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if (KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
-            else if (Input.IsKeyPressed(Key.H))
-            {
-                if (playerWeapon == PlayerWeapon.Sword) playerWeapon = PlayerWeapon.Zarabatana;
-                else playerWeapon = PlayerWeapon.Sword;
+            else if (Input.IsKeyPressed(Key.H)) switchWeapon();
+
+
+        }
+        if (@event is InputEventMouseMotion mouseMove)
+        {
+            MouseDirection = (GetGlobalMousePosition() - GlobalPosition).Normalized();
+        }
+        if(@event is InputEventMouseButton mouseButton){
+            if (mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed && playerWeapon == PlayerWeapon.Zarabatana){
+                Attack();
             }
         }
     }
 
+    void switchWeapon()
+    {
+        if (playerWeapon == PlayerWeapon.Sword) playerWeapon = PlayerWeapon.Zarabatana;
+        else playerWeapon = PlayerWeapon.Sword;
+        HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(playerWeapon != PlayerWeapon.Sword);
+    }
+
     public void InteractDialog(DialogResource[] dialog, string EventAtEnd)
     {
-        if (dialogGui.Visible)
-        {
+        if (dialogGui.Visible){
             dialogGui.Deactivate();
             state = PlayerState.Idle;
         }
-        else
-        {
+        else{
             dialogGui.Activate(dialog, EventAtEnd);
             state = PlayerState.Lock;
         }
@@ -186,13 +205,11 @@ public partial class Player : CharacterBody2D
 
     public void InteractMerchant(ItemResource[] shopItems)
     {
-        if (ShopGUI.Visible)
-        {
+        if (ShopGUI.Visible){
             ShopGUI.Deactivate();
             state = PlayerState.Idle;
         }
-        else
-        {
+        else{
             ShopGUI.Activate(shopItems);
             state = PlayerState.Lock;
         }
@@ -200,13 +217,11 @@ public partial class Player : CharacterBody2D
 
     public void InteractCraft()
     {
-        if (CraftGUI.Visible)
-        {
+        if (CraftGUI.Visible){
             CraftGUI.Deactivate();
             state = PlayerState.Idle;
         }
-        else
-        {
+        else{
             CraftGUI.Activate();
             state = PlayerState.Lock;
         }
@@ -389,10 +404,12 @@ public partial class Player : CharacterBody2D
         if (!inventory.Remove(HandItem.id, quantity)) return null;
         if (inventory[handItemIndex] == null || HandItem.quantity == 0) HandItem = null;
 
-        if (HandItem != null){
+        if (HandItem != null)
+        {
             GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
         }
-        else{
+        else
+        {
             GUI.UpdateHandItem("", null, 0);
         }
 
@@ -400,48 +417,53 @@ public partial class Player : CharacterBody2D
     }
 
 
-    public void AddGold(int amount){
+    public void AddGold(int amount)
+    {
         gold += amount;
         GUI.UpdateGold();
     }
 
-    public bool RemoveGold(int amount){
+    public bool RemoveGold(int amount)
+    {
         if (gold - amount < 0) return false;
         gold -= amount;
         GUI.UpdateGold();
         return true;
     }
-    public bool CanPurchase(int amount){
+    public bool CanPurchase(int amount)
+    {
         return gold - amount >= 0;
     }
 
-    /// <summary>
-    /// Executes an attack by setting the hit area position and modifying the attack speed
-    /// based on equipment and potion modifiers.
-    /// </summary>
     void Attack()
     {
-        float modifier = 0;
-        modifier -= equipamentSys.attackSpeed + potionModifier.attackSpeed;
+        if (!fightSystem.canAttack) return;
+        float attackSpeedmodifier = -(equipamentSys.attackSpeed + potionModifier.attackSpeed);
+
         if (playerWeapon == PlayerWeapon.Sword)
         {
             HitArea.Position = lastDirection * GameManager.GAMEUNITS;
+            HitArea.Rotation = lastDirection.Angle();
         }
         else
         {
-            gameManager.PlayerShoot(GlobalPosition, lastDirection);
-            modifier -= fightSystem.attackSpeed / 2;
+            var e = gameManager.GetBullet(this, GlobalPosition, MouseDirection);
+            e.SetTexture(BulletTexture);
+            e.WhenBodyEnter = whenHitEnemy;
+            e.speed = bulletSpeed;
         }
 
         if (state == PlayerState.Attacking) return;
         previousState = state;
         this.state = PlayerState.Attacking;
-        fightSystem.Attack(modifier);
+        fightSystem.Attack(attackSpeedmodifier);
     }
+
     void StopAttack()
     {
         state = previousState;
         HitArea.Position = Vector2.Zero;
+        HitArea.Rotation = 0;
     }
     void Die()
     {
@@ -459,6 +481,17 @@ public partial class Player : CharacterBody2D
         lifeSystem.GetDamage(modifier, amount);
         UpdateHearts();
         fightSystem.GetDamage();
+    }
+
+
+    public void whenHitEnemy(Node2D body)
+    {
+        if (body.IsInGroup("EnemyGroup"))
+        {
+            float damageModifier = -(equipamentSys.damage + potionModifier.damage);
+            if (playerWeapon == PlayerWeapon.Zarabatana) damageModifier /= 2;
+            if (body is Atirador a) a.Damage(damageModifier);
+        }
     }
 
 }

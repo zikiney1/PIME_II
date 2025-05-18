@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43x3s"]
 size = Vector2(16, 16)
 
-[node name="Atirador" type="StaticBody2D"]
+[node name="Atirador" type="StaticBody2D" groups=["EnemyGroup"]]
 script = ExtResource("1_43x3s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

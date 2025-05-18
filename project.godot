@@ -21,7 +21,7 @@ project/assembly_name="PIMEII"
 
 [global_group]
 
-EneymGroup="Grupo de inimigos"
+EnemyGroup="Grupo de inimigos"
 
 [input]
 

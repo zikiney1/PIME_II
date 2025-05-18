@@ -12,9 +12,7 @@ public partial class GameManager : Node{
 
     public Pooling pooling;
 
-    public PlayerProjectile PlayerShoot(Vector2 position, Vector2 direction) =>  pooling.GetPlayerProjectile(position,direction);
-
-    public EnemyProjectile EnemyShoot(Vector2 position, Vector2 direction) => pooling.GetEnemyProjectile(position,direction);
+    public Projectile GetBullet(CollisionObject2D shooter , Vector2 position, Vector2 direction) =>  pooling.GetBullet(shooter,position,direction);
 
     public DropItem SpawnItem(Vector2 position, ItemResource item, int quantity){
         return pooling.GrabItem(position, item, quantity);

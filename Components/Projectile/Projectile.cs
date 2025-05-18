@@ -3,13 +3,13 @@ using System;
 
 public partial class Projectile : Area2D
 {
-    protected CollisionShape2D collision;
-    protected Sprite2D sprite;
+    CollisionShape2D collision;
+    Sprite2D sprite;
+    VisibleOnScreenNotifier2D visibleNotifier;
     public Vector2 direction = Vector2.Zero;
-    public int damage = 1;
     public float speed = 200f;
-    public VisibleOnScreenNotifier2D visibleNotifier;
     public Pooling pooling;
+    public Action<Node2D> WhenBodyEnter;
 
     public override void _Ready()
     {
@@ -21,8 +21,12 @@ public partial class Projectile : Area2D
         AddChild(collision);
         AddChild(visibleNotifier);
 
-        visibleNotifier.ScreenExited += () => {this.DeSpawn();};
-        BodyEntered += (body)=>{this.WhenEnterBody(body);};
+        visibleNotifier.ScreenExited += () => { this.DeSpawn(); };
+        BodyEntered += (body) =>
+        {
+            WhenBodyEnter?.Invoke(body);
+            DeSpawn();
+        };
 
         DeActivate();
     }
@@ -30,7 +34,6 @@ public partial class Projectile : Area2D
 
     public override void _Process(double delta)
     {
-        base._Process(delta);
         if(direction == Vector2.Zero) return;
 
         GlobalPosition += speed * direction * (float)delta;
@@ -55,7 +58,8 @@ public partial class Projectile : Area2D
     }
 
 
-    public virtual void WhenEnterBody(Node2D body){}
-
-    public virtual void DeSpawn(){}
+    public void DeSpawn()
+    {
+        pooling.ReturnBullet(this);
+    }
 }

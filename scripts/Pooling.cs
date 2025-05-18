@@ -7,81 +7,57 @@ public partial class Pooling : Node2D
 {
     List<DropItem> poolItems = new();
     List<DropItem> activeItems = new();
-    List<PlayerProjectile> playerProjectilesActive = new();
-    List<PlayerProjectile> playerProjectilesDeactive = new();
-    List<EnemyProjectile> enemyProjectilesActive = new();
-    List<EnemyProjectile> enemyProjectilesDeactive = new();
+
+    List<Projectile> ActiveProjectiles = new();
+    List<Projectile> DeactiveProjectiles = new();
 
     Random rnd = new();
+    
     public override void _Ready()
     {
         base._Ready();
         for (int i = 0; i < 20; i++){
-            PlayerProjectile ppj = new();
-            ppj.pooling = this;
-            ppj.DeActivate();
+            Projectile p = new();
+            p.pooling = this;
+            p.DeActivate();
             
-            playerProjectilesDeactive.Add(ppj);
-            this.AddChild(ppj);
+            DeactiveProjectiles.Add(p);
+            this.AddChild(p);
         }
 
-        for (int i = 0; i < 20; i++){
-            EnemyProjectile epj = new();
-            epj.pooling = this;
-            epj.DeActivate();
-            
-            enemyProjectilesDeactive.Add(epj);
-            this.AddChild(epj);
+    }
+
+    public Projectile GetBullet(CollisionObject2D shooter, Vector2 position, Vector2 direction)
+    {
+        Projectile pj;
+
+        if (DeactiveProjectiles.Count > 0)
+        {
+            pj = DeactiveProjectiles.Last();
+            DeactiveProjectiles.RemoveAt(DeactiveProjectiles.Count - 1);
         }
-    }
-
-    public PlayerProjectile GetPlayerProjectile(Vector2 position, Vector2 direction){
-        PlayerProjectile ppj;
-
-        if(playerProjectilesDeactive.Count > 0){
-            ppj = playerProjectilesDeactive.Last();
-            playerProjectilesDeactive.RemoveAt(playerProjectilesDeactive.Count - 1);
-            ppj.Activate();
-        }else{
-            ppj = new();
-            ppj.pooling = this;
-            this.AddChild(ppj);
+        else
+        {
+            pj = new();
+            pj.pooling = this;
+            this.AddChild(pj);
         }
-        ppj.direction = direction;
-        ppj.GlobalPosition = position;
-        ppj.Rotation = (float)(direction.Angle() + (Math.PI / 2));
-        playerProjectilesActive.Add(ppj);
-        return ppj;
-    }
-    public void ReturnPlayerProjectile(PlayerProjectile ppj){
-        ppj.DeActivate();
-        playerProjectilesActive.Remove(ppj);
-        playerProjectilesDeactive.Add(ppj);
+        pj.Activate();
+        pj.direction = direction;
+        pj.GlobalPosition = position;
+        pj.Rotation = (float)(direction.Angle() + (Math.PI / 2));
+        pj.CollisionMask = shooter.CollisionMask;
+        ActiveProjectiles.Add(pj);
+        return pj;
     }
 
-    public EnemyProjectile GetEnemyProjectile(Vector2 position, Vector2 direction){
-        EnemyProjectile epj;
+    public void ReturnBullet(Projectile pj){
+        pj.DeActivate();
+        ActiveProjectiles.Remove(pj);
+        DeactiveProjectiles.Add(pj);
+    }
 
-        if(enemyProjectilesDeactive.Count > 0){
-            epj = enemyProjectilesDeactive.Last();
-            enemyProjectilesDeactive.RemoveAt(enemyProjectilesDeactive.Count - 1);
-            epj.Activate();
-        }else{
-            epj = new();
-            epj.pooling = this;
-            this.AddChild(epj);
-        }
-        epj.direction = direction;
-        epj.GlobalPosition = position;
-        epj.Rotation = (float)(direction.Angle() + (Math.PI / 2));
-        enemyProjectilesActive.Add(epj);
-        return epj;
-    }
-    public void ReturnEnemyProjectile(EnemyProjectile epj){
-        epj.DeActivate();
-        enemyProjectilesActive.Remove(epj);
-        enemyProjectilesDeactive.Add(epj);
-    }
+    
 
     /// <summary>
     /// Grabs a DropItem from the pool, or creates a new one if the pool is empty.
