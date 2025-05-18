@@ -3,12 +3,14 @@ using System;
 
 public partial class EspadachinPlanta : Area2D
 {
-    [Export] Player player;
+    GameManager manager;
+    Player player;
     [Export] int rayCastDistanceInTiles = 10;
     [Export] byte totalLife = 1;
     [Export] byte damage = 1;
     [Export] float speed = 40;
     [Export] float timeToAct = 1.5f;
+    [Export] byte coinsToDrop = 1;
     RayCast2D rayCast;
     VisibleOnScreenNotifier2D visibleNotifier;
 
@@ -25,6 +27,9 @@ public partial class EspadachinPlanta : Area2D
 
     public override void _Ready()
     {
+        player = Player.Instance;
+        manager = GameManager.Instance;
+        
         lifeSystem = new(totalLife, totalLife);
         lifeSystem.WhenDies += Die;
         visibleNotifier = NodeMisc.GenVisibleNotifier(this);
@@ -84,6 +89,8 @@ public partial class EspadachinPlanta : Area2D
     }
     void Die()
     {
+        if(!isGoingToDie) manager.SpawnCoins(GlobalPosition, coinsToDrop);
+        else manager.SpawnCoins(GlobalPosition, coinsToDrop/2);
         QueueFree();
     }
     void WhenHit(Node2D body)

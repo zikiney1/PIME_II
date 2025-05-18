@@ -5,7 +5,7 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6odco"]
 
-[node name="Espadachin-planta" type="Area2D"]
+[node name="Espadachin-planta" type="Area2D" groups=["EnemyGroup"]]
 collision_layer = 4
 collision_mask = 9
 script = ExtResource("1_lyila")

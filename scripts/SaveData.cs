@@ -17,27 +17,30 @@ public static class SaveData{
 
         file.Close();
 
-        player.lifeSystem = new(byte.Parse(lines[0]),10);
-        player.handItemIndex = byte.Parse(lines[1]);
+        string[] pInfo = lines[0].Split('|');
 
-        string[] inventoryItems = lines[2].Split('|');
+        player.lifeSystem = new(byte.Parse(pInfo[0]),10);
+        player.handItemIndex = byte.Parse(pInfo[1]);
+        player.gold = int.Parse(pInfo[2]);
+
+        string[] inventoryItems = lines[1].Split('|');
         foreach(string item in inventoryItems){
             if(item == "") continue;
             string[] itemData = item.Split(';');
             byte id = byte.Parse(itemData[0]);
             byte quantity = byte.Parse(itemData[1]);
 
-            player.inventory.Add(id,quantity);
+            player.Add(id,quantity);
         }
 
-        string[] equipaments = lines[3].Split('|');
+        string[] equipaments = lines[2].Split('|');
         foreach(string equipament in equipaments){
             if(equipament == "") continue;
             byte id = byte.Parse(equipament);
             player.equipamentSys.AddEquipament(id);
         }
 
-        string[] soilsLifesRaw = lines[4].Split(';');
+        string[] soilsLifesRaw = lines[3].Split(';');
         byte[] soilsLifes = new byte[soilsLifesRaw.Length-1];
         for(int i=0;i<soilsLifes.Length;i++){
             if(soilsLifesRaw[i].Trim() == "") continue;
@@ -46,7 +49,7 @@ public static class SaveData{
         player.plantZoneData = new PlantZoneData(3,3,soilsLifes);
         if(player.PlantZone != null) player.PlantZone.Setup();
 
-        string[] plants = lines[5].Split('|');
+        string[] plants = lines[4].Split('|');
         foreach(string plant in plants){
             if(plant == "") continue;
             string[] itemData = plant.Split(';');
@@ -55,14 +58,14 @@ public static class SaveData{
             short progress = short.Parse(itemData[2]);
             player.plantZoneData.Add(name,position,progress);
         }
-        string[] playerPositionRaw = lines[6].Split('|');
+        string[] playerPositionRaw = lines[5].Split('|');
         Vector2 newPosition = new(int.Parse(playerPositionRaw[0]),int.Parse(playerPositionRaw[1]));
         player.GlobalPosition = newPosition;
 
-        string[] checkpoints = lines[7].Split('|');
+        string[] checkpoints = lines[6].Split('|');
         player.UpdateKnowsCheckPoints(checkpoints);
 
-        string[] recepies = lines[8].Split('|');
+        string[] recepies = lines[7].Split('|');
         CraftingSystem.DiscoverMultiples(recepies);
 
     }
@@ -83,8 +86,7 @@ public static class SaveData{
         FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
         string content = "";
 
-        content += player.lifeSystem.CurrentLife() + "\n";
-        content += player.handItemIndex + "\n";
+        content += player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold + "\n";
 
         string inventoryContent = "";
         foreach(ItemData item in player.inventory.items){

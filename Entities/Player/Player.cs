@@ -11,8 +11,8 @@ public enum PlayerState{
 }
 public partial class Player : CharacterBody2D
 {
+    public static Player Instance;
     public enum PlayerWeapon { Sword, Zarabatana }
-
 
     [Export] public PlantingZone PlantZone;
     [Export] public SaveStationManager checkPointManager;
@@ -33,12 +33,13 @@ public partial class Player : CharacterBody2D
     ShopGui ShopGUI;
     SaveStationGui saveGUI;
     DialogGui dialogGui;
+    ItemList itemList;
 
     bool isDefending = false;
     bool canPlant = true;
     public byte handItemIndex = 0;
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
-    public float gold = 1;
+    public int gold = 0;
     float Speed = (GameManager.GAMEUNITS) * 1000;
     Vector2 lastDirection;
     Vector2 MouseDirection;
@@ -72,6 +73,7 @@ public partial class Player : CharacterBody2D
 
     public override void _EnterTree()
     {
+        Instance = this;
         inventory = new();
         equipamentSys = new();
         fightSystem = new(this, 0.4f, 1f);
@@ -88,7 +90,8 @@ public partial class Player : CharacterBody2D
         saveGUI = GetNode<SaveStationGui>("Canvas/SaveStationGUI");
         InteractableRange = GetNode<Area2D>("InteractableRange");
         dialogGui = GetNode<DialogGui>("Canvas/DialogGUI");
-        gameManager = GetNode<GameManager>("..");
+        itemList = GUI.GetNode<ItemList>("GameContainter/HBoxContainer/PanelContainer/ItemList");
+        gameManager = GameManager.Instance;
 
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
 
@@ -127,6 +130,7 @@ public partial class Player : CharacterBody2D
         GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
 
         HitArea.BodyEntered += whenHitEnemy;
+        itemList.GetParent<Control>().Visible = false;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -173,7 +177,7 @@ public partial class Player : CharacterBody2D
             else if (KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if (KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
             else if (Input.IsKeyPressed(Key.H)) switchWeapon();
-
+            else if (KeyEvent.IsActionPressed("inventory")) ToggleInventory();
 
         }
         if (@event is InputEventMouseMotion mouseMove)
@@ -320,11 +324,13 @@ public partial class Player : CharacterBody2D
     public bool Add(ItemResource item, byte quantity = 1)
     {
         bool result = inventory.Add(item, quantity);
+        itemList.AddItem(item.name + " - " + quantity, item.icon);
         if (HandItem != null)
             if (HandItem.id == item.id)
                 UpdatePortrait();
         return result;
     }
+    public bool Add(byte id, byte quantity = 1) => Add(ItemDB.GetItemData(id), quantity);
     /// <summary>
     /// Removes the specified quantity of the given item from the inventory.
     /// If the item being removed is the same as the current hand item, updates the item portrait.
@@ -334,6 +340,7 @@ public partial class Player : CharacterBody2D
     /// <returns>True if the item was successfully removed, otherwise false.</returns>
     public bool Remove(ItemResource item, byte quantity = 1)
     {
+        itemList.RemoveItem(inventory.itemPositions[item.id]);
         bool result = inventory.Remove(item.id, quantity);
         if (HandItem.id == item.id)
             UpdatePortrait();
@@ -373,15 +380,35 @@ public partial class Player : CharacterBody2D
         GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
     }
 
+    void ToggleInventory()
+    {
+
+        if (itemList.GetParent<Control>().Visible)
+        {
+            itemList.GetParent<Control>().Visible = false;
+        }
+        else
+        {
+            itemList.GetParent<Control>().Visible = true;
+        }
+    }
+
+    //============================================================================================================
+    //============================================================================================================
 
     /// <summary>
     /// Changes the hand item to the next item in the inventory, if none are available, sets the hand item to null.
     /// </summary>
     void ChangeHandItem()
     {
+        if (inventory.Length == 0 || inventory.HandItems.Count == 0)
+        {
+            GUI.UpdateHandItem("", null, 0);
+            return;
+        }
         handItemIndex++;
-        if (handItemIndex >= inventory.Length) handItemIndex = 0;
-        HandItem = inventory[handItemIndex];
+        if (handItemIndex >= inventory.HandItems.Count) handItemIndex = 0;
+        HandItem = inventory.HandItems[handItemIndex];
 
         if (HandItem == null)
         {
@@ -389,6 +416,8 @@ public partial class Player : CharacterBody2D
         }
         else
         {
+            // if(HandItem.resource.type == ItemType.Ingredient || HandItem.resource.type == ItemType.Equipament)
+                // ChangeHandItem();
             UpdatePortrait();
         }
 

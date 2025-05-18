@@ -3,8 +3,9 @@ using System;
 
 public partial class Atirador : StaticBody2D
 {
-    [Export] GameManager gameManager;
-    [Export] Player player;
+    GameManager manager;
+    Player player;
+
     [Export] Texture2D BulletTexture;
     [Export] float attackSpeed = 0.5f;
     [Export] int BulletDamage = 1;
@@ -13,7 +14,8 @@ public partial class Atirador : StaticBody2D
     [Export] float bulletSpeed = 300f;
     [Export] float rotationSpeed = 1.0f;
     [Export] int rayCastDistanceInTiles = 8;
-    [Export] byte life = 10;
+    [Export] byte life = 2;
+    [Export] byte coinsToDrop = 1;
 
     RayCast2D rayCast;
     RayCast2D mira;
@@ -35,6 +37,8 @@ public partial class Atirador : StaticBody2D
     public override void _Ready()
     {
         base._Ready();
+        player = Player.Instance;
+        manager = GameManager.Instance;
         lifeSystem = new(life, life);
         lifeSystem.WhenDies += Die;
         fightSystem = new(this, attackSpeed);
@@ -109,6 +113,7 @@ public partial class Atirador : StaticBody2D
     
     public void Die()
     {
+        manager.SpawnCoins(GlobalPosition, coinsToDrop);
         QueueFree();
     }
 
@@ -124,7 +129,7 @@ public partial class Atirador : StaticBody2D
     {
         Vector2 direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(Rotation));
 
-        var e = gameManager.GetBullet(this,GlobalPosition,direction);
+        var e = manager.GetBullet(this,GlobalPosition,direction);
         e.SetTexture(BulletTexture);
         e.speed = bulletSpeed;
         e.WhenBodyEnter = WhenEnterBody;

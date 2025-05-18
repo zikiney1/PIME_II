@@ -35,17 +35,15 @@ size = Vector2(16, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m6der"]
 size = Vector2(16, 16)
 
-[node name="Level_Demo" type="Node" node_paths=PackedStringArray("player", "camera")]
+[node name="Level_Demo" type="Node" node_paths=PackedStringArray("camera")]
 script = ExtResource("1_0bltp")
-player = NodePath("Player")
 camera = NodePath("Camera2D")
 
-[node name="PlantingZone" parent="." node_paths=PackedStringArray("player", "gameManager") instance=ExtResource("2_4f2ty")]
+[node name="PlantingZone" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_4f2ty")]
 position = Vector2(200, 80)
 player = NodePath("../Player")
 SelectRegion = ExtResource("3_n4pgo")
 SoilTextureStates = Array[Texture2D]([ExtResource("3_wgv7f"), ExtResource("4_n4pgo"), ExtResource("5_xesv0"), ExtResource("6_2kxrb")])
-gameManager = NodePath("..")
 
 [node name="DamageArea" type="Area2D" parent="." groups=["EnemyGroup"]]
 position = Vector2(156, 95)
@@ -122,25 +120,22 @@ player = NodePath("../Player")
 
 [node name="Enemys" type="Node" parent="."]
 
-[node name="Atirador" parent="Enemys" node_paths=PackedStringArray("gameManager", "player") instance=ExtResource("23_m6der")]
+[node name="Atirador" parent="Enemys" instance=ExtResource("23_m6der")]
 position = Vector2(164, 328)
 collision_layer = 4
 collision_mask = 9
-gameManager = NodePath("../..")
-player = NodePath("../../Player")
 BulletTexture = ExtResource("24_qww5e")
 attackSpeed = 2.0
 bulletQuantity = 3
 rotationSpeed = 10.0
-life = 3
+life = 1
+coinsToDrop = 19
 
-[node name="Rolante" parent="Enemys" node_paths=PackedStringArray("player") instance=ExtResource("25_7pc4u")]
-position = Vector2(209, 392)
-player = NodePath("../../Player")
+[node name="Rolante" parent="Enemys" instance=ExtResource("25_7pc4u")]
+position = Vector2(373, 388)
 
-[node name="Espadachin-planta" parent="Enemys" node_paths=PackedStringArray("player") instance=ExtResource("26_kxb8i")]
+[node name="Espadachin-planta" parent="Enemys" instance=ExtResource("26_kxb8i")]
 position = Vector2(530, 382)
-player = NodePath("../../Player")
 
 [node name="obstaculos" type="Node" parent="."]
 

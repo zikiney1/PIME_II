@@ -24,6 +24,7 @@ public partial class Projectile : Area2D
         visibleNotifier.ScreenExited += () => { this.DeSpawn(); };
         BodyEntered += (body) =>
         {
+            if (!Visible) return;
             WhenBodyEnter?.Invoke(body);
             DeSpawn();
         };
