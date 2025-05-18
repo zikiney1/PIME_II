@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="PIMEII"
 
+[global_group]
+
+EnemyGroup="Grupo de inimigos"
+
 [input]
 
 ui_up={
@@ -69,7 +73,15 @@ use={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Interactable"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="Walls"
+
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

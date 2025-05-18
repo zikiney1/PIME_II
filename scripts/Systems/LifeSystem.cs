@@ -19,7 +19,7 @@ public class LifeSystem{
     /// </summary>
     /// <param name="modifier">The modifier to reduce the damage. 0 means no reduction, 1 means total reduction.</param>
     /// <param name="amount">The base amount of damage to apply. Defaults to 1.</param>
-    public void GetDamage(float modifier, int amount = 1){
+    public void GetDamage(float modifier, int amount){
         byte totalDamage = (byte)Math.Floor(amount * (1 - modifier));
         if(totalDamage <= 0){
             totalDamage = 1;
@@ -31,6 +31,7 @@ public class LifeSystem{
         }
         currentLife -= totalDamage;
     }
+    public bool WillBeDead(int amount = 1) => currentLife - amount <= 0;
 
     public int CurrentLife() => currentLife;
     public int MaxLife() => maxLife;

@@ -36,7 +36,6 @@ public partial class PlantingZone : Node2D
             AddChild(Soils[i]);
             player.plantZoneData[i].WhenPlantSet += Soils[i].SetPlant;
         }
-        data.WhenUpdate += Update;
     }
 
 
@@ -154,7 +153,6 @@ public partial class SoilTile : Sprite2D{
     /// </remarks>
     public void UpdateTexture(){
         if (SoilTexture.Length == 0) return;
-
         int index = (int)Math.Floor((1f - (data.soilLife / (float)MAXSOILLIFE)) * (SoilTexture.Length - 1));
         index = Math.Clamp(index, 0, SoilTexture.Length - 1);
         Texture = SoilTexture[index];
@@ -180,7 +178,7 @@ public partial class SoilTile : Sprite2D{
             PlantSprite.Texture = data.DeadTexture();
             plantData.isDead = true;
         }else{
-            double ratio = plantData.progress / data.GrowthDuration();
+            double ratio = (double)plantData.progress / data.GrowthDuration();
             int index = (int)Math.Floor(ratio * (PlantTexture.Length - 1));
             index = Math.Clamp(index, 0, PlantTexture.Length - 1);
             PlantSprite.Texture = PlantTexture[index];

@@ -7,10 +7,57 @@ public partial class Pooling : Node2D
 {
     List<DropItem> poolItems = new();
     List<DropItem> activeItems = new();
+
+    List<Projectile> ActiveProjectiles = new();
+    List<Projectile> DeactiveProjectiles = new();
+
     Random rnd = new();
-    public Pooling(){
+    
+    public override void _Ready()
+    {
+        base._Ready();
+        for (int i = 0; i < 20; i++){
+            Projectile p = new();
+            p.pooling = this;
+            p.DeActivate();
+            
+            DeactiveProjectiles.Add(p);
+            this.AddChild(p);
+        }
 
     }
+
+    public Projectile GetBullet(CollisionObject2D shooter, Vector2 position, Vector2 direction)
+    {
+        Projectile pj;
+
+        if (DeactiveProjectiles.Count > 0)
+        {
+            pj = DeactiveProjectiles.Last();
+            DeactiveProjectiles.RemoveAt(DeactiveProjectiles.Count - 1);
+        }
+        else
+        {
+            pj = new();
+            pj.pooling = this;
+            this.AddChild(pj);
+        }
+        pj.Activate();
+        pj.direction = direction;
+        pj.GlobalPosition = position;
+        pj.Rotation = (float)(direction.Angle() + (Math.PI / 2));
+        pj.CollisionMask = shooter.CollisionMask;
+        ActiveProjectiles.Add(pj);
+        return pj;
+    }
+
+    public void ReturnBullet(Projectile pj){
+        pj.DeActivate();
+        ActiveProjectiles.Remove(pj);
+        DeactiveProjectiles.Add(pj);
+    }
+
+    
 
     /// <summary>
     /// Grabs a DropItem from the pool, or creates a new one if the pool is empty.
@@ -20,7 +67,7 @@ public partial class Pooling : Node2D
     /// <param name="item">The item to spawn the DropItem with.</param>
     /// <param name="quantity">The quantity of the item to spawn the DropItem with.</param>
     /// <returns>The spawned DropItem.</returns>
-    public DropItem GrabFroomPool(Vector2 position, ItemResource item, int quantity){
+    public DropItem GrabItem(Vector2 position, ItemResource item, int quantity){
         DropItem dropItem;
 
         position += new Vector2((float)rnd.NextDouble(), (float)rnd.NextDouble() + 0.5f);
@@ -47,7 +94,7 @@ public partial class Pooling : Node2D
     /// Returns a DropItem back to the pool, disabling its processing and visibility.
     /// </summary>
     /// <param name="dropItem">The DropItem to return to the pool.</param>
-    public void PutBackToPool(DropItem dropItem){
+    public void ReturnItem(DropItem dropItem){
         activeItems.Remove(dropItem);
         poolItems.Add(dropItem);
         dropItem.SetPhysicsProcess(false);
