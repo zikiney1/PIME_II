@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=29 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -24,6 +24,7 @@
 [ext_resource type="Resource" uid="uid://bx1kebuoaht0i" path="res://Dialogo/Resources/teste2.tres" id="22_74k5p"]
 [ext_resource type="PackedScene" uid="uid://d3nwgnwjpb005" path="res://Entities/Enemy/Atirador/Atirador.tscn" id="23_m6der"]
 [ext_resource type="Texture2D" uid="uid://cw26f4ab08bii" path="res://assets/Sprites/test/enemy_projectile.png" id="24_qww5e"]
+[ext_resource type="PackedScene" uid="uid://c7qi0gxc1vg1d" path="res://Entities/Enemy/Rolante/Rolante.tscn" id="25_7pc4u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
 size = Vector2(16, 16)
@@ -131,6 +132,10 @@ attackSpeed = 2.0
 bulletQuantity = 3
 rotationSpeed = 10.0
 life = 3
+
+[node name="Rolante" parent="Enemys" node_paths=PackedStringArray("player") instance=ExtResource("25_7pc4u")]
+position = Vector2(209, 392)
+player = NodePath("../../Player")
 
 [node name="obstaculos" type="Node" parent="."]
 

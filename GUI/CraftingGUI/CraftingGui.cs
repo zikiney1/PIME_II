@@ -70,7 +70,6 @@ public partial class CraftingGui : HBoxContainer
         recipes = CraftingSystem.GetRecipes();
         RecipeList.Clear();
         foreach (RecipeData recipe in recipes){
-            if(!recipe.known) continue;
 
             ItemResource result = recipe.result;
             try{

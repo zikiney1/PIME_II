@@ -52,22 +52,20 @@ public partial class Atirador : StaticBody2D
             TargetPosition = rayCast.TargetPosition
         };
 
-        visibleNotifier = new();
-        visibleNotifier.ScreenExited += () => { active = false; };
-        visibleNotifier.ScreenEntered += () => { active = true; };
+        visibleNotifier = NodeMisc.GenVisibleNotifier(this);
 
         FireTimer = NodeMisc.GenTimer(this, fireRate, Fire);
         lookTimer = NodeMisc.GenTimer(this, 1f, () => { lookToOrigin = true; });
 
-        AddChild(visibleNotifier);
         AddChild(rayCast);
         AddChild(mira);
     }
 
 
+
     public override void _PhysicsProcess(double delta)
     {
-        if(!active) return;
+        if (!active) return;
         rayCast.LookAt(player.GlobalPosition);
 
         if (rayCast.IsColliding() && rayCast.GetCollider() == player)
@@ -84,13 +82,14 @@ public partial class Atirador : StaticBody2D
         }
         else
         {
-            if (!lookToOrigin){
+            if (!lookToOrigin)
+            {
                 if (lookTimer.IsStopped())
                     lookTimer.Start();
             }
             else
             {
-                
+
                 Rotation = Mathf.LerpAngle(Rotation, originalRotation, (float)delta * rotationSpeed);
                 if (Mathf.IsEqualApprox(Rotation, originalRotation, 0.01f))
                 {

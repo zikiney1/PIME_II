@@ -63,7 +63,7 @@ public partial class Player : CharacterBody2D
     public void UpdateKnowsCheckPoints(string[] names) => checkPointManager.UpdateKnows(names);
     public string[] KnowCheckPoints() => saveGUI.ToNames();
 
-    public void Heal(int amount = 1) => lifeSystem.Heal(amount);
+    
     public int CurrentLife() => lifeSystem.CurrentLife();
     public int MaxLife() => lifeSystem.MaxLife();
 
@@ -300,6 +300,11 @@ public partial class Player : CharacterBody2D
             UpdatePortrait();
         }
 
+    }
+    public void Heal(int amount = 1)
+    {
+        lifeSystem.Heal(amount);
+        UpdateHearts();
     }
 
     /// <summary>

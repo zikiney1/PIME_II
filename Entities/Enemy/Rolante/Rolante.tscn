@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7qi0gxc1vg1d"]
+
+[ext_resource type="Script" uid="uid://d08hjo7neo4sa" path="res://Entities/Enemy/Rolante/Rolante.cs" id="1_6g53m"]
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_2yjkb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xn7e5"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6g53m"]
+
+[node name="Rolante" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 8
+script = ExtResource("1_6g53m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xn7e5")
+
+[node name="Icon" type="Sprite2D" parent="."]
+modulate = Color(0.27451, 0, 0.85098, 1)
+texture = ExtResource("2_2yjkb")
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("RectangleShape2D_6g53m")
