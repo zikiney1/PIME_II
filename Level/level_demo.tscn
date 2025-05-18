@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=30 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://d3nwgnwjpb005" path="res://Entities/Enemy/Atirador/Atirador.tscn" id="23_m6der"]
 [ext_resource type="Texture2D" uid="uid://cw26f4ab08bii" path="res://assets/Sprites/test/enemy_projectile.png" id="24_qww5e"]
 [ext_resource type="PackedScene" uid="uid://c7qi0gxc1vg1d" path="res://Entities/Enemy/Rolante/Rolante.tscn" id="25_7pc4u"]
+[ext_resource type="PackedScene" uid="uid://ctnt4pp71fjhm" path="res://Entities/Enemy/Espadachin-Planta/Espadachin-planta.tscn" id="26_kxb8i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4f2ty"]
 size = Vector2(16, 16)
@@ -137,7 +138,23 @@ life = 3
 position = Vector2(209, 392)
 player = NodePath("../../Player")
 
+[node name="Espadachin-planta" parent="Enemys" node_paths=PackedStringArray("player") instance=ExtResource("26_kxb8i")]
+position = Vector2(530, 382)
+player = NodePath("../../Player")
+
 [node name="obstaculos" type="Node" parent="."]
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="obstaculos"]
+position = Vector2(530, 354)
+scale = Vector2(5, 1)
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="obstaculos/StaticBody2D3"]
+shape = SubResource("RectangleShape2D_m6der")
+
+[node name="Icon" type="Sprite2D" parent="obstaculos/StaticBody2D3"]
+texture = ExtResource("3_pbyjw")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="obstaculos"]
 position = Vector2(233, 323)
@@ -162,4 +179,17 @@ collision_mask = 0
 shape = SubResource("RectangleShape2D_m6der")
 
 [node name="Icon" type="Sprite2D" parent="obstaculos/StaticBody2D"]
+texture = ExtResource("3_pbyjw")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="obstaculos"]
+position = Vector2(497, 386)
+rotation = 1.5708
+scale = Vector2(5, 1)
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="obstaculos/StaticBody2D4"]
+shape = SubResource("RectangleShape2D_m6der")
+
+[node name="Icon" type="Sprite2D" parent="obstaculos/StaticBody2D4"]
 texture = ExtResource("3_pbyjw")
