@@ -4,10 +4,11 @@ using System;
 public partial class Interactable : Area2D
 {
     public bool isInRange = false;
-    [Export] public Player player;
+    public Player player;
 
     public override void _Ready()
     {
+        player = Player.Instance;
         base._Ready();
         AreaEntered += (Area2D area) =>{
             if(area.Name == "InteractableRange") isInRange = true;

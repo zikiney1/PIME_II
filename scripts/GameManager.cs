@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using Godot;
 public partial class GameManager : Node{
 
+    public readonly static byte GAMEUNITS = 16;
+    public readonly static byte SOILTILESIZE = 3;
+
+    public readonly static uint PlayerBulletMask = 12;
+    public readonly static uint EnemyBulletMask = 9;
+
     public static GameManager Instance { get; set; }
     Player player;
     [Export] Camera camera;
@@ -17,12 +23,11 @@ public partial class GameManager : Node{
     }
 
     public Configurator configurator;
-    public readonly static byte GAMEUNITS = 16;
     public GameState gameState = GameState.Running;
 
     public Pooling pooling;
 
-    public Projectile GetBullet(CollisionObject2D shooter , Vector2 position, Vector2 direction) =>  pooling.GetBullet(shooter,position,direction);
+    public Projectile GetBullet(uint maskLayer , Vector2 position, Vector2 direction) =>  pooling.GetBullet(maskLayer,position,direction);
 
     public DropItem SpawnItem(Vector2 position, ItemResource item, int quantity){
         return pooling.GrabItem(position, item, quantity);

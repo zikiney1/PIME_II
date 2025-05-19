@@ -69,7 +69,7 @@ public partial class Pooling : Node2D
         return coin;
     }
 
-    public Projectile GetBullet(CollisionObject2D shooter, Vector2 position, Vector2 direction)
+    public Projectile GetBullet(uint maskLayer, Vector2 position, Vector2 direction)
     {
         Projectile pj;
 
@@ -88,7 +88,7 @@ public partial class Pooling : Node2D
         pj.direction = direction;
         pj.GlobalPosition = position;
         pj.Rotation = (float)(direction.Angle() + (Math.PI / 2));
-        pj.CollisionMask = shooter.CollisionMask;
+        pj.CollisionMask = maskLayer;
         ActiveProjectiles.Add(pj);
         return pj;
     }

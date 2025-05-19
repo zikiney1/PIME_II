@@ -129,7 +129,7 @@ public partial class Atirador : StaticBody2D
     {
         Vector2 direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(Rotation));
 
-        var e = manager.GetBullet(this,GlobalPosition,direction);
+        var e = manager.GetBullet(GameManager.EnemyBulletMask,GlobalPosition,direction);
         e.SetTexture(BulletTexture);
         e.speed = bulletSpeed;
         e.WhenBodyEnter = WhenEnterBody;

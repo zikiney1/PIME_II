@@ -4,8 +4,13 @@ using System.Linq;
 
 public partial class SaveStationManager : Node
 {
-    [Export] public Player player;
+    public Player player;
 
+
+    public override void _EnterTree()
+    {
+        player = Player.Instance;
+    }
 
     /// <summary>
     /// Updates the know save stations of the player.
@@ -16,22 +21,24 @@ public partial class SaveStationManager : Node
     /// If the given array is null or empty, the function does nothing.
     /// </para>
     /// </summary>
-    public void UpdateKnows(string[] saveName){
-        if(saveName == null) return;
-        if(saveName.Length == 0) return;
-        SaveStation[] saveStation = 
+    public void UpdateKnows(string[] saveName)
+    {
+        if (saveName == null) return;
+        if (saveName.Length == 0) return;
+        SaveStation[] saveStation =
                 GetChildren()
                 .OfType<SaveStation>()
                 .Where(
-                    x => 
+                    x =>
                     saveName.Any(n => n == x.Name)
                 )
                 .ToArray();
-                
-                
-        foreach(SaveStation s in saveStation){
+
+
+        foreach (SaveStation s in saveStation)
+        {
             player.AddStation(s);
         }
-        
+
     }
 }

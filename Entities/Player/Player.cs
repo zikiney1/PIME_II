@@ -61,7 +61,6 @@ public partial class Player : CharacterBody2D
     public void Save(Vector2 pos) => SaveData.Save(this, pos);
     public void UpdateHearts() => GUI.UpdateHearts();
     public void AddStation(SaveStation saveStation) => saveGUI.AddStation(saveStation);
-    public void UpdateKnowsCheckPoints(string[] names) => checkPointManager.UpdateKnows(names);
     public string[] KnowCheckPoints() => saveGUI.ToNames();
     public bool CanPurchase(int amount) => gold - amount >= 0;
     
@@ -484,9 +483,14 @@ public partial class Player : CharacterBody2D
         Position = pos;
     }
 
+    public void UpdateKnowsCheckPoints(string[] names)
+    {
+        if(checkPointManager.player == null ) checkPointManager.player = this;
+        checkPointManager.UpdateKnows(names);
+    }
     //============================================================================================================
     //============================================================================================================
-    
+
 
     void Attack()
     {
@@ -501,7 +505,7 @@ public partial class Player : CharacterBody2D
         }
         else
         {
-            var e = gameManager.GetBullet(this, GlobalPosition, MouseDirection);
+            var e = gameManager.GetBullet(GameManager.PlayerBulletMask, GlobalPosition, MouseDirection);
             e.SetTexture(BulletTexture);
             e.WhenBodyEnter = whenHitEnemy;
             e.speed = bulletSpeed;
