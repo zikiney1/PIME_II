@@ -1,12 +1,57 @@
-[gd_scene load_steps=5 format=3 uid="uid://e6qtwhofe5ag"]
+[gd_scene load_steps=10 format=3 uid="uid://e6qtwhofe5ag"]
 
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_drfle"]
 [ext_resource type="Script" uid="uid://crmyq7j1qm6jo" path="res://Entities/Enemy/Cachorro-planta/CachorroPlanta.cs" id="1_h57yh"]
+[ext_resource type="Shader" uid="uid://ch401k1srlcv7" path="res://Shaders/HitShader.gdshader" id="2_55v2f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h57yh"]
 size = Vector2(16, 16)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mbwrt"]
+shader = ExtResource("2_55v2f")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_55v2f"]
+
+[sub_resource type="Animation" id="Animation_mbwrt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_55v2f"]
+resource_name = "take_damage"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cqxis"]
+_data = {
+&"RESET": SubResource("Animation_mbwrt"),
+&"take_damage": SubResource("Animation_55v2f")
+}
 
 [node name="Cachorro-planta" type="CharacterBody2D" groups=["EnemyGroup"]]
 collision_layer = 4
@@ -18,6 +63,7 @@ shape = SubResource("RectangleShape2D_h57yh")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 modulate = Color(0.254902, 0.905882, 0.239216, 1)
+material = SubResource("ShaderMaterial_mbwrt")
 texture = ExtResource("1_drfle")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
@@ -31,3 +77,12 @@ debug_path_custom_color = Color(1, 0.054902, 0.0313726, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
 shape = SubResource("RectangleShape2D_55v2f")
+
+[node name="Animation" type="Node" parent="."]
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="Animation"]
+libraries = {
+&"": SubResource("AnimationLibrary_cqxis")
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Animation"]
