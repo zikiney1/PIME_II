@@ -134,11 +134,6 @@ public partial class Player : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-
-    }
-
-    public override void _Process(double delta)
-    {
         if (state == PlayerState.Attacking || CraftGUI.Visible || state == PlayerState.Lock) return;
 
         Vector2 direction = InputSystem.GetVector();
@@ -159,6 +154,10 @@ public partial class Player : CharacterBody2D
         }
 
         MoveAndSlide();
+    }
+
+    public override void _Process(double delta)
+    {
 
     }
 
@@ -548,6 +547,7 @@ public partial class Player : CharacterBody2D
             if (body is Atirador a) a.Damage(damageModifier);
             else if (body is Rolante r) r.Damage(damageModifier);
             else if (body is EspadachinPlanta e) e.Damage(damageModifier);
+            else if(body is CachorroPlanta c) c.Damage(damageModifier);
         }
     }
 

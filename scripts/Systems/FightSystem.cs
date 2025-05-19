@@ -23,7 +23,7 @@ public class FightSystem
         DamageTimer = NodeMisc.GenTimer(father, invencibleTime, () => {AfterDamageTimer(); });
 
     }
-    public void Attack(float modifier)
+    public void Attack(float modifier=0)
     {
         float waitTime = attackSpeed + modifier;
         if(waitTime <= 0) waitTime = 0.01f;

@@ -41,24 +41,51 @@ public partial class Rolante : CharacterBody2D
         lifeSystem = new(totalLife, totalLife);
         lifeSystem.WhenDies = Die;
 
-        visibleNotifier = NodeMisc.GenVisibleNotifier(this);
+        visibleNotifier = new();
+        visibleNotifier.ScreenEntered += Activate;
+        visibleNotifier.ScreenExited += DeActivate;
 
         rayCast = new()
         {
             CollisionMask = hitArea.CollisionMask,
             TargetPosition = new Vector2(rayCastDistanceInTiles * GameManager.GAMEUNITS, 0)
         };
-        AddChild(rayCast);
 
         inFrontCast = new()
         {
             CollisionMask = hitArea.CollisionMask,
             TargetPosition = new Vector2(2 * GameManager.GAMEUNITS, 0)
         };
+
+        
+        AddChild(rayCast);
         AddChild(inFrontCast);
+        AddChild(visibleNotifier);
 
         timerToAct = NodeMisc.GenTimer(this, timeToAct, WhenAct);
         stunnedTimer = NodeMisc.GenTimer(this, StunnedTime, StopStun);
+        DeActivate();
+    }
+
+    void Activate()
+    {
+        SetPhysicsProcess(true);
+        SetProcess(true);
+        GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        hitArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        GetNode<Sprite2D>("Sprite").Visible = true;
+        hitArea.Monitoring = true;
+        hitArea.Monitorable = true;
+    }
+    void DeActivate()
+    {
+        SetPhysicsProcess(false);
+        SetProcess(false);
+        GetNode<Sprite2D>("Sprite").Visible = false;
+        GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+        hitArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+        hitArea.Monitoring = false;
+        hitArea.Monitorable = false;
     }
 
     public override void _PhysicsProcess(double delta)

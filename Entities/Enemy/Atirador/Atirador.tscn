@@ -7,11 +7,13 @@
 size = Vector2(16, 16)
 
 [node name="Atirador" type="StaticBody2D" groups=["EnemyGroup"]]
+collision_layer = 4
+collision_mask = 9
 script = ExtResource("1_43x3s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_43x3s")
 
-[node name="Icon" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 self_modulate = Color(0.776471, 0.137255, 0.431373, 1)
 texture = ExtResource("1_tgg3u")

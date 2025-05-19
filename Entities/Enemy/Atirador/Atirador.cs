@@ -56,15 +56,35 @@ public partial class Atirador : StaticBody2D
             TargetPosition = rayCast.TargetPosition
         };
 
-        visibleNotifier = NodeMisc.GenVisibleNotifier(this);
+        visibleNotifier = new();
+        visibleNotifier.ScreenEntered += Activate;
+        visibleNotifier.ScreenExited += DeActivate;
 
         FireTimer = NodeMisc.GenTimer(this, fireRate, Fire);
         lookTimer = NodeMisc.GenTimer(this, 1f, () => { lookToOrigin = true; });
 
+        AddChild(visibleNotifier);
         AddChild(rayCast);
         AddChild(mira);
+        DeActivate();
     }
 
+
+    void Activate()
+    {
+        SetPhysicsProcess(true);
+        SetProcess(true);
+        GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        GetNode<Sprite2D>("Sprite").Visible = true;
+        
+    }
+    void DeActivate()
+    {
+        SetPhysicsProcess(false);
+        SetProcess(false);
+        GetNode<Sprite2D>("Sprite").Visible = false;
+        GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+    }
 
 
     public override void _PhysicsProcess(double delta)
@@ -122,7 +142,7 @@ public partial class Atirador : StaticBody2D
     {
         if (!fightSystem.canAttack) return;
         FireTimer.Start();
-        fightSystem.Attack(0);
+        fightSystem.Attack();
     }
 
     void Fire()

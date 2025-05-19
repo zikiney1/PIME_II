@@ -3,26 +3,38 @@ using System;
 
 public partial class CachorroPlanta : CharacterBody2D
 {
-    [Export] public float attackSpeed;
-    [Export] public byte totalLife;
-    [Export] public byte coinsToDrop;
-    [Export] public float distanceToPlayer;
-    [Export] public float Speed = 230;
+    [Export] public float attackSpeed = 0.5f;
+    [Export] public byte totalLife = 2;
+    [Export] public byte coinsToDrop = 5;
+    [Export] public int distanceToPlayer = 20;
+    [Export] public float Speed = 220;
+    [Export] public byte damage = 1;
+
     LifeSystem lifeSystem;
+    FightSystem fightSystem;
+
     Player player;
+    GameManager manager;
+
     VisibleOnScreenNotifier2D visibleNotifier;
     NavigationAgent2D navAgent;
 
     RayCast2D VisionCast;
+    Timer NavUpdateTimer;
+    Area2D HitArea;
 
+    bool isInVision => VisionCast.IsColliding() && VisionCast.GetCollider() == player;
 
     public override void _Ready()
     {
         base._Ready();
+        NavUpdateTimer = NodeMisc.GenTimer(this, 0.5f, NavUpdate);
+
         player = Player.Instance;
+        manager = GameManager.Instance;
         lifeSystem = new(totalLife, totalLife);
+        fightSystem = new(this, attackSpeed);
         lifeSystem.WhenDies += Die;
-        // visibleNotifier = NodeMisc.GenVisibleNotifier(this);
 
         VisionCast = new()
         {
@@ -32,37 +44,76 @@ public partial class CachorroPlanta : CharacterBody2D
         AddChild(VisionCast);
 
         navAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
-        navAgent.TargetPosition = player.GlobalPosition;
+        HitArea = GetNode<Area2D>("HitArea");
+        HitArea.BodyEntered += WhenHit;
+
+        visibleNotifier = new();
+        AddChild(visibleNotifier);
+        visibleNotifier.ScreenEntered += Activate;
+        DeActivate();
     }
+
+    void Activate()
+    {
+        NavUpdate();
+        SetPhysicsProcess(true);
+        SetProcess(true);
+        HitArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        GetNode<Sprite2D>("Sprite").Visible = true;
+        
+    }
+    void DeActivate()
+    {
+        SetPhysicsProcess(false);
+        SetProcess(false);
+        GetNode<Sprite2D>("Sprite").Visible = false;
+        HitArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+        GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+    }
+
+    public override void _Process(double delta)
+    {
+        if (!MathM.IsInRange(GlobalPosition, player.GlobalPosition, GameManager.GAMEUNITS * distanceToPlayer * 2))
+        {
+            DeActivate();
+        }
+    }
+
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
 
+        VisionCast.LookAt(player.GlobalPosition);
+
         if (navAgent.IsNavigationFinished()) return;
-        
 
-        navAgent.TargetPosition = player.GlobalPosition;
         Vector2 nextPos = navAgent.GetNextPathPosition();
-        Vector2 vel = GlobalPosition.DirectionTo(nextPos) * Speed * GameManager.GAMEUNITS * (float)delta;
-
-        if (navAgent.AvoidanceEnabled)
-            navAgent.SetVelocityForced(vel);
-        else
-            NavAgentVelCompute(vel);
-
-
+        Velocity = GlobalPosition.DirectionTo(nextPos) * Speed * GameManager.GAMEUNITS * (float)delta;
         MoveAndSlide();
     }
 
-    void NavAgentVelCompute(Vector2 safe_vel)
-    {
-        Velocity = safe_vel;        
-    }
+    public void Damage(float modifier,int amount=1) => lifeSystem.GetDamage(modifier, amount);
 
+    void NavUpdate() {
+        if(isInVision) navAgent.TargetPosition = player.GlobalPosition;
+        NavUpdateTimer.Start();
+    }
 
     void Die()
     {
-        
+        manager.SpawnCoins(GlobalPosition, coinsToDrop);
+        QueueFree();
+    }
+    
+    void WhenHit(Node body)
+    {
+        if(!fightSystem.canAttack) return;
+        if (body is Player p)
+        {
+            p.Damage(damage);
+            fightSystem.Attack();
+        }
     }
 }

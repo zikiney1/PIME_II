@@ -80,6 +80,16 @@ use={
 2d_physics/layer_2="Interactable"
 2d_physics/layer_3="Enemy"
 2d_physics/layer_4="Walls"
+2d_physics/layer_5="Rolante"
+
+[navigation]
+
+2d/default_cell_size=4.0
+
+[physics]
+
+2d/run_on_separate_thread=true
+2d/solver/solver_iterations=8
 
 [rendering]
 
