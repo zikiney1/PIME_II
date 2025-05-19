@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Text;
 public static class SaveData{
 
     public static string saveFilePath = "res://Data/saveData/save.txt";
@@ -17,36 +18,43 @@ public static class SaveData{
 
         file.Close();
 
-        player.lifeSystem = new(byte.Parse(lines[0]),10);
-        player.handItemIndex = byte.Parse(lines[1]);
+        //atualiza as informacoes do jogador
+        string[] pInfo = lines[0].Split('|');
+        player.lifeSystem = new(byte.Parse(pInfo[0]),10);
+        player.handItemIndex = byte.Parse(pInfo[1]);
+        player.gold = int.Parse(pInfo[2]);
 
-        string[] inventoryItems = lines[2].Split('|');
+        //atualiza o inventario
+        string[] inventoryItems = lines[1].Split('|');
         foreach(string item in inventoryItems){
             if(item == "") continue;
             string[] itemData = item.Split(';');
             byte id = byte.Parse(itemData[0]);
             byte quantity = byte.Parse(itemData[1]);
 
-            player.inventory.Add(id,quantity);
+            player.Add(id,quantity);
         }
 
-        string[] equipaments = lines[3].Split('|');
+        //atualiza os equipamentos
+        string[] equipaments = lines[2].Split('|');
         foreach(string equipament in equipaments){
             if(equipament == "") continue;
             byte id = byte.Parse(equipament);
             player.equipamentSys.AddEquipament(id);
         }
 
-        string[] soilsLifesRaw = lines[4].Split(';');
+        //atualiza a vida dos terrenos
+        string[] soilsLifesRaw = lines[3].Split(';');
         byte[] soilsLifes = new byte[soilsLifesRaw.Length-1];
         for(int i=0;i<soilsLifes.Length;i++){
             if(soilsLifesRaw[i].Trim() == "") continue;
             soilsLifes[i] = byte.Parse(soilsLifesRaw[i]);
         }
-        player.plantZoneData = new PlantZoneData(3,3,soilsLifes);
+        player.plantZoneData = new PlantZoneData(GameManager.SOILTILESIZE,GameManager.SOILTILESIZE,soilsLifes);
         if(player.PlantZone != null) player.PlantZone.Setup();
 
-        string[] plants = lines[5].Split('|');
+        //atualizar as plantas
+        string[] plants = lines[4].Split('|');
         foreach(string plant in plants){
             if(plant == "") continue;
             string[] itemData = plant.Split(';');
@@ -55,14 +63,18 @@ public static class SaveData{
             short progress = short.Parse(itemData[2]);
             player.plantZoneData.Add(name,position,progress);
         }
-        string[] playerPositionRaw = lines[6].Split('|');
+
+        //coloca a posição do jogador no checkpoint
+        string[] playerPositionRaw = lines[5].Split('|');
         Vector2 newPosition = new(int.Parse(playerPositionRaw[0]),int.Parse(playerPositionRaw[1]));
         player.GlobalPosition = newPosition;
 
-        string[] checkpoints = lines[7].Split('|');
+        //atualizar os warpszones
+        string[] checkpoints = lines[6].Split('|');
         player.UpdateKnowsCheckPoints(checkpoints);
 
-        string[] recepies = lines[8].Split('|');
+        //atualizar receitas
+        string[] recepies = lines[7].Split('|');
         CraftingSystem.DiscoverMultiples(recepies);
 
     }
@@ -81,54 +93,60 @@ public static class SaveData{
         if(saveFilePath == "") return;
         
         FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
-        string content = "";
+        StringBuilder sb = new();
 
-        content += player.lifeSystem.CurrentLife() + "\n";
-        content += player.handItemIndex + "\n";
+        //informação do jogador
+        sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold);
 
+
+        //inventario
         string inventoryContent = "";
         foreach(ItemData item in player.inventory.items){
             if(item == null) continue;
             inventoryContent += $"{item.id};{item.quantity}|";
         }
-        content += inventoryContent + "\n";
+        sb.AppendLine(inventoryContent);
 
+        //equipamentos
         string equipamentsContent = "";
         foreach(ItemResource equipament in player.equipamentSys.equipaments){
             if(equipament == null) continue;
             equipamentsContent += $"{equipament.id}|";
         }
-        content += equipamentsContent + "\n";
+        sb.AppendLine(equipamentsContent);
 
+        //vida dos terrenos
         string soilsLifesContent = "";
         foreach(SoilTileData soil in player.plantZoneData.SoilsData){
             if(soil == null) continue;
             soilsLifesContent += $"{soil.soilLife};";
         }
-        content += soilsLifesContent + "\n";
+        sb.AppendLine(soilsLifesContent);
 
+        //plantas
         string plantsContent = "";
-
         var soilWithPlants = player.plantZoneData.SoilsData.Where(soil => soil != null && soil.plantData != null);
-
         foreach(SoilTileData soil in soilWithPlants){
             PlantData plant = soil.plantData;
             PlantResource plantData = plant?.plant;
             plantsContent += $"{plantData.name};{soil.position};{plant.progress}|";
         }
-        content += plantsContent + "\n";
+        sb.AppendLine(plantsContent);
 
-        content += $"{Math.Round(pos.X,0)}|{Math.Round(pos.Y,0)}\n";
+        //posição do jogador
+        sb.AppendLine($"{Math.Round(pos.X, 0)}|{Math.Round(pos.Y, 0)}");
 
-        content += string.Join('|',player.KnowCheckPoints());
+        //checkpoints
+        sb.AppendLine(string.Join('|', player.KnowCheckPoints()));
 
-        content += string.Join("|",
-                        CraftingSystem.GetRecipes()
-                        .Where(x => x.known)
-                        .Select(x => x.name)
-        );
+        //receitas
+        sb.AppendLine(string.Join("|",
+            CraftingSystem.GetRecipes()
+                .Where(x => x.known)
+                .Select(x => x.name)
+        ));
 
-        file.StoreString(content);
+        file.StoreString(sb.ToString());
 
 
         file.Close();

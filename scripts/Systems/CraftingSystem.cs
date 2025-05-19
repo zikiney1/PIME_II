@@ -36,7 +36,7 @@ public static class CraftingSystem{
     /// </summary>
     /// <returns>An array of all recipes in the crafting system.</returns>
     public static RecipeData[] GetRecipes(){
-        return recipes.Values.ToArray();
+        return recipes.Values.Where(x => x.known).ToArray();
     }
 
     

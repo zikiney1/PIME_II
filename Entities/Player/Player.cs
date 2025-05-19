@@ -11,8 +11,8 @@ public enum PlayerState{
 }
 public partial class Player : CharacterBody2D
 {
+    public static Player Instance;
     public enum PlayerWeapon { Sword, Zarabatana }
-
 
     [Export] public PlantingZone PlantZone;
     [Export] public SaveStationManager checkPointManager;
@@ -33,12 +33,13 @@ public partial class Player : CharacterBody2D
     ShopGui ShopGUI;
     SaveStationGui saveGUI;
     DialogGui dialogGui;
+    ItemList itemList;
 
     bool isDefending = false;
     bool canPlant = true;
     public byte handItemIndex = 0;
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
-    public float gold = 1;
+    public int gold = 0;
     float Speed = (GameManager.GAMEUNITS) * 1000;
     Vector2 lastDirection;
     Vector2 MouseDirection;
@@ -60,10 +61,9 @@ public partial class Player : CharacterBody2D
     public void Save(Vector2 pos) => SaveData.Save(this, pos);
     public void UpdateHearts() => GUI.UpdateHearts();
     public void AddStation(SaveStation saveStation) => saveGUI.AddStation(saveStation);
-    public void UpdateKnowsCheckPoints(string[] names) => checkPointManager.UpdateKnows(names);
     public string[] KnowCheckPoints() => saveGUI.ToNames();
-
-    public void Heal(int amount = 1) => lifeSystem.Heal(amount);
+    public bool CanPurchase(int amount) => gold - amount >= 0;
+    
     public int CurrentLife() => lifeSystem.CurrentLife();
     public int MaxLife() => lifeSystem.MaxLife();
 
@@ -72,6 +72,7 @@ public partial class Player : CharacterBody2D
 
     public override void _EnterTree()
     {
+        Instance = this;
         inventory = new();
         equipamentSys = new();
         fightSystem = new(this, 0.4f, 1f);
@@ -88,7 +89,11 @@ public partial class Player : CharacterBody2D
         saveGUI = GetNode<SaveStationGui>("Canvas/SaveStationGUI");
         InteractableRange = GetNode<Area2D>("InteractableRange");
         dialogGui = GetNode<DialogGui>("Canvas/DialogGUI");
-        gameManager = GetNode<GameManager>("..");
+        itemList = GUI.GetNode<ItemList>("GameContainter/HBoxContainer/PanelContainer/ItemList");
+        gameManager = GameManager.Instance;
+
+        HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
+
     }
 
 
@@ -124,14 +129,10 @@ public partial class Player : CharacterBody2D
         GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
 
         HitArea.BodyEntered += whenHitEnemy;
+        itemList.GetParent<Control>().Visible = false;
     }
 
     public override void _PhysicsProcess(double delta)
-    {
-
-    }
-
-    public override void _Process(double delta)
     {
         if (state == PlayerState.Attacking || CraftGUI.Visible || state == PlayerState.Lock) return;
 
@@ -153,6 +154,10 @@ public partial class Player : CharacterBody2D
         }
 
         MoveAndSlide();
+    }
+
+    public override void _Process(double delta)
+    {
 
     }
 
@@ -170,7 +175,7 @@ public partial class Player : CharacterBody2D
             else if (KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if (KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
             else if (Input.IsKeyPressed(Key.H)) switchWeapon();
-
+            else if (KeyEvent.IsActionPressed("inventory")) ToggleInventory();
 
         }
         if (@event is InputEventMouseMotion mouseMove)
@@ -184,20 +189,19 @@ public partial class Player : CharacterBody2D
         }
     }
 
-    void switchWeapon()
-    {
-        if (playerWeapon == PlayerWeapon.Sword) playerWeapon = PlayerWeapon.Zarabatana;
-        else playerWeapon = PlayerWeapon.Sword;
-        HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(playerWeapon != PlayerWeapon.Sword);
-    }
+    //============================================================================================================
+    //============================================================================================================
+
 
     public void InteractDialog(DialogResource[] dialog, string EventAtEnd)
     {
-        if (dialogGui.Visible){
+        if (dialogGui.Visible)
+        {
             dialogGui.Deactivate();
             state = PlayerState.Idle;
         }
-        else{
+        else
+        {
             dialogGui.Activate(dialog, EventAtEnd);
             state = PlayerState.Lock;
         }
@@ -240,66 +244,6 @@ public partial class Player : CharacterBody2D
             saveGUI.Activate(saveStation);
             state = PlayerState.Lock;
         }
-    }
-
-    /// <summary>
-    /// Adds the specified quantity of the given item to the inventory.
-    /// If the item being added is the same as the current hand item, updates the item portrait.
-    /// </summary>
-    /// <param name="item">The item to add to the inventory.</param>
-    /// <param name="quantity">The quantity of the item to add. Defaults to 1.</param>
-    /// <returns>True if the item was added to an existing stack, otherwise false.</returns>
-    public bool Add(ItemResource item, byte quantity = 1)
-    {
-        bool result = inventory.Add(item, quantity);
-        if (HandItem != null)
-            if (HandItem.id == item.id)
-                UpdatePortrait();
-        return result;
-    }
-    /// <summary>
-    /// Removes the specified quantity of the given item from the inventory.
-    /// If the item being removed is the same as the current hand item, updates the item portrait.
-    /// </summary>
-    /// <param name="item">The item to remove from the inventory.</param>
-    /// <param name="quantity">The quantity of the item to remove. Defaults to 1.</param>
-    /// <returns>True if the item was successfully removed, otherwise false.</returns>
-    public bool Remove(ItemResource item, byte quantity = 1)
-    {
-        bool result = inventory.Remove(item.id, quantity);
-        if (HandItem.id == item.id)
-            UpdatePortrait();
-        return result;
-    }
-
-    /// <summary>
-    /// Updates the portrait of the hand item in the GUI.
-    /// </summary>
-    void UpdatePortrait()
-    {
-        ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
-        GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
-    }
-
-
-    /// <summary>
-    /// Changes the hand item to the next item in the inventory, if none are available, sets the hand item to null.
-    /// </summary>
-    void ChangeHandItem()
-    {
-        handItemIndex++;
-        if (handItemIndex >= inventory.Length) handItemIndex = 0;
-        HandItem = inventory[handItemIndex];
-
-        if (HandItem == null)
-        {
-            ChangeHandItem();
-        }
-        else
-        {
-            UpdatePortrait();
-        }
-
     }
 
     /// <summary>
@@ -364,14 +308,122 @@ public partial class Player : CharacterBody2D
     {
         state = PlayerState.Idle;
     }
+
+    //============================================================================================================
+    //============================================================================================================
+
     /// <summary>
-    /// Teleports the player to the specified position and sets the state to idle.
+    /// Adds the specified quantity of the given item to the inventory.
+    /// If the item being added is the same as the current hand item, updates the item portrait.
     /// </summary>
-    /// <param name="pos">The target position to teleport the player to.</param>
-    public void Teleport(Vector2 pos)
+    /// <param name="item">The item to add to the inventory.</param>
+    /// <param name="quantity">The quantity of the item to add. Defaults to 1.</param>
+    /// <returns>True if the item was added to an existing stack, otherwise false.</returns>
+    public bool Add(ItemResource item, byte quantity = 1)
     {
-        state = PlayerState.Idle;
-        Position = pos;
+        bool result = inventory.Add(item, quantity);
+        itemList.AddItem(item.name + " - " + quantity, item.icon);
+        if (HandItem != null)
+            if (HandItem.id == item.id)
+                UpdatePortrait();
+        return result;
+    }
+    public bool Add(byte id, byte quantity = 1) => Add(ItemDB.GetItemData(id), quantity);
+    /// <summary>
+    /// Removes the specified quantity of the given item from the inventory.
+    /// If the item being removed is the same as the current hand item, updates the item portrait.
+    /// </summary>
+    /// <param name="item">The item to remove from the inventory.</param>
+    /// <param name="quantity">The quantity of the item to remove. Defaults to 1.</param>
+    /// <returns>True if the item was successfully removed, otherwise false.</returns>
+    public bool Remove(ItemResource item, byte quantity = 1)
+    {
+        itemList.RemoveItem(inventory.itemPositions[item.id]);
+        bool result = inventory.Remove(item.id, quantity);
+        if (HandItem.id == item.id)
+            UpdatePortrait();
+        return result;
+    }
+
+    public void Heal(int amount = 1)
+    {
+        lifeSystem.Heal(amount);
+        UpdateHearts();
+    }
+
+    public void AddGold(int amount)
+    {
+        gold += amount;
+        GUI.UpdateGold();
+    }
+
+    public bool RemoveGold(int amount)
+    {
+        if (gold - amount < 0) return false;
+        gold -= amount;
+        GUI.UpdateGold();
+        return true;
+    }
+
+    //============================================================================================================
+    //============================================================================================================
+
+
+    /// <summary>
+    /// Updates the portrait of the hand item in the GUI.
+    /// </summary>
+    void UpdatePortrait()
+    {
+        ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+        GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
+    }
+
+    void ToggleInventory()
+    {
+
+        if (itemList.GetParent<Control>().Visible)
+        {
+            itemList.GetParent<Control>().Visible = false;
+        }
+        else
+        {
+            itemList.GetParent<Control>().Visible = true;
+        }
+    }
+
+    //============================================================================================================
+    //============================================================================================================
+
+    /// <summary>
+    /// Changes the hand item to the next item in the inventory, if none are available, sets the hand item to null.
+    /// </summary>
+    void ChangeHandItem()
+    {
+        if (inventory.Length == 0 || inventory.HandItems.Count == 0)
+        {
+            GUI.UpdateHandItem("", null, 0);
+            return;
+        }
+        handItemIndex++;
+        if (handItemIndex >= inventory.HandItems.Count) handItemIndex = 0;
+        HandItem = inventory.HandItems[handItemIndex];
+
+        if (HandItem == null)
+        {
+            ChangeHandItem();
+        }
+        else
+        {
+            // if(HandItem.resource.type == ItemType.Ingredient || HandItem.resource.type == ItemType.Equipament)
+                // ChangeHandItem();
+            UpdatePortrait();
+        }
+
+    }
+    void switchWeapon()
+    {
+        if (playerWeapon == PlayerWeapon.Sword) playerWeapon = PlayerWeapon.Zarabatana;
+        else playerWeapon = PlayerWeapon.Sword;
     }
 
     /// <summary>
@@ -416,24 +468,28 @@ public partial class Player : CharacterBody2D
         return handItemData;
     }
 
+    //============================================================================================================
+    //============================================================================================================
 
-    public void AddGold(int amount)
+    
+    /// <summary>
+    /// Teleports the player to the specified position and sets the state to idle.
+    /// </summary>
+    /// <param name="pos">The target position to teleport the player to.</param>
+    public void Teleport(Vector2 pos)
     {
-        gold += amount;
-        GUI.UpdateGold();
+        state = PlayerState.Idle;
+        Position = pos;
     }
 
-    public bool RemoveGold(int amount)
+    public void UpdateKnowsCheckPoints(string[] names)
     {
-        if (gold - amount < 0) return false;
-        gold -= amount;
-        GUI.UpdateGold();
-        return true;
+        if(checkPointManager.player == null ) checkPointManager.player = this;
+        checkPointManager.UpdateKnows(names);
     }
-    public bool CanPurchase(int amount)
-    {
-        return gold - amount >= 0;
-    }
+    //============================================================================================================
+    //============================================================================================================
+
 
     void Attack()
     {
@@ -444,10 +500,11 @@ public partial class Player : CharacterBody2D
         {
             HitArea.Position = lastDirection * GameManager.GAMEUNITS;
             HitArea.Rotation = lastDirection.Angle();
+            HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(false);
         }
         else
         {
-            var e = gameManager.GetBullet(this, GlobalPosition, MouseDirection);
+            var e = gameManager.GetBullet(GameManager.PlayerBulletMask, GlobalPosition, MouseDirection);
             e.SetTexture(BulletTexture);
             e.WhenBodyEnter = whenHitEnemy;
             e.speed = bulletSpeed;
@@ -464,14 +521,11 @@ public partial class Player : CharacterBody2D
         state = previousState;
         HitArea.Position = Vector2.Zero;
         HitArea.Rotation = 0;
+        HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
     }
     void Die()
     {
         GD.Print("YOU DIED");
-    }
-    void whenHeal()
-    {
-        UpdateHearts();
     }
 
     public void Damage(int amount)
@@ -491,6 +545,9 @@ public partial class Player : CharacterBody2D
             float damageModifier = -(equipamentSys.damage + potionModifier.damage);
             if (playerWeapon == PlayerWeapon.Zarabatana) damageModifier /= 2;
             if (body is Atirador a) a.Damage(damageModifier);
+            else if (body is Rolante r) r.Damage(damageModifier);
+            else if (body is EspadachinPlanta e) e.Damage(damageModifier);
+            else if(body is CachorroPlanta c) c.Damage(damageModifier);
         }
     }
 

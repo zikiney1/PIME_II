@@ -10,9 +10,11 @@ public partial class PlantingZone : Node2D
     [Export(PropertyHint.ArrayType, "Texture2D")] Texture2D[] SoilTextureStates;
     SoilTile[] Soils;
 
-    [Export] public GameManager gameManager;
+    public GameManager gameManager;
 
-    public override void _EnterTree(){
+    public override void _Ready()
+    {
+        gameManager = GameManager.Instance;
     }
     
     /// <summary>
@@ -173,7 +175,6 @@ public partial class SoilTile : Sprite2D{
         if(plantData == null) return;
         if (PlantTexture.Length == 0 || data.IsDead() || plantData.plant == null) return;            
         
-
         if(plantData.progress >= data.GrowthDuration() && data.DeadTexture() != null){
             PlantSprite.Texture = data.DeadTexture();
             plantData.isDead = true;

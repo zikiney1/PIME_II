@@ -3,8 +3,9 @@ using System;
 
 public partial class Atirador : StaticBody2D
 {
-    [Export] GameManager gameManager;
-    [Export] Player player;
+    GameManager manager;
+    Player player;
+
     [Export] Texture2D BulletTexture;
     [Export] float attackSpeed = 0.5f;
     [Export] int BulletDamage = 1;
@@ -13,7 +14,8 @@ public partial class Atirador : StaticBody2D
     [Export] float bulletSpeed = 300f;
     [Export] float rotationSpeed = 1.0f;
     [Export] int rayCastDistanceInTiles = 8;
-    [Export] byte life = 10;
+    [Export] byte life = 2;
+    [Export] byte coinsToDrop = 1;
 
     RayCast2D rayCast;
     RayCast2D mira;
@@ -35,6 +37,8 @@ public partial class Atirador : StaticBody2D
     public override void _Ready()
     {
         base._Ready();
+        player = Player.Instance;
+        manager = GameManager.Instance;
         lifeSystem = new(life, life);
         lifeSystem.WhenDies += Die;
         fightSystem = new(this, attackSpeed);
@@ -53,8 +57,8 @@ public partial class Atirador : StaticBody2D
         };
 
         visibleNotifier = new();
-        visibleNotifier.ScreenExited += () => { active = false; };
-        visibleNotifier.ScreenEntered += () => { active = true; };
+        visibleNotifier.ScreenEntered += Activate;
+        visibleNotifier.ScreenExited += DeActivate;
 
         FireTimer = NodeMisc.GenTimer(this, fireRate, Fire);
         lookTimer = NodeMisc.GenTimer(this, 1f, () => { lookToOrigin = true; });
@@ -62,12 +66,30 @@ public partial class Atirador : StaticBody2D
         AddChild(visibleNotifier);
         AddChild(rayCast);
         AddChild(mira);
+        DeActivate();
+    }
+
+
+    void Activate()
+    {
+        SetPhysicsProcess(true);
+        SetProcess(true);
+        GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        GetNode<Sprite2D>("Sprite").Visible = true;
+        
+    }
+    void DeActivate()
+    {
+        SetPhysicsProcess(false);
+        SetProcess(false);
+        GetNode<Sprite2D>("Sprite").Visible = false;
+        GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
     }
 
 
     public override void _PhysicsProcess(double delta)
     {
-        if(!active) return;
+        if (!active) return;
         rayCast.LookAt(player.GlobalPosition);
 
         if (rayCast.IsColliding() && rayCast.GetCollider() == player)
@@ -84,13 +106,14 @@ public partial class Atirador : StaticBody2D
         }
         else
         {
-            if (!lookToOrigin){
+            if (!lookToOrigin)
+            {
                 if (lookTimer.IsStopped())
                     lookTimer.Start();
             }
             else
             {
-                
+
                 Rotation = Mathf.LerpAngle(Rotation, originalRotation, (float)delta * rotationSpeed);
                 if (Mathf.IsEqualApprox(Rotation, originalRotation, 0.01f))
                 {
@@ -110,6 +133,7 @@ public partial class Atirador : StaticBody2D
     
     public void Die()
     {
+        manager.SpawnCoins(GlobalPosition, coinsToDrop);
         QueueFree();
     }
 
@@ -118,14 +142,14 @@ public partial class Atirador : StaticBody2D
     {
         if (!fightSystem.canAttack) return;
         FireTimer.Start();
-        fightSystem.Attack(0);
+        fightSystem.Attack();
     }
 
     void Fire()
     {
         Vector2 direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(Rotation));
 
-        var e = gameManager.GetBullet(this,GlobalPosition,direction);
+        var e = manager.GetBullet(GameManager.EnemyBulletMask,GlobalPosition,direction);
         e.SetTexture(BulletTexture);
         e.speed = bulletSpeed;
         e.WhenBodyEnter = WhenEnterBody;

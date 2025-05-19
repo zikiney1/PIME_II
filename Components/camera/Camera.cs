@@ -15,23 +15,25 @@ public partial class Camera : Camera2D
         if(player == null) return;
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         if(player == null) return;
         SetScreenPosition();
     }
 
+
     /// <summary>
     /// Adjusts the camera's global position to center around the player's current grid-based position,
     /// ensuring smooth transitions by aligning the camera to the calculated grid center based on the player's position.
     /// </summary>
-    public void SetScreenPosition(){
+    public void SetScreenPosition()
+    {
         Vector2 playerPos = player.GlobalPosition;
         Vector2 ScreenSize = GetViewportRect().Size / (Zoom * 1.1f);
 
         float x = (float)(Math.Floor(playerPos.X / ScreenSize.X) * ScreenSize.X + ScreenSize.X / 2);
         float y = (float)(Math.Floor(playerPos.Y / ScreenSize.Y) * ScreenSize.Y + ScreenSize.Y / 2);
-        GlobalPosition = new Vector2(x,y);
+        GlobalPosition = new Vector2(x, y);
     }
 
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public static class ItemDB{
     public static Dictionary<byte, ItemResource> itemDB = new();
 
-        /// <summary>
+    /// <summary>
     /// Sets up the item database by loading all the items in the <c>res://Resources/Items/</c> directory.
     /// </summary>
     /// <remarks>

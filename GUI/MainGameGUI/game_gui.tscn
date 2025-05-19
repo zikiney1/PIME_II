@@ -125,6 +125,30 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GameContainter" type="Control" parent="."]
+[node name="GameContainter" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameContainter"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.65
+alignment = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="GameContainter/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="GameContainter/HBoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("2_r4c4e")
+
+[node name="ItemList" type="ItemList" parent="GameContainter/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="GameContainter"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.35

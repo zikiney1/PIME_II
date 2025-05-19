@@ -11,23 +11,65 @@ public partial class Pooling : Node2D
     List<Projectile> ActiveProjectiles = new();
     List<Projectile> DeactiveProjectiles = new();
 
+    List<Coin> ActiveCoins = new();
+    List<Coin> DeactiveCoins = new();
+
     Random rnd = new();
-    
+
     public override void _Ready()
     {
         base._Ready();
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++)
+        {
             Projectile p = new();
             p.pooling = this;
             p.DeActivate();
-            
+
             DeactiveProjectiles.Add(p);
             this.AddChild(p);
         }
 
+        for (int i = 0; i < 20; i++)
+        {
+            Coin c = new();
+            c.pool = this;
+            c.DeActivate();
+
+            DeactiveCoins.Add(c);
+            this.AddChild(c);
+        }
+
+    }
+    
+    public Coin SpawnCoin(Vector2 position){
+        Coin coin;
+        if (DeactiveCoins.Count > 0)
+        {
+            coin = DeactiveCoins.Last();
+            DeactiveCoins.RemoveAt(DeactiveCoins.Count - 1);
+        }
+        else
+        {
+            coin = new();
+            coin.pool = this;
+            this.AddChild(coin);
+        }
+        coin.Activate();
+        coin.GlobalPosition = position;
+        coin.startPosition = position;
+        ActiveCoins.Add(coin);
+        return coin;
     }
 
-    public Projectile GetBullet(CollisionObject2D shooter, Vector2 position, Vector2 direction)
+    public Coin ReturnCoin(Coin coin)
+    {
+        coin.DeActivate();
+        ActiveCoins.Remove(coin);
+        DeactiveCoins.Add(coin);
+        return coin;
+    }
+
+    public Projectile GetBullet(uint maskLayer, Vector2 position, Vector2 direction)
     {
         Projectile pj;
 
@@ -46,7 +88,7 @@ public partial class Pooling : Node2D
         pj.direction = direction;
         pj.GlobalPosition = position;
         pj.Rotation = (float)(direction.Angle() + (Math.PI / 2));
-        pj.CollisionMask = shooter.CollisionMask;
+        pj.CollisionMask = maskLayer;
         ActiveProjectiles.Add(pj);
         return pj;
     }

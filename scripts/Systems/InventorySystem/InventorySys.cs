@@ -9,9 +9,13 @@ public class InventorySystem{
     public List<ItemData> items = new();
     
     public byte Length => (byte)items.Count;
-    public InventorySystem(){
-    }
 
+    public List<ItemData> HandItems = new();
+
+    public InventorySystem()
+    {
+        
+    }
     /// <summary>
     /// Adds a certain quantity of an item to the inventory.
     /// If the item already exists in the inventory, its quantity is increased by the given amount.
@@ -20,20 +24,29 @@ public class InventorySystem{
     /// <param name="item">The item to add to the inventory.</param>
     /// <param name="quantity">The quantity of the item to add. Defaults to 1.</param>
     /// <returns>True if the item already existed in the inventory, otherwise false.</returns>
-    public bool Add(ItemResource item, byte quantity = 1){
-        if(item == null) return false;
-        if(itemPositions.ContainsKey(item.id)){
+    public bool Add(ItemResource item, byte quantity = 1)
+    {
+        // if(Length > 9) return false;
+        if (item == null) return false;
+        if (itemPositions.ContainsKey(item.id))
+        {
             items[itemPositions[item.id]].quantity += quantity;
             return true;
-        }else{
-            ItemData data = new(){
+        }
+        else
+        {
+            ItemData data = new()
+            {
                 resource = item,
                 quantity = quantity
             };
-
+            if (item.type == ItemType.Potion || item.type == ItemType.Seed || item.type == ItemType.Resource)
+            {
+                HandItems.Add(data);
+            }
             items.Add(data);
-            itemPositions.Add(item.id, (byte)(items.Count-1));
-            return false;
+            itemPositions.Add(item.id, (byte)(items.Count - 1));
+            return true;
         }
     }
     public bool Add(byte id, byte quantity = 1) => Add(ItemDB.GetItemData(id),quantity);
@@ -50,6 +63,10 @@ public class InventorySystem{
             byte index = itemPositions[id];
             items[index].quantity -= quantity;
             if(items[index].quantity <= 0) {
+                ItemResource itr = items[index].resource;
+                if (itr.type == ItemType.Potion || itr.type == ItemType.Seed || itr.type == ItemType.Resource){
+                    HandItems.Remove(items[index]);
+                }
                 items.RemoveAt(index);
                 itemPositions.Remove(id);
             }
