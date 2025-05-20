@@ -70,7 +70,6 @@ texture = ExtResource("1_drfle")
 path_desired_distance = 5.0
 target_desired_distance = 5.0
 path_postprocessing = 1
-debug_enabled = true
 debug_path_custom_color = Color(1, 0.054902, 0.0313726, 1)
 
 [node name="HitArea" type="Area2D" parent="."]

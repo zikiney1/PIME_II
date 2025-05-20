@@ -34,6 +34,7 @@ public partial class Player : CharacterBody2D
     SaveStationGui saveGUI;
     DialogGui dialogGui;
     ItemList itemList;
+    MainMenu mainMenu;
 
     bool isDefending = false;
     bool canPlant = true;
@@ -91,6 +92,7 @@ public partial class Player : CharacterBody2D
         saveGUI = GetNode<SaveStationGui>("Canvas/SaveStationGUI");
         InteractableRange = GetNode<Area2D>("InteractableRange");
         dialogGui = GetNode<DialogGui>("Canvas/DialogGUI");
+        mainMenu = GetNode<MainMenu>("Canvas/MainMenu");
         itemList = GUI.GetNode<ItemList>("GameContainter/HBoxContainer/PanelContainer/ItemList");
         animationHandler = new(
             GetNode<AnimationPlayer>("Animations/CharacterAnimationPlayer"),
@@ -190,8 +192,9 @@ public partial class Player : CharacterBody2D
             if (KeyEvent.IsActionPressed("attack")) Attack();
             else if (KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if (KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
-            else if (Input.IsKeyPressed(Key.H)) switchWeapon();
+            else if (KeyEvent.IsActionPressed("change_weapon")) switchWeapon();
             else if (KeyEvent.IsActionPressed("inventory")) ToggleInventory();
+            else if(Input.IsKeyPressed(Key.Escape)) mainMenu.Open();
 
         }
         if (@event is InputEventMouseMotion mouseMove)

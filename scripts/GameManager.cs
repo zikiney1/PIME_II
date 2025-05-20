@@ -45,11 +45,11 @@ public partial class GameManager : Node{
         pooling = new ();
         AddChild(pooling);
 
+        configurator = new();
         ItemDB.SetupItemDB();
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
 
-        configurator = new();
 
     }
 

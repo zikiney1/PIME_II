@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjdydqsnxmsdd"]
+
+[ext_resource type="Script" uid="uid://7j8mnm5gdwe4" path="res://GUI/Menu/MainMenu.cs" id="1_jxlsl"]
+[ext_resource type="FontFile" uid="uid://cwtjloy6xs3e6" path="res://assets/Fonts/CutePixel.ttf" id="3_52beq"]
+[ext_resource type="PackedScene" uid="uid://cj41dg5qmemyg" path="res://GUI/Menu/Configuracoes/configuracoes.tscn" id="3_bfin4"]
+
+[node name="MainMenu" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+script = ExtResource("1_jxlsl")
+
+[node name="menu" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(250, 150)
+layout_mode = 2
+
+[node name="Resume" type="Button" parent="menu"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_52beq")
+theme_override_font_sizes/font_size = 32
+text = "Resume"
+
+[node name="Control2" type="Control" parent="menu"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Configuração" type="Button" parent="menu"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_52beq")
+theme_override_font_sizes/font_size = 32
+text = "Configuração"
+
+[node name="Control" type="Control" parent="menu"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Main Menu" type="Button" parent="menu"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_52beq")
+theme_override_font_sizes/font_size = 32
+text = "Main Menu "
+
+[node name="Configuracoes" parent="." instance=ExtResource("3_bfin4")]
+visible = false
+layout_mode = 2

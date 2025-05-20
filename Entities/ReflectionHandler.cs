@@ -14,8 +14,8 @@ public class ReflectionHandler
         ReflectSprite.Texture = ownSprite.Texture;
         ReflectSprite.Hframes = ownSprite.Hframes;
         ReflectSprite.Vframes = ownSprite.Vframes;
-        // ReflectSprite.Rotation = -(float)Math.PI;
-        // ReflectSprite.Position = new(0, (GameManager.GAMEUNITS * 1.5f));
+        ReflectSprite.Scale = new(1, -1);
+        ReflectSprite.Position = new(0, GameManager.GAMEUNITS);
         ReflectSprite.ZIndex = -14;
     }
 

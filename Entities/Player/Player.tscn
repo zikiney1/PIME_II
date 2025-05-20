@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cdg0jp7odllo"]
+[gd_scene load_steps=25 format=3 uid="uid://cdg0jp7odllo"]
 
 [ext_resource type="Script" uid="uid://bnqm2p5umlph6" path="res://Entities/Player/Player.cs" id="1_cabni"]
 [ext_resource type="Texture2D" uid="uid://b83a7k7xyp1r7" path="res://assets/Sprites/Player/personagem/Protag-1.png" id="3_761t5"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://c2aklh64ns43h" path="res://GUI/ShopGUI/shop_gui.tscn" id="4_t38ms"]
 [ext_resource type="PackedScene" uid="uid://nk7j4lfur5sk" path="res://GUI/DialogGUI/DialogGUI.tscn" id="4_x44r4"]
 [ext_resource type="PackedScene" uid="uid://dbe1kek88maxs" path="res://GUI/CraftingGUI/crafting_gui.tscn" id="5_an6q6"]
+[ext_resource type="PackedScene" uid="uid://cjdydqsnxmsdd" path="res://GUI/Menu/main_menu.tscn" id="5_hacra"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vweq0"]
 size = Vector2(16, 16)
@@ -226,13 +227,15 @@ current = true
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("3_vweq0")
 autoplay = true
+bus = &"Musica"
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_vweq0")
 
 [node name="WaterReflection" type="Sprite2D" parent="."]
-modulate = Color(0.32549, 1, 1, 0.278431)
-position = Vector2(0, 17)
+modulate = Color(0, 0.796078, 1, 0.137255)
+self_modulate = Color(0.968627, 1, 1, 1)
+position = Vector2(0, 18)
 scale = Vector2(-1, -1)
 texture = ExtResource("3_761t5")
 hframes = 3
@@ -266,6 +269,9 @@ visible = false
 visible = false
 
 [node name="ShopGUI" parent="Canvas" instance=ExtResource("4_t38ms")]
+visible = false
+
+[node name="MainMenu" parent="Canvas" instance=ExtResource("5_hacra")]
 visible = false
 
 [node name="InteractableRange" type="Area2D" parent="."]
