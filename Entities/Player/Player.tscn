@@ -1,47 +1,255 @@
-[gd_scene load_steps=12 format=3 uid="uid://cdg0jp7odllo"]
+[gd_scene load_steps=25 format=3 uid="uid://cdg0jp7odllo"]
 
 [ext_resource type="Script" uid="uid://bnqm2p5umlph6" path="res://Entities/Player/Player.cs" id="1_cabni"]
-[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_ww0jn"]
+[ext_resource type="Texture2D" uid="uid://b83a7k7xyp1r7" path="res://assets/Sprites/Player/personagem/Protag-1.png" id="3_761t5"]
+[ext_resource type="Shader" uid="uid://ch401k1srlcv7" path="res://Shaders/HitShader.gdshader" id="3_hacra"]
 [ext_resource type="AudioStream" uid="uid://daif76xkgn2lt" path="res://assets/songs/overworld.wav" id="3_vweq0"]
 [ext_resource type="PackedScene" uid="uid://bpxj72d1rhigg" path="res://GUI/MainGameGUI/game_gui.tscn" id="4_1des2"]
 [ext_resource type="PackedScene" uid="uid://dyeqkrd2byixm" path="res://GUI/SaveGUI/save_station_gui.tscn" id="4_hj1c0"]
 [ext_resource type="PackedScene" uid="uid://c2aklh64ns43h" path="res://GUI/ShopGUI/shop_gui.tscn" id="4_t38ms"]
 [ext_resource type="PackedScene" uid="uid://nk7j4lfur5sk" path="res://GUI/DialogGUI/DialogGUI.tscn" id="4_x44r4"]
 [ext_resource type="PackedScene" uid="uid://dbe1kek88maxs" path="res://GUI/CraftingGUI/crafting_gui.tscn" id="5_an6q6"]
+[ext_resource type="PackedScene" uid="uid://cjdydqsnxmsdd" path="res://GUI/Menu/main_menu.tscn" id="5_hacra"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vweq0"]
 size = Vector2(16, 16)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x44r4"]
+shader = ExtResource("3_hacra")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1des2"]
-size = Vector2(24, 8)
+size = Vector2(24, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t38ms"]
 size = Vector2(36, 36)
+
+[sub_resource type="Animation" id="Animation_jynvv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gallu"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_uw7o4"]
+resource_name = "walk_down"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 3, 5, 3]
+}
+
+[sub_resource type="Animation" id="Animation_lmeus"]
+resource_name = "walk_left"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [9, 10, 11, 10]
+}
+
+[sub_resource type="Animation" id="Animation_hacra"]
+resource_name = "walk_right"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 13]
+}
+
+[sub_resource type="Animation" id="Animation_061yh"]
+resource_name = "walk_up"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [7, 6, 8, 6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_samso"]
+_data = {
+&"RESET": SubResource("Animation_jynvv"),
+&"idle": SubResource("Animation_gallu"),
+&"walk_down": SubResource("Animation_uw7o4"),
+&"walk_left": SubResource("Animation_lmeus"),
+&"walk_right": SubResource("Animation_hacra"),
+&"walk_up": SubResource("Animation_061yh")
+}
+
+[sub_resource type="Animation" id="Animation_761t5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_x44r4"]
+resource_name = "take_damage"
+length = 1.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, true, false, true, false, true, false, true, false, true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite:material:shader_parameter/active")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_761t5"]
+_data = {
+&"RESET": SubResource("Animation_761t5"),
+&"take_damage": SubResource("Animation_x44r4")
+}
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 28
 script = ExtResource("1_cabni")
 
+[node name="Audio" type="Node" parent="."]
+
+[node name="AudioListener2D" type="AudioListener2D" parent="Audio"]
+current = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("3_vweq0")
+autoplay = true
+bus = &"Musica"
+
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_vweq0")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_ww0jn")
+[node name="WaterReflection" type="Sprite2D" parent="."]
+modulate = Color(0, 0.796078, 1, 0.137255)
+self_modulate = Color(0.968627, 1, 1, 1)
+position = Vector2(0, 18)
+scale = Vector2(-1, -1)
+texture = ExtResource("3_761t5")
+hframes = 3
+vframes = 5
 
-[node name="AudioListener2D" type="AudioListener2D" parent="."]
-current = true
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_vweq0")
-autoplay = true
+[node name="Sprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_x44r4")
+texture = ExtResource("3_761t5")
+hframes = 3
+vframes = 5
 
 [node name="HitArea" type="Area2D" parent="."]
 position = Vector2(0.5, 0)
 collision_mask = 20
-
-[node name="Icon" type="Sprite2D" parent="HitArea"]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_ww0jn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
 position = Vector2(8, 0)
@@ -63,9 +271,25 @@ visible = false
 [node name="ShopGUI" parent="Canvas" instance=ExtResource("4_t38ms")]
 visible = false
 
+[node name="MainMenu" parent="Canvas" instance=ExtResource("5_hacra")]
+visible = false
+
 [node name="InteractableRange" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableRange"]
 shape = SubResource("RectangleShape2D_t38ms")
+
+[node name="Animations" type="Node" parent="."]
+
+[node name="CharacterAnimationPlayer" type="AnimationPlayer" parent="Animations"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_samso")
+}
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="Animations"]
+libraries = {
+&"": SubResource("AnimationLibrary_761t5")
+}

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ba5easkuuh7n"]
+
+[node name="Button" type="Button"]
+offset_left = 436.0
+offset_top = 235.0
+offset_right = 444.0
+offset_bottom = 243.0
+text = "Teste"

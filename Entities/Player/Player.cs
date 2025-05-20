@@ -34,6 +34,7 @@ public partial class Player : CharacterBody2D
     SaveStationGui saveGUI;
     DialogGui dialogGui;
     ItemList itemList;
+    MainMenu mainMenu;
 
     bool isDefending = false;
     bool canPlant = true;
@@ -57,6 +58,8 @@ public partial class Player : CharacterBody2D
     public PlantZoneData plantZoneData;
     public LifeSystem lifeSystem;
     public FightSystem fightSystem;
+    public AnimationHandler animationHandler;
+    public ReflectionHandler reflectionHandler;
 
     public void Save(Vector2 pos) => SaveData.Save(this, pos);
     public void UpdateHearts() => GUI.UpdateHearts();
@@ -75,7 +78,7 @@ public partial class Player : CharacterBody2D
         Instance = this;
         inventory = new();
         equipamentSys = new();
-        fightSystem = new(this, 0.4f, 1f);
+        fightSystem = new(this, 0.4f, 1.7f);
 
         fightSystem.WhenStopAttack += StopAttack;
 
@@ -89,7 +92,18 @@ public partial class Player : CharacterBody2D
         saveGUI = GetNode<SaveStationGui>("Canvas/SaveStationGUI");
         InteractableRange = GetNode<Area2D>("InteractableRange");
         dialogGui = GetNode<DialogGui>("Canvas/DialogGUI");
+        mainMenu = GetNode<MainMenu>("Canvas/MainMenu");
         itemList = GUI.GetNode<ItemList>("GameContainter/HBoxContainer/PanelContainer/ItemList");
+        animationHandler = new(
+            GetNode<AnimationPlayer>("Animations/CharacterAnimationPlayer"),
+            GetNode<AnimationPlayer>("Animations/HitAnimationPlayer")
+        );
+        reflectionHandler = new(
+            GetNode<Sprite2D>("Sprite"),
+            GetNode<Sprite2D>("WaterReflection")
+        );
+        
+
         gameManager = GameManager.Instance;
 
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
@@ -130,6 +144,8 @@ public partial class Player : CharacterBody2D
 
         HitArea.BodyEntered += whenHitEnemy;
         itemList.GetParent<Control>().Visible = false;
+
+        animationHandler.Play("idle");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -140,6 +156,8 @@ public partial class Player : CharacterBody2D
 
         float speedModifier = equipamentSys.speed + potionModifier.speed + 1;
         float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(Input.IsActionPressed("defend")) + 1);
+
+        animationHandler.Direction(direction);
 
         if (direction != Vector2.Zero)
         {
@@ -158,7 +176,7 @@ public partial class Player : CharacterBody2D
 
     public override void _Process(double delta)
     {
-
+        reflectionHandler.Update();
     }
 
 
@@ -174,8 +192,9 @@ public partial class Player : CharacterBody2D
             if (KeyEvent.IsActionPressed("attack")) Attack();
             else if (KeyEvent.IsActionPressed("use_potion")) UsePotion();
             else if (KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
-            else if (Input.IsKeyPressed(Key.H)) switchWeapon();
+            else if (KeyEvent.IsActionPressed("change_weapon")) switchWeapon();
             else if (KeyEvent.IsActionPressed("inventory")) ToggleInventory();
+            else if(Input.IsKeyPressed(Key.Escape)) mainMenu.Open();
 
         }
         if (@event is InputEventMouseMotion mouseMove)
@@ -535,6 +554,7 @@ public partial class Player : CharacterBody2D
         lifeSystem.GetDamage(modifier, amount);
         UpdateHearts();
         fightSystem.GetDamage();
+        animationHandler.Damage();
     }
 
 

@@ -45,11 +45,11 @@ public partial class GameManager : Node{
         pooling = new ();
         AddChild(pooling);
 
+        configurator = new();
         ItemDB.SetupItemDB();
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
 
-        configurator = new();
 
     }
 
@@ -59,7 +59,7 @@ public partial class GameManager : Node{
         base._Ready();
         rnd = new ();
         player = Player.Instance;
-        player.GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").ProcessMode = ProcessModeEnum.Always;
+        player.GetNode<AudioStreamPlayer2D>("Audio/AudioStreamPlayer2D").ProcessMode = ProcessModeEnum.Always;
         camera.ProcessMode = ProcessModeEnum.Always;
     }
 

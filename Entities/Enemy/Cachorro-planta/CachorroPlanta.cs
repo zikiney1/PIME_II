@@ -12,6 +12,7 @@ public partial class CachorroPlanta : CharacterBody2D
 
     LifeSystem lifeSystem;
     FightSystem fightSystem;
+    AnimationHandler animationHandler;
 
     Player player;
     GameManager manager;
@@ -32,9 +33,11 @@ public partial class CachorroPlanta : CharacterBody2D
 
         player = Player.Instance;
         manager = GameManager.Instance;
-        lifeSystem = new(totalLife, totalLife);
+
         fightSystem = new(this, attackSpeed);
+        lifeSystem = new(totalLife, totalLife);
         lifeSystem.WhenDies += Die;
+        animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
 
         VisionCast = new()
         {
@@ -94,7 +97,11 @@ public partial class CachorroPlanta : CharacterBody2D
         MoveAndSlide();
     }
 
-    public void Damage(float modifier,int amount=1) => lifeSystem.GetDamage(modifier, amount);
+    public void Damage(float modifier, int amount = 1)
+    {
+        lifeSystem.GetDamage(modifier, amount);
+        animationHandler.Damage();
+    }
 
     void NavUpdate() {
         if(isInVision) navAgent.TargetPosition = player.GlobalPosition;

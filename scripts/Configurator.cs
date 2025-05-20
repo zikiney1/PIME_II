@@ -1,23 +1,32 @@
 using System;
+using System.Linq;
 using Godot;
 
-public class Configurator{
+public class Configurator
+{
     const string configPath = "res://Data/config.cfg";
     const string KEYCONFIG = "KEY_CONFIG";
     public CfgData configData;
+
+    public static Configurator Instance;
 
     /// <summary>
     /// Initializes a new instance of the Configurator class.
     /// Loads configuration data from a file if it exists, otherwise creates a default configuration.
     /// Saves the configuration data to a file and sets up input keys based on the loaded configuration.
     /// </summary>
-    public Configurator(){
-       if(FileAccess.FileExists(configPath)){
+    public Configurator()
+    {
+        if(Instance != null) return;
+        Instance = this;
+        if (FileAccess.FileExists(configPath))
+        {
             configData = CFGParser.Parse(configPath);
-            SaveConfig();
-        }else{
+        }
+        else
+        {
             configData = DefaultConfig();
-            CFGParser.ToFile(configData, configPath);
+            SaveConfig();
         }
 
         SetKeys();
@@ -26,7 +35,7 @@ public class Configurator{
     public void SaveConfig() => CFGParser.ToFile(configData, configPath);
     public void LoadConfig() => configData = CFGParser.Parse(configPath);
 
-
+    public Section Audio => configData["AUDIO"];
 
     /// <summary>
     /// Creates a default configuration with the default keys.
@@ -44,7 +53,8 @@ public class Configurator{
     /// <item><term>CHANGE_ITEM</term><description>T key</description></item>
     /// </list>
     /// </summary>
-    public CfgData DefaultConfig(){
+    public CfgData DefaultConfig()
+    {
         CfgData data = new CfgData();
         data.Add(new Section(KEYCONFIG));
         data[KEYCONFIG].Add("LEFT", "Left,D");
@@ -57,24 +67,31 @@ public class Configurator{
         data[KEYCONFIG].Add("CONFIRM", "Enter");
         data[KEYCONFIG].Add("INVENTORY", "Tab");
         data[KEYCONFIG].Add("CHANGE_ITEM", "T");
-        
+
         return data;
     }
-    public string KeyConfig(string key){
-        if(configData[KEYCONFIG].Contains(key))
+    public string KeyConfig(string key)
+    {
+        if (configData[KEYCONFIG].Contains(key))
             return configData[KEYCONFIG][key];
         else
             return "";
     }
 
+    public string[] GetKeys() => configData[KEYCONFIG].GetKeys().Select(x => x.ToLower()).ToArray();
+    public string GetKey(string action) => configData[KEYCONFIG][action.ToUpper()];
+
     /// <summary>
     /// Sets up the input map based on the keys in the configuration file.
     /// Iterates over the KEYCONFIG section of the configuration file and sets up the input map for each action.
     /// </summary>
-    void SetKeys(){
-        foreach(Section section in configData.sections.Values){
-            if(section.name != KEYCONFIG) continue;
-            foreach (string name in section.values.Keys){
+    public void SetKeys()
+    {
+        foreach (Section section in configData.sections.Values)
+        {
+            if (section.name != KEYCONFIG) continue;
+            foreach (string name in section.values.Keys)
+            {
 
                 string[] keys = section.values[name].Split(',');
                 SetAction(name.ToLower(), keys);
@@ -88,23 +105,41 @@ public class Configurator{
     /// </summary>
     /// <param name="actionName">The name of the action. Must be a valid action name.</param>
     /// <param name="keys">An array of key names that will be used to trigger the action.</param>
-    void SetAction(string actionName, string[] keys){
-        if(actionName == "" || keys.Length == 0) return;
-        if(InputMap.HasAction(actionName)) InputMap.EraseAction(actionName);
+    void SetAction(string actionName, string[] keys)
+    {
+        if (actionName == "" || keys.Length == 0) return;
+        if (InputMap.HasAction(actionName)) InputMap.EraseAction(actionName);
         InputMap.AddAction(actionName);
-        
+
         foreach (string key in keys)
         {
-            if(Enum.TryParse(key,true, out Key keyCode)){
-                InputMap.ActionAddEvent(actionName, 
-                    new InputEventKey(){
+            if (Enum.TryParse(key, true, out Key keyCode))
+            {
+                InputMap.ActionAddEvent(actionName,
+                    new InputEventKey()
+                    {
                         Keycode = keyCode,
                     }
                 );
-            }else{
+            }
+            else
+            {
                 GD.PushWarning($"Invalid key name: {key}");
             }
         }
 
+    }
+    void SetAction(string actionName, string key) => SetAction(actionName,[key]);
+
+
+    public void SetKey(string action, string key)
+    {
+        if (action == "" || key == "" || action == null || key == null) return;
+
+        if (configData[KEYCONFIG].Contains(action))
+        {
+            configData[KEYCONFIG].Set(action, key);
+            SetAction(action, key);
+        }
     }
 }

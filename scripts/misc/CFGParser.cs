@@ -4,39 +4,52 @@ using System.Linq;
 using System.Text;
 using Godot;
 
-public class Section{
+public class Section
+{
     public Dictionary<string, string> values = new();
     public string name = "";
     public string this[string key] => values[key];
-    public Section(){}
+    public Section() { }
     public Section(string name) => this.name = name;
 
-    public bool Add(string key, string value){
-        if(values.ContainsKey(key) && key.Trim() != "" && value.Trim() != "") return false;
+    public bool Add(string key, string value)
+    {
+        if (values.ContainsKey(key) && key.Trim() != "" && value.Trim() != "") return false;
         else values.Add(key, value);
         return true;
     }
     public bool IsEmpty() => values.Count == 0;
     public bool Contains(string key) => values.ContainsKey(key);
-    public override string ToString() {
+    public override string ToString()
+    {
         string vl = $"{values.Count} values\n{values}\n";
-        foreach (string item in values.Keys){
-            vl +=$"{item} value: {values[item]}\n";
+        foreach (string item in values.Keys)
+        {
+            vl += $"{item} value: {values[item]}\n";
         }
         return vl;
     }
+    public Dictionary<string, string>.KeyCollection GetKeys() => values.Keys;
+    public void Set(string key, string value)
+    {
+        if (!key.Contains(key)) Add(key, value);
+        else values[key] = value;
+    }
 }
 
-public class CfgData{
+public class CfgData
+{
     public Dictionary<string, Section> sections = new();
     public Section this[string key] => sections[key];
-    
-    public bool Add(string key, Section section){
-        if(sections.ContainsKey(key)|| key.Trim() == "" || section.IsEmpty()) return false;
+
+    public bool Add(string key, Section section)
+    {
+        if (sections.ContainsKey(key) || key.Trim() == "" || section.IsEmpty()) return false;
         else sections.Add(key, section);
         return true;
     }
-    public bool Add(Section section){
+    public bool Add(Section section)
+    {
         return Add(section.name, section);
     }
     public bool IsEmpty() => sections.Count == 0;
@@ -46,11 +59,13 @@ public class CfgData{
     public override string ToString()
     {
         string values = "";
-        foreach (string key in sections.Keys){
+        foreach (string key in sections.Keys)
+        {
             values += key + ":\n" + sections[key].ToString() + "\n";
         }
         return $"{sections.Count} sections\n{values}";
     }
+    public Dictionary<string, Section>.KeyCollection GetKeys() => sections.Keys;
 }
 
 
@@ -132,7 +147,6 @@ public static class CFGParser{
                 .ForEach(key => {
                     sb.AppendLine($"{key}={cfgData[section][key]}");
                 });
-                sb.AppendLine();
             });
 
             using (FileAccess file = FileAccess.Open(path, FileAccess.ModeFlags.Write)){

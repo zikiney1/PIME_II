@@ -27,6 +27,7 @@ public partial class Atirador : StaticBody2D
     int currentBullet = 0;
     LifeSystem lifeSystem;
     FightSystem fightSystem;
+    AnimationHandler animationHandler;
 
     float originalRotation = 0;
 
@@ -39,9 +40,11 @@ public partial class Atirador : StaticBody2D
         base._Ready();
         player = Player.Instance;
         manager = GameManager.Instance;
+
         lifeSystem = new(life, life);
-        lifeSystem.WhenDies += Die;
         fightSystem = new(this, attackSpeed);
+        lifeSystem.WhenDies += Die;
+        animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
 
         originalRotation = Rotation;
 
@@ -124,10 +127,11 @@ public partial class Atirador : StaticBody2D
         }
 
     }
-    public void Damage(float modifier,int amount=1)
+    public void Damage(float modifier, int amount = 1)
     {
-        lifeSystem.GetDamage(modifier,amount);
+        lifeSystem.GetDamage(modifier, amount);
         FireTimer.Stop();
+        animationHandler.Damage();
     }
 
     

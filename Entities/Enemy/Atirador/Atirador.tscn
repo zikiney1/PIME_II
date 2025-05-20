@@ -1,10 +1,54 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3nwgnwjpb005"]
+[gd_scene load_steps=9 format=3 uid="uid://d3nwgnwjpb005"]
 
 [ext_resource type="Script" uid="uid://cs8ok54xxs2xm" path="res://Entities/Enemy/Atirador/Atirador.cs" id="1_43x3s"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_tgg3u"]
+[ext_resource type="Shader" uid="uid://ch401k1srlcv7" path="res://Shaders/HitShader.gdshader" id="2_b8fyi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43x3s"]
 size = Vector2(16, 16)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_55xpg"]
+shader = ExtResource("2_b8fyi")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_kd2n4"]
+resource_name = "take_damage"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_fqejc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mbyhy"]
+_data = {
+&"RESET": SubResource("Animation_fqejc"),
+&"take_damage": SubResource("Animation_kd2n4")
+}
 
 [node name="Atirador" type="StaticBody2D" groups=["EnemyGroup"]]
 collision_layer = 4
@@ -16,4 +60,14 @@ shape = SubResource("RectangleShape2D_43x3s")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 self_modulate = Color(0.776471, 0.137255, 0.431373, 1)
+material = SubResource("ShaderMaterial_55xpg")
 texture = ExtResource("1_tgg3u")
+
+[node name="Animation" type="Node" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Animation"]
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="Animation"]
+libraries = {
+&"": SubResource("AnimationLibrary_mbyhy")
+}

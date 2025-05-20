@@ -24,6 +24,7 @@ public partial class Rolante : CharacterBody2D
     Timer stunnedTimer;
 
     LifeSystem lifeSystem;
+    AnimationHandler animationHandler;
 
     Vector2 playerPos;
 
@@ -40,6 +41,9 @@ public partial class Rolante : CharacterBody2D
 
         lifeSystem = new(totalLife, totalLife);
         lifeSystem.WhenDies = Die;
+
+        animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
+
 
         visibleNotifier = new();
         visibleNotifier.ScreenEntered += Activate;
@@ -141,6 +145,7 @@ public partial class Rolante : CharacterBody2D
     public void Damage(float modifier, int amount = 1)
     {
         lifeSystem.GetDamage(modifier, amount);
+        animationHandler.Damage();
     }
 
     void WhenAct()
