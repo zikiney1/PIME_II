@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cjdydqsnxmsdd"]
+[gd_scene load_steps=5 format=3 uid="uid://cjdydqsnxmsdd"]
 
 [ext_resource type="Script" uid="uid://7j8mnm5gdwe4" path="res://GUI/Menu/MainMenu.cs" id="1_jxlsl"]
+[ext_resource type="Theme" uid="uid://s18iip2r5pk6" path="res://GUI/game_theme.tres" id="2_bfin4"]
 [ext_resource type="FontFile" uid="uid://cwtjloy6xs3e6" path="res://assets/Fonts/CutePixel.ttf" id="3_52beq"]
 [ext_resource type="PackedScene" uid="uid://cj41dg5qmemyg" path="res://GUI/Menu/Configuracoes/configuracoes.tscn" id="3_bfin4"]
 
@@ -20,9 +21,11 @@ layout_mode = 2
 [node name="Resume" type="Button" parent="menu"]
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
+theme = ExtResource("2_bfin4")
 theme_override_fonts/font = ExtResource("3_52beq")
 theme_override_font_sizes/font_size = 32
-text = "Resume"
+text = "Resumir
+"
 
 [node name="Control2" type="Control" parent="menu"]
 custom_minimum_size = Vector2(0, 15)
@@ -31,6 +34,7 @@ layout_mode = 2
 [node name="Configuração" type="Button" parent="menu"]
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
+theme = ExtResource("2_bfin4")
 theme_override_fonts/font = ExtResource("3_52beq")
 theme_override_font_sizes/font_size = 32
 text = "Configuração"
@@ -42,6 +46,7 @@ layout_mode = 2
 [node name="Main Menu" type="Button" parent="menu"]
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
+theme = ExtResource("2_bfin4")
 theme_override_fonts/font = ExtResource("3_52beq")
 theme_override_font_sizes/font_size = 32
 text = "Main Menu "

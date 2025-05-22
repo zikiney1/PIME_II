@@ -6,8 +6,10 @@ public partial class DialogGui : VBoxContainer
     RichTextLabel dialogText;
     RichTextLabel nameText;
     TextureRect portrait;
+    AnimationPlayer animationPlayer;
 
     Timer WordUpdater;
+    Timer animationTimer;
     int currentLetter = 0;
     bool endedAnimation = false;
 
@@ -16,17 +18,26 @@ public partial class DialogGui : VBoxContainer
     Sequencer<string> DialogSequence;
 
     string EventAtEnd = "";
+    Action animationTimerEnds;
+    public bool isPlayingAnimation => animationPlayer.IsPlaying();
 
     public override void _Ready()
     {
-        dialogText = GetNode<RichTextLabel>("DialogArea/PanelContainer/GridContainer/VBoxContainer/Dialog");
+        dialogText = GetNode<RichTextLabel>("DialogArea/PanelContainer/MarginContainer/Dialog");
         nameText = GetNode<RichTextLabel>("RichTextLabel/Name");
         portrait = GetNode<TextureRect>("RichTextLabel/Portrait");
-        player = GetNode<Player>("../.."); 
+        animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        player = GetNode<Player>("../..");
 
         dialogText.BbcodeEnabled = true;
         WordUpdater = NodeMisc.GenTimer(this, 0.025f, onWordUpdate);
-        Deactivate();
+
+        animationTimer = NodeMisc.GenTimer(this, 0.5f, () =>
+        {
+            animationTimerEnds?.Invoke();
+            animationPlayer.Stop(true);
+        });
+        Deactivate(false);
     }
 
 
@@ -37,8 +48,19 @@ public partial class DialogGui : VBoxContainer
     /// This method sets the dialog GUI's visibility to false and nullifies the dialog sequence,
     /// effectively resetting the dialog state.
     /// </remarks>
-    public void Deactivate(){
-        Visible = false;
+    public void Deactivate(bool playAnimation = true)
+    {
+        if (playAnimation)
+        {
+            animationPlayer.Play("close");
+            animationTimer.WaitTime = animationPlayer.CurrentAnimationLength;
+            animationTimer.Start();
+            animationTimerEnds = () => { Visible = false; };
+        }
+        else
+        {
+            Visible = false;
+        }
         DialogSequence = null;
     }
 
@@ -50,15 +72,29 @@ public partial class DialogGui : VBoxContainer
     /// This method makes the dialog GUI visible and initializes the resource sequence with the provided dialog resources. 
     /// If the dialog is null, it signals the player to end the interaction.
     /// </remarks>
-    public void Activate(DialogResource[] dialog,string EventAtEnd){
-        Visible = true;
-        if (dialog == null){
-            player.InteractDialog(null,"");
+    public void Activate(DialogResource[] dialog,string EventAtEnd,bool playAnimation = true){
+        dialogText.Text = "";
+        portrait.Texture = null;
+        nameText.Text = "";
+        if (dialog == null)
+        {
+            player.InteractDialog(null, "");
             return;
         }
         this.EventAtEnd = EventAtEnd;
         resourceSequence = new(dialog);
-        SetResource(resourceSequence.Current());
+        Visible = true;
+        if (playAnimation)
+        {
+            animationPlayer.Play("open");
+            animationTimerEnds = () => { SetResource(resourceSequence.Current()); };
+            animationTimer.WaitTime = animationPlayer.CurrentAnimationLength;
+            animationTimer.Start();
+        }
+        else
+        {
+            SetResource(resourceSequence.Current());
+        }
         
     }
 
@@ -143,12 +179,18 @@ public partial class DialogGui : VBoxContainer
     /// Otherwise, it progresses the dialog sequence if it is not finished, or the resource sequence if the dialog is finished.
     /// </remarks>
     void Next(){
-        if(resourceSequence.isFinished && DialogSequence.isFinished){
-            player.InteractDialog(null,"");
+        if(resourceSequence == null || DialogSequence == null) return;
+        if (resourceSequence.isFinished && DialogSequence.isFinished)
+        {
+            player.InteractDialog(null, "");
             EventHandler.EmitEvent(EventAtEnd);
-        }else if(!DialogSequence.isFinished){
+        }
+        else if (!DialogSequence.isFinished)
+        {
             SetDialog(DialogSequence.Next());
-        }else{
+        }
+        else
+        {
             SetResource(resourceSequence.Next());
         }
     }

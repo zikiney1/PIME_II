@@ -27,16 +27,18 @@ public partial class Pooling : Node2D
 
             DeactiveProjectiles.Add(p);
             this.AddChild(p);
-        }
 
-        for (int i = 0; i < 20; i++)
-        {
             Coin c = new();
             c.pool = this;
             c.DeActivate();
 
             DeactiveCoins.Add(c);
             this.AddChild(c);
+
+            DropItem d = new();
+            d = new();
+            d.polling = this;
+            this.AddChild(d);
         }
 
     }
@@ -111,6 +113,7 @@ public partial class Pooling : Node2D
     /// <returns>The spawned DropItem.</returns>
     public DropItem GrabItem(Vector2 position, ItemResource item, int quantity){
         DropItem dropItem;
+        if (quantity <= 0) quantity = 1;
 
         position += new Vector2((float)rnd.NextDouble(), (float)rnd.NextDouble() + 0.5f);
 

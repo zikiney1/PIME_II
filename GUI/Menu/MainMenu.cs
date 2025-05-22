@@ -5,7 +5,8 @@ public partial class MainMenu : CenterContainer
 {
     Configuracoes configuracoes;
     Timer openTime;
-    bool canClose = false;
+    bool canClose = false, canOpen = true;
+    Action openOrClose;
     public override void _Ready()
     {
         configuracoes = GetNode<Configuracoes>("Configuracoes");
@@ -22,20 +23,37 @@ public partial class MainMenu : CenterContainer
             canClose = false;
         };
         ProcessMode = ProcessModeEnum.Always;
-        openTime = NodeMisc.GenTimer(this, 0.3f, () => { canClose = true; });
+        openTime = NodeMisc.GenTimer(this, 0.35f, () => { openOrClose?.Invoke(); });
+        openTime.ProcessMode = ProcessModeEnum.Always;
     }
     public void Open()
     {
-        GetNode<VBoxContainer>("menu").Visible = true;
-        openTime.Start();
+        if (!canOpen) return;
+
+        Player.Instance.ActivateBlur();
         GetTree().Paused = true;
+        
         Visible = true;
+        GetNode<VBoxContainer>("menu").Visible = true;
+
+        canClose = false;
+        openTime.Stop();
+        openOrClose = () => canClose = true;
+        openTime.Start();
     }
 
     void Resume()
     {
+        if (!canClose) return;
+        Player.Instance.DeactivateBlur();
         GetTree().Paused = false;
         Visible = false;
+
+        canOpen = false;
+        openTime.Stop();
+        openOrClose = () => canOpen = true;
+        openTime.Start();
+        
     }
 
     override public void _Input(InputEvent @event)
@@ -43,7 +61,7 @@ public partial class MainMenu : CenterContainer
         if (!Visible) return;
         if (@event is InputEventKey KeyEvent)
         {
-            if (KeyEvent.Keycode == Key.Escape && canClose)
+            if (KeyEvent.Keycode == Key.Escape)
             {
                 Resume();
             }

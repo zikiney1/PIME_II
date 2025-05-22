@@ -3,6 +3,7 @@ public class AnimationHandler
 {
     public AnimationPlayer characterAnimPlayer;
     public AnimationPlayer hitAnimPlayer;
+
     
     public AnimationHandler(AnimationPlayer characterAnimPlayer, AnimationPlayer hitAnimPlayer)
     {
@@ -56,6 +57,16 @@ public class AnimationHandler
             characterAnimPlayer.Play("attack2_right");
         else if (direction.X < 0)
             characterAnimPlayer.Play("attack2_left");
+    }
+
+    public double GetAnimationTime()
+    {
+        if (characterAnimPlayer.IsPlaying())
+            return characterAnimPlayer.CurrentAnimationLength;
+        else if (hitAnimPlayer.IsPlaying())
+            return hitAnimPlayer.CurrentAnimationLength;
+        else
+            return 0;
     }
 
     public void Damage()

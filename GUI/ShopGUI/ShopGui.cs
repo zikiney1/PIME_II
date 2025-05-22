@@ -9,9 +9,11 @@ public partial class ShopGui : VBoxContainer
     RichTextLabel descriptionText;
     Button changeModeButton;
     RichTextLabel AlertText;
+    public TextureRect MerchantTexture;
 
     public ItemResource[] shopItems;
     public ItemResource[] playerInventory;
+
 
     const float sellModifier = 0.5f;
     bool inBuyMode = true;
@@ -24,12 +26,13 @@ public partial class ShopGui : VBoxContainer
     int currentLetter=0;
 
     public override void _Ready(){
-        itemList = GetNode<ItemList>("ShopArea/HBoxContainer/ItemList");
-        descriptionText = GetNode<RichTextLabel>("ShopArea/HBoxContainer/SideBar/Description");
-        confirmButton = GetNode<Button>("ShopArea/HBoxContainer/SideBar/HBoxContainer/Confirm");
-        exitButton = GetNode<Button>("ShopArea/HBoxContainer/SideBar/HBoxContainer/Sair");
+        itemList = GetNode<ItemList>("ShopArea/HBoxContainer/MarginContainer2/ItemList");
+        descriptionText = GetNode<RichTextLabel>("ShopArea/HBoxContainer/MarginContainer/SideBar/Description");
+        confirmButton = GetNode<Button>("ShopArea/HBoxContainer/MarginContainer/SideBar/HBoxContainer/Confirm");
+        exitButton = GetNode<Button>("ShopArea/HBoxContainer/MarginContainer/SideBar/HBoxContainer/Sair");
         changeModeButton = GetNode<Button>("CharacterArea/VBoxContainer/HBoxContainer/MudaModo");
         AlertText = GetNode<RichTextLabel>("CharacterArea/VBoxContainer/HBoxContainer/Alert(no mone)");
+        MerchantTexture = GetNode<TextureRect>("CharacterArea/MerchantImage");
 
         AlertText.Visible = false;
         AlertAnimation = NodeMisc.GenTimer(this, 0.03f, AlertAnimationTick);

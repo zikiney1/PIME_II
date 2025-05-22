@@ -25,6 +25,8 @@ public partial class Player : CharacterBody2D
     Timer PlantZoneUpdater;
     Timer PlantTimer;
     Timer PlantCoolDownTimer;
+    Timer AnimationTimer;
+
 
     public Action WhenPlantUpdate;
 
@@ -33,7 +35,6 @@ public partial class Player : CharacterBody2D
     ShopGui ShopGUI;
     SaveStationGui saveGUI;
     DialogGui dialogGui;
-    ItemList itemList;
     MainMenu mainMenu;
 
     bool isDefending = false;
@@ -52,6 +53,7 @@ public partial class Player : CharacterBody2D
     PlayerState state = PlayerState.Idle;
     PlayerState previousState = PlayerState.Idle;
 
+    Action whenAnimationEnds;
 
     public InventorySystem inventory;
     public EquipamentSys equipamentSys;
@@ -60,6 +62,7 @@ public partial class Player : CharacterBody2D
     public FightSystem fightSystem;
     public AnimationHandler animationHandler;
     public ReflectionHandler reflectionHandler;
+    public ColorRect blur;
 
     public void Save(Vector2 pos) => SaveData.Save(this, pos);
     public void UpdateHearts() => GUI.UpdateHearts();
@@ -93,7 +96,7 @@ public partial class Player : CharacterBody2D
         InteractableRange = GetNode<Area2D>("InteractableRange");
         dialogGui = GetNode<DialogGui>("Canvas/DialogGUI");
         mainMenu = GetNode<MainMenu>("Canvas/MainMenu");
-        itemList = GUI.GetNode<ItemList>("GameContainter/HBoxContainer/PanelContainer/ItemList");
+        blur = GetNode<ColorRect>("Canvas/blur");
         animationHandler = new(
             GetNode<AnimationPlayer>("Animations/CharacterAnimationPlayer"),
             GetNode<AnimationPlayer>("Animations/HitAnimationPlayer")
@@ -102,12 +105,13 @@ public partial class Player : CharacterBody2D
             GetNode<Sprite2D>("Sprite"),
             GetNode<Sprite2D>("WaterReflection")
         );
-        
+
+        AnimationTimer = NodeMisc.GenTimer(this, 0.1f, () => { whenAnimationEnds?.Invoke(); });
 
         gameManager = GameManager.Instance;
 
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
-
+        blur.Visible = false;
     }
 
 
@@ -143,7 +147,7 @@ public partial class Player : CharacterBody2D
         GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
 
         HitArea.BodyEntered += whenHitEnemy;
-        itemList.GetParent<Control>().Visible = false;
+        
 
         animationHandler.Play("idle");
     }
@@ -194,7 +198,8 @@ public partial class Player : CharacterBody2D
             else if (KeyEvent.IsActionPressed("change_item")) ChangeHandItem();
             else if (KeyEvent.IsActionPressed("change_weapon")) switchWeapon();
             else if (KeyEvent.IsActionPressed("inventory")) ToggleInventory();
-            else if(Input.IsKeyPressed(Key.Escape)) mainMenu.Open();
+            else if (KeyEvent.IsActionPressed("ui_cancel")) mainMenu.Open();
+            
 
         }
         if (@event is InputEventMouseMotion mouseMove)
@@ -211,18 +216,22 @@ public partial class Player : CharacterBody2D
     //============================================================================================================
     //============================================================================================================
 
-
+    public void DeactivateBlur() => blur.Visible = false;
+    public void ActivateBlur() => blur.Visible = true;
     public void InteractDialog(DialogResource[] dialog, string EventAtEnd)
     {
+        if(dialogGui.isPlayingAnimation) return;
         if (dialogGui.Visible)
         {
             dialogGui.Deactivate();
             state = PlayerState.Idle;
+            blur.Visible = false;
         }
         else
         {
             dialogGui.Activate(dialog, EventAtEnd);
             state = PlayerState.Lock;
+            blur.Visible = true;
         }
     }
 
@@ -231,10 +240,12 @@ public partial class Player : CharacterBody2D
         if (ShopGUI.Visible){
             ShopGUI.Deactivate();
             state = PlayerState.Idle;
+            blur.Visible = false;
         }
         else{
             ShopGUI.Activate(shopItems);
             state = PlayerState.Lock;
+            blur.Visible = true;
         }
     }
 
@@ -243,10 +254,12 @@ public partial class Player : CharacterBody2D
         if (CraftGUI.Visible){
             CraftGUI.Deactivate();
             state = PlayerState.Idle;
+            blur.Visible = false;
         }
         else{
             CraftGUI.Activate();
             state = PlayerState.Lock;
+            blur.Visible = true;
         }
 
     }
@@ -341,10 +354,12 @@ public partial class Player : CharacterBody2D
     public bool Add(ItemResource item, byte quantity = 1)
     {
         bool result = inventory.Add(item, quantity);
-        itemList.AddItem(item.name + " - " + quantity, item.icon);
         if (HandItem != null)
             if (HandItem.id == item.id)
                 UpdatePortrait();
+
+        GUI.InventoryUpdate();
+        
         return result;
     }
     public bool Add(byte id, byte quantity = 1) => Add(ItemDB.GetItemData(id), quantity);
@@ -357,10 +372,12 @@ public partial class Player : CharacterBody2D
     /// <returns>True if the item was successfully removed, otherwise false.</returns>
     public bool Remove(ItemResource item, byte quantity = 1)
     {
-        itemList.RemoveItem(inventory.itemPositions[item.id]);
+        
         bool result = inventory.Remove(item.id, quantity);
         if (HandItem.id == item.id)
             UpdatePortrait();
+        
+        GUI.InventoryUpdate();
         return result;
     }
 
@@ -400,13 +417,13 @@ public partial class Player : CharacterBody2D
     void ToggleInventory()
     {
 
-        if (itemList.GetParent<Control>().Visible)
+        if (GUI.inventory.Visible)
         {
-            itemList.GetParent<Control>().Visible = false;
+            GUI.CloseInventory();
         }
         else
         {
-            itemList.GetParent<Control>().Visible = true;
+            GUI.OpenInventory();
         }
     }
 
@@ -490,15 +507,28 @@ public partial class Player : CharacterBody2D
     //============================================================================================================
     //============================================================================================================
 
-    
+
     /// <summary>
     /// Teleports the player to the specified position and sets the state to idle.
     /// </summary>
     /// <param name="pos">The target position to teleport the player to.</param>
     public void Teleport(Vector2 pos)
     {
-        state = PlayerState.Idle;
-        Position = pos;
+        state = PlayerState.Lock;
+        whenAnimationEnds = () =>
+        {
+            whenAnimationEnds = () =>
+            {
+                state = PlayerState.Idle;
+            };
+            Position = pos;
+            animationHandler.Play("teleport_end");
+            AnimationTimer.WaitTime = animationHandler.GetAnimationTime();
+            AnimationTimer.Start();
+        };
+        animationHandler.Play("teleport_start");
+        AnimationTimer.WaitTime = animationHandler.GetAnimationTime();
+        AnimationTimer.Start();
     }
 
     public void UpdateKnowsCheckPoints(string[] names)

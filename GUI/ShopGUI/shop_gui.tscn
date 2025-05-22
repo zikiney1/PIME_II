@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2aklh64ns43h"]
+[gd_scene load_steps=6 format=3 uid="uid://c2aklh64ns43h"]
 
 [ext_resource type="Script" uid="uid://df0vnwld32t6d" path="res://GUI/ShopGUI/ShopGui.cs" id="1_jyx6i"]
+[ext_resource type="Theme" uid="uid://s18iip2r5pk6" path="res://GUI/game_theme.tres" id="2_x7eaq"]
+[ext_resource type="FontFile" uid="uid://cvjan8u6q7fu7" path="res://assets/Fonts/PanasChill.ttf" id="3_1hgdn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x7eaq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pfuqk"]
+bg_color = Color(0.919704, 0.829075, 0.644931, 1)
 
 [node name="ShopGUI" type="VBoxContainer"]
 anchors_preset = 15
@@ -16,6 +23,7 @@ script = ExtResource("1_jyx6i")
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
+theme_override_styles/panel = SubResource("StyleBoxEmpty_x7eaq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CharacterArea"]
 layout_mode = 2
@@ -34,12 +42,19 @@ alignment = 2
 [node name="Alert(no mone)" type="RichTextLabel" parent="CharacterArea/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(145, 0)
 layout_mode = 2
+theme = ExtResource("2_x7eaq")
+theme_override_font_sizes/bold_italics_font_size = 14
+theme_override_font_sizes/italics_font_size = 14
+theme_override_font_sizes/mono_font_size = 14
+theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/bold_font_size = 14
 bbcode_enabled = true
 text = "[pulse freq=0.5 color=#ffffff40 ease=-2.0][shake rate=2.0 level=2 connected=1]Você não tem 
 Moedas suficiente"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+threaded = true
 
 [node name="Control" type="Control" parent="CharacterArea/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(170, 0)
@@ -48,46 +63,76 @@ layout_mode = 2
 [node name="MudaModo" type="Button" parent="CharacterArea/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 focus_mode = 1
+theme = ExtResource("2_x7eaq")
 text = "Vender"
+
+[node name="MerchantImage" type="TextureRect" parent="CharacterArea"]
+layout_mode = 2
 
 [node name="ShopArea" type="PanelContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.45
+theme_override_styles/panel = SubResource("StyleBoxFlat_pfuqk")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ShopArea"]
 layout_mode = 2
 
-[node name="ItemList" type="ItemList" parent="ShopArea/HBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="ShopArea/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ItemList" type="ItemList" parent="ShopArea/HBoxContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 1
+theme = ExtResource("2_x7eaq")
 allow_reselect = true
 
-[node name="SideBar" type="VBoxContainer" parent="ShopArea/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ShopArea/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="SideBar" type="VBoxContainer" parent="ShopArea/HBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Description" type="RichTextLabel" parent="ShopArea/HBoxContainer/SideBar"]
+[node name="Description" type="RichTextLabel" parent="ShopArea/HBoxContainer/MarginContainer/SideBar"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_x7eaq")
+theme_override_colors/default_color = Color(0.152941, 0.0509804, 0.109804, 1)
+theme_override_fonts/normal_font = ExtResource("3_1hgdn")
+theme_override_fonts/mono_font = ExtResource("3_1hgdn")
+theme_override_fonts/italics_font = ExtResource("3_1hgdn")
+theme_override_fonts/bold_italics_font = ExtResource("3_1hgdn")
+theme_override_fonts/bold_font = ExtResource("3_1hgdn")
 bbcode_enabled = true
 text = "Descrição do item"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ShopArea/HBoxContainer/SideBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ShopArea/HBoxContainer/MarginContainer/SideBar"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 
-[node name="Confirm" type="Button" parent="ShopArea/HBoxContainer/SideBar/HBoxContainer"]
+[node name="Confirm" type="Button" parent="ShopArea/HBoxContainer/MarginContainer/SideBar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 1
+theme = ExtResource("2_x7eaq")
 text = "Comprar"
 
-[node name="Sair" type="Button" parent="ShopArea/HBoxContainer/SideBar/HBoxContainer"]
+[node name="Sair" type="Button" parent="ShopArea/HBoxContainer/MarginContainer/SideBar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 1
+theme = ExtResource("2_x7eaq")
 text = "Sair"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

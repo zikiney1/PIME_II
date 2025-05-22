@@ -6,7 +6,7 @@ public partial class GameManager : Node{
     public readonly static byte GAMEUNITS = 16;
     public readonly static byte SOILTILESIZE = 3;
 
-    public readonly static uint PlayerBulletMask = 12;
+    public readonly static uint PlayerBulletMask = 28;
     public readonly static uint EnemyBulletMask = 9;
 
     public static GameManager Instance { get; set; }
@@ -22,7 +22,7 @@ public partial class GameManager : Node{
         GameOver
     }
 
-    public Configurator configurator;
+    public Configurator config;
     public GameState gameState = GameState.Running;
 
     public Pooling pooling;
@@ -45,22 +45,38 @@ public partial class GameManager : Node{
         pooling = new ();
         AddChild(pooling);
 
-        configurator = new();
+        config = new();
         ItemDB.SetupItemDB();
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
+
 
 
     }
 
     public override void _Ready()
     {
-
         base._Ready();
-        rnd = new ();
+        rnd = new();
         player = Player.Instance;
         player.GetNode<AudioStreamPlayer2D>("Audio/AudioStreamPlayer2D").ProcessMode = ProcessModeEnum.Always;
         camera.ProcessMode = ProcessModeEnum.Always;
+        AudioSetup();
+    }
+
+    void AudioSetup()
+    {
+        int MasterBusIndex = AudioServer.GetBusIndex("Master");
+        int SFXBusIndex = AudioServer.GetBusIndex("SFX");
+        int MusicBusIndex = AudioServer.GetBusIndex("Musica");
+
+        float MasterValue = float.Parse(config.Audio["MASTER"]);
+        float SFXValue = float.Parse(config.Audio["SFX"]);
+        float MusicValue = float.Parse(config.Audio["MUSICA"]);
+
+        AudioServer.SetBusVolumeDb(SFXBusIndex, Mathf.LinearToDb(SFXValue));
+        AudioServer.SetBusVolumeDb(MusicBusIndex, Mathf.LinearToDb(MusicValue));
+        AudioServer.SetBusVolumeDb(MasterBusIndex, Mathf.LinearToDb(MasterValue));
     }
 
     public void SpawnCoins(Vector2 position, int amount, float waitTime = 0.01f, int randomRange = 3)
@@ -80,7 +96,8 @@ public partial class GameManager : Node{
 
         Timer SpawnTimer = new();
         SpawnTimer.WaitTime = waitTime;
-        SpawnTimer.Timeout += () => {
+        SpawnTimer.Timeout += () =>
+        {
             if (current >= coinsToSpawn)
             {
                 SpawnTimer.Stop();
