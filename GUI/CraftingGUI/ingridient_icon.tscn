@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cfkwmakq36v3k"]
+[gd_scene load_steps=3 format=3 uid="uid://cfkwmakq36v3k"]
 
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_rbi05"]
+[ext_resource type="FontFile" uid="uid://cwtjloy6xs3e6" path="res://assets/Fonts/CutePixel.ttf" id="2_avgy5"]
 
 [node name="IngridientIcon" type="Control"]
 custom_minimum_size = Vector2(50, 50)
@@ -27,4 +28,9 @@ offset_left = 27.0
 offset_top = 27.0
 offset_right = 67.0
 offset_bottom = 67.0
+theme_override_fonts/normal_font = ExtResource("2_avgy5")
+theme_override_fonts/mono_font = ExtResource("2_avgy5")
+theme_override_fonts/italics_font = ExtResource("2_avgy5")
+theme_override_fonts/bold_italics_font = ExtResource("2_avgy5")
+theme_override_fonts/bold_font = ExtResource("2_avgy5")
 text = "XX"

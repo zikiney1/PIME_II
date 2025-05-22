@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=40 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -29,7 +29,6 @@
 [ext_resource type="PackedScene" uid="uid://e6qtwhofe5ag" path="res://Entities/Enemy/Cachorro-planta/Cachorro-planta.tscn" id="27_cm5pt"]
 [ext_resource type="Shader" uid="uid://rubo2g7anh4h" path="res://Shaders/Water.gdshader" id="28_3elml"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="28_fgs11"]
-[ext_resource type="Shader" uid="uid://bja4ryt6evw5a" path="res://Shaders/teleport.gdshader" id="30_0gcu2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fgs11"]
 texture = ExtResource("12_cm5pt")
@@ -628,13 +627,7 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32
 outlines = Array[PackedVector2Array]([PackedVector2Array(-163, -68, 859, -53, 889, 549, -163, 559)])
 source_geometry_mode = 1
 source_geometry_group_name = &"Wall"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_krs7n"]
-shader = ExtResource("30_0gcu2")
-shader_parameter/progress = 0.246
-shader_parameter/noise_desnity = 20.0
-shader_parameter/beam_size = 0.033
-shader_parameter/color = Color(0, 1.03137, 0.278431, 1)
+cell_size = 4.0
 
 [node name="Level_Demo" type="Node" node_paths=PackedStringArray("camera")]
 script = ExtResource("1_0bltp")
@@ -669,13 +662,6 @@ shopItems = Array[Object]([ExtResource("15_modcj"), ExtResource("16_86kg1"), Ext
 [node name="SaveStationManager" type="Node" parent="."]
 script = ExtResource("18_86kg1")
 
-[node name="Teste_2" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition") instance=ExtResource("13_2kxrb")]
-position = Vector2(297, 193)
-SavePosition = NodePath("Node2D")
-
-[node name="Node2D" type="Node2D" parent="SaveStationManager/Teste_2"]
-position = Vector2(0, -14)
-
 [node name="Teste_1" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition") instance=ExtResource("13_2kxrb")]
 position = Vector2(149, 193)
 SavePosition = NodePath("Node2D")
@@ -683,11 +669,25 @@ SavePosition = NodePath("Node2D")
 [node name="Node2D" type="Node2D" parent="SaveStationManager/Teste_1"]
 position = Vector2(0, -14)
 
+[node name="Teste_2" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition") instance=ExtResource("13_2kxrb")]
+position = Vector2(510, 46)
+SavePosition = NodePath("Node2D")
+
+[node name="Node2D" type="Node2D" parent="SaveStationManager/Teste_2"]
+position = Vector2(0, -14)
+
 [node name="Teste_3" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition") instance=ExtResource("13_2kxrb")]
 position = Vector2(29, 133)
 SavePosition = NodePath("Node2D")
 
 [node name="Node2D" type="Node2D" parent="SaveStationManager/Teste_3"]
+position = Vector2(0, -14)
+
+[node name="Teste_4" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition") instance=ExtResource("13_2kxrb")]
+position = Vector2(341, 495)
+SavePosition = NodePath("Node2D")
+
+[node name="Node2D" type="Node2D" parent="SaveStationManager/Teste_4"]
 position = Vector2(0, -14)
 
 [node name="NPCDialogZone" parent="." instance=ExtResource("20_t2slw")]
@@ -757,6 +757,5 @@ visible = false
 navigation_polygon = SubResource("NavigationPolygon_cm5pt")
 
 [node name="Icon" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_krs7n")
 position = Vector2(308, 145)
 texture = ExtResource("28_fgs11")

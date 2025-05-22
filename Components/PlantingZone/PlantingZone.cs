@@ -218,8 +218,12 @@ public partial class SoilTile : Sprite2D{
     /// Sets the plant sprite's texture to null.
     /// </remarks>
     void CollectPlant(){
-        Father.gameManager.SpawnItem(GlobalPosition, data.GetPlantResult(), data.GetPlantResultQuantity());
-        Father.gameManager.SpawnItem(GlobalPosition, data.GetSeed(), 1 );
+        if (!data.IsDead())
+        {
+            int profit = (int)Math.Floor(MathM.ProfitAtProgress(data.GetProgress(), data.GetPlantResultQuantity()));
+            Father.gameManager.SpawnItem(GlobalPosition, data.GetPlantResult(), profit);
+            Father.gameManager.SpawnItem(GlobalPosition, data.GetSeed(), 1 );
+        }
         data.RemovePlant();
         PlantSprite.Texture = null;
     }

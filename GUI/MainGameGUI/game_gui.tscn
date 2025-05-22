@@ -1,9 +1,65 @@
-[gd_scene load_steps=5 format=3 uid="uid://bpxj72d1rhigg"]
+[gd_scene load_steps=12 format=3 uid="uid://bpxj72d1rhigg"]
 
 [ext_resource type="Script" uid="uid://dy6qxe67h3abk" path="res://GUI/MainGameGUI/GameGui.cs" id="1_p34v0"]
-[ext_resource type="Texture2D" uid="uid://c2neks5ml2p5u" path="res://assets/ItemsIcons/Portrait.png" id="2_r4c4e"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_xg4vt"]
+[ext_resource type="Theme" uid="uid://s18iip2r5pk6" path="res://GUI/game_theme.tres" id="3_2676r"]
 [ext_resource type="Texture2D" uid="uid://dpqam1dj1uvao" path="res://assets/ItemsIcons/adubo_organico.png" id="3_xg4vt"]
+[ext_resource type="FontFile" uid="uid://cwtjloy6xs3e6" path="res://assets/Fonts/CutePixel.ttf" id="4_yd8fi"]
+[ext_resource type="Texture2D" uid="uid://djwh2arlmc8u4" path="res://assets/GUI/gui_theme/portrait.png" id="5_wlqrn"]
+[ext_resource type="Texture2D" uid="uid://jjqteghryssn" path="res://assets/ItemsIcons/HealingPotion.png" id="7_wlqrn"]
+
+[sub_resource type="Animation" id="Animation_66dtx"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GameContainter/HBoxContainer/ItemList:size_flags_stretch_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.35, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_8hosj"]
+resource_name = "close"
+length = 0.4
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GameContainter/HBoxContainer/ItemList:size_flags_stretch_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.35, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="Animation" id="Animation_wlqrn"]
+resource_name = "open"
+length = 0.4
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GameContainter/HBoxContainer/ItemList:size_flags_stretch_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.35, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_66dtx"]
+_data = {
+&"RESET": SubResource("Animation_66dtx"),
+&"close": SubResource("Animation_8hosj"),
+&"open": SubResource("Animation_wlqrn")
+}
 
 [node name="GameGUI" type="VBoxContainer"]
 anchors_preset = 15
@@ -43,7 +99,7 @@ size_flags_stretch_ratio = 0.4
 [node name="VBoxContainer" type="VBoxContainer" parent="MainGUI"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.2
+size_flags_stretch_ratio = 0.09
 
 [node name="Control" type="Control" parent="MainGUI/VBoxContainer"]
 layout_mode = 2
@@ -64,10 +120,22 @@ expand_mode = 2
 stretch_mode = 4
 
 [node name="CoinAmount" type="RichTextLabel" parent="MainGUI/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_2676r")
+theme_override_fonts/normal_font = ExtResource("4_yd8fi")
+theme_override_fonts/mono_font = ExtResource("4_yd8fi")
+theme_override_fonts/italics_font = ExtResource("4_yd8fi")
+theme_override_fonts/bold_italics_font = ExtResource("4_yd8fi")
+theme_override_fonts/bold_font = ExtResource("4_yd8fi")
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
 bbcode_enabled = true
 text = " XXXX"
+scroll_active = false
 vertical_alignment = 1
 
 [node name="Control2" type="Control" parent="MainGUI/VBoxContainer"]
@@ -78,20 +146,33 @@ size_flags_stretch_ratio = 0.25
 [node name="ItemRegion" type="VBoxContainer" parent="MainGUI"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.2
+size_flags_stretch_ratio = 0.15
 
 [node name="Control" type="Control" parent="MainGUI/ItemRegion"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.5
+size_flags_stretch_ratio = 0.3
 
 [node name="ItemName" type="RichTextLabel" parent="MainGUI/ItemRegion"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("3_2676r")
+theme_override_fonts/normal_font = ExtResource("4_yd8fi")
+theme_override_fonts/mono_font = ExtResource("4_yd8fi")
+theme_override_fonts/italics_font = ExtResource("4_yd8fi")
+theme_override_fonts/bold_italics_font = ExtResource("4_yd8fi")
+theme_override_fonts/bold_font = ExtResource("4_yd8fi")
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
 bbcode_enabled = true
 text = "Nome do Item"
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+threaded = true
 
 [node name="ItemLayout" type="HBoxContainer" parent="MainGUI/ItemRegion"]
 layout_mode = 2
@@ -105,7 +186,7 @@ custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
-texture = ExtResource("2_r4c4e")
+texture = ExtResource("5_wlqrn")
 expand_mode = 2
 
 [node name="ItemIcon" type="TextureRect" parent="MainGUI/ItemRegion/ItemLayout/Portrait"]
@@ -120,10 +201,26 @@ offset_left = 28.0
 offset_top = 31.0
 offset_right = 68.0
 offset_bottom = 71.0
+theme = ExtResource("3_2676r")
+theme_override_fonts/normal_font = ExtResource("4_yd8fi")
+theme_override_fonts/mono_font = ExtResource("4_yd8fi")
+theme_override_fonts/italics_font = ExtResource("4_yd8fi")
+theme_override_fonts/bold_italics_font = ExtResource("4_yd8fi")
+theme_override_fonts/bold_font = ExtResource("4_yd8fi")
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
 text = "XX"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Control2" type="Control" parent="MainGUI"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
 
 [node name="GameContainter" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -136,19 +233,26 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 0.65
 alignment = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="GameContainter/HBoxContainer"]
+[node name="Control" type="Control" parent="GameContainter/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ItemList" type="ItemList" parent="GameContainter/HBoxContainer"]
 visible = false
 layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="GameContainter/HBoxContainer/PanelContainer"]
-layout_mode = 2
-texture = ExtResource("2_r4c4e")
-
-[node name="ItemList" type="ItemList" parent="GameContainter/HBoxContainer/PanelContainer"]
-custom_minimum_size = Vector2(270, 0)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
+theme = ExtResource("3_2676r")
+item_count = 1
+item_0/text = "Nome do item"
+item_0/icon = ExtResource("7_wlqrn")
 
 [node name="Control" type="Control" parent="GameContainter"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.35
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_66dtx")
+}

@@ -8,29 +8,40 @@ public partial class CraftingGui : HBoxContainer
     HBoxContainer IngridientsContainer;
     Control IngridientIcon;
     Button craftButton;
+    AnimationPlayer animationPlayer;
+    Timer animationTimer;
 
     [Export] PackedScene IngridientIconScene;
     Player player;
     RecipeData[] recipes;
     int selected = 0;
+    Action WhenAnimationEnd;
 
 
-    public override void _Ready(){
-        RecipeList = GetNode<ItemList>("SideBar/SideBarContainer/RecipesContainer");
+    public override void _Ready()
+    {
+        RecipeList = GetNode<ItemList>("SideBarContainer/RecipesContainer");
         RecipeList.ItemSelected += OnSelectRecipe;
 
         descriptionText = GetNode<RichTextLabel>("CraftingWindow/RecipeContainer/RecipeLayout/Description/RichTextLabel");
         IngridientsContainer = GetNode<HBoxContainer>("CraftingWindow/RecipeContainer/RecipeLayout/Ingridients");
         craftButton = GetNode<Button>("CraftingWindow/RecipeContainer/RecipeLayout/Actions/CraftButton");
-        
+        animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+
         player = GetNode<Player>("../..");
         IngridientIcon = IngridientIconScene.Instantiate() as Control;
 
-        RecipeList.ItemSelected += (index) => {
+        RecipeList.ItemSelected += (index) =>
+        {
             selected = (int)index;
             RecipeList.Select(selected);
             OnSelectRecipe(selected);
         };
+        animationTimer = NodeMisc.GenTimer(this, 0.5f, () =>
+        {
+            WhenAnimationEnd?.Invoke();
+            animationPlayer.Stop(true);
+        });
         Deactivate();
     }
 
@@ -41,22 +52,32 @@ public partial class CraftingGui : HBoxContainer
     /// This function makes the crafting GUI visible, refreshes the recipes, and selects the currently selected recipe. 
     /// If there are no recipes in the list, it exits early. It also defers focus to the recipe list.
     /// </remarks>
-    public void Activate(){
+    public void Activate()
+    {
         Visible = true;
         UpdateRecipes();
-        if(RecipeList.ItemCount == 0) return;
+        if (RecipeList.ItemCount == 0) return;
         OnSelectRecipe(selected);
 
         RecipeList.Select(selected);
         CallDeferred(nameof(DeferredFocus));
-
+        
+        animationPlayer.Play("open");
     }
     public void DeferredFocus(){
         RecipeList.GrabFocus();
     }
-    public void Deactivate(){
-        Visible = false;
-        recipes = null;
+    public void Deactivate()
+    {
+        WhenAnimationEnd = () =>
+        {
+            Visible = false;
+            recipes = null;
+        };
+        animationPlayer.Play("close");
+        animationTimer.WaitTime = animationPlayer.CurrentAnimationLength;
+        animationTimer.Start();
+        // Visible = false;
     }
     /// <summary>
     /// Updates the recipes in the GUI to be the ones from the crafting system.

@@ -1,22 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmm7mak6setme"]
+[gd_scene load_steps=3 format=3 uid="uid://bmm7mak6setme"]
 
+[ext_resource type="Theme" uid="uid://s18iip2r5pk6" path="res://GUI/game_theme.tres" id="1_1tb8d"]
 [ext_resource type="FontFile" uid="uid://cwtjloy6xs3e6" path="res://assets/Fonts/CutePixel.ttf" id="1_bvyxl"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w6brk"]
-bg_color = Color(0, 0, 0, 0.392157)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1go87"]
-bg_color = Color(1, 1, 1, 0.392157)
-
 [node name="Action" type="Button"]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 60)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 50.0
+offset_bottom = 60.0
 grow_horizontal = 2
-theme_override_styles/focus = SubResource("StyleBoxFlat_w6brk")
-theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_1go87")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_1go87")
+theme = ExtResource("1_1tb8d")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -35,6 +28,9 @@ layout_mode = 2
 [node name="ActionName" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("1_1tb8d")
+theme_override_colors/font_color = Color(0.152941, 0.0509804, 0.109804, 1)
+theme_override_constants/outline_size = 0
 theme_override_fonts/font = ExtResource("1_bvyxl")
 theme_override_font_sizes/font_size = 30
 text = "Action Name"
@@ -49,6 +45,8 @@ mouse_filter = 1
 [node name="ActionInput" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("1_1tb8d")
+theme_override_colors/font_color = Color(0.152941, 0.0509804, 0.109804, 1)
 theme_override_fonts/font = ExtResource("1_bvyxl")
 theme_override_font_sizes/font_size = 30
 text = "Input Key"

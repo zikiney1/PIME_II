@@ -1,0 +1,67 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://s18iip2r5pk6"]
+
+[ext_resource type="FontFile" uid="uid://cvjan8u6q7fu7" path="res://assets/Fonts/PanasChill.ttf" id="1_7q4o2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3lx27"]
+content_margin_right = 4.0
+bg_color = Color(0.75234, 0.623985, 0.353487, 1)
+border_width_right = 2
+border_width_bottom = 5
+border_color = Color(0.686275, 0.521569, 0.337255, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.215686)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7q4o2"]
+content_margin_right = 4.0
+bg_color = Color(0.858824, 0.741176, 0.498039, 1)
+border_width_right = 2
+border_width_bottom = 5
+border_color = Color(0.686275, 0.521569, 0.337255, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.215686)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ofmyu"]
+bg_color = Color(0.918012, 0.742335, 0.503499, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t6pj7"]
+bg_color = Color(0.858824, 0.741176, 0.498039, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.686275, 0.521569, 0.337255, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjoeo"]
+bg_color = Color(0.858824, 0.741176, 0.498039, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.673283, 0.514254, 0.268766, 1)
+
+[resource]
+default_font = ExtResource("1_7q4o2")
+default_font_size = 20
+Button/colors/font_color = Color(0.152941, 0.0509804, 0.109804, 1)
+Button/colors/font_hover_color = Color(0.352941, 0.152941, 0.266667, 1)
+Button/styles/hover = SubResource("StyleBoxFlat_3lx27")
+Button/styles/normal = SubResource("StyleBoxFlat_7q4o2")
+Button/styles/pressed = SubResource("StyleBoxFlat_ofmyu")
+ItemList/colors/font_color = Color(0.152941, 0.0509804, 0.109804, 1)
+ItemList/colors/font_hovered_color = Color(0.352454, 0.154529, 0.26848, 1)
+ItemList/styles/panel = SubResource("StyleBoxFlat_t6pj7")
+Label/fonts/font = ExtResource("1_7q4o2")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_vjoeo")

@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj41dg5qmemyg"]
+[gd_scene load_steps=6 format=3 uid="uid://cj41dg5qmemyg"]
 
 [ext_resource type="Script" uid="uid://dimnxvlmcwyfe" path="res://GUI/Menu/Configuracoes/Configuracoes.cs" id="1_gl3lc"]
 [ext_resource type="FontFile" uid="uid://cwtjloy6xs3e6" path="res://assets/Fonts/CutePixel.ttf" id="2_2gvrg"]
+[ext_resource type="Theme" uid="uid://s18iip2r5pk6" path="res://GUI/game_theme.tres" id="2_eh16m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eh16m"]
+bg_color = Color(0.858824, 0.741176, 0.498039, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvrqu"]
+bg_color = Color(0.858824, 0.741176, 0.498039, 0.756863)
 
 [node name="Configuracoes" type="HBoxContainer"]
 custom_minimum_size = Vector2(850, 400)
@@ -9,19 +16,31 @@ script = ExtResource("1_gl3lc")
 
 [node name="Opções" type="PanelContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("2_eh16m")
+theme_override_styles/panel = SubResource("StyleBoxFlat_eh16m")
 
-[node name="Lista" type="VBoxContainer" parent="Opções"]
+[node name="m" type="MarginContainer" parent="Opções"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Lista" type="VBoxContainer" parent="Opções/m"]
 custom_minimum_size = Vector2(250, 25)
 layout_mode = 2
+theme = ExtResource("2_eh16m")
 
-[node name="Teclas" type="Button" parent="Opções/Lista"]
+[node name="Teclas" type="Button" parent="Opções/m/Lista"]
 layout_mode = 2
+theme = ExtResource("2_eh16m")
 theme_override_fonts/font = ExtResource("2_2gvrg")
 theme_override_font_sizes/font_size = 20
 text = "Opções De Teclas"
 
-[node name="Audio" type="Button" parent="Opções/Lista"]
+[node name="Audio" type="Button" parent="Opções/m/Lista"]
 layout_mode = 2
+theme = ExtResource("2_eh16m")
 theme_override_fonts/font = ExtResource("2_2gvrg")
 theme_override_font_sizes/font_size = 20
 text = "Opções De Audio"
@@ -32,6 +51,8 @@ layout_mode = 2
 [node name="KeyBind" type="PanelContainer" parent="PanelContainer"]
 custom_minimum_size = Vector2(600, 400)
 layout_mode = 2
+theme = ExtResource("2_eh16m")
+theme_override_styles/panel = SubResource("StyleBoxFlat_dvrqu")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/KeyBind"]
 layout_mode = 2
@@ -50,11 +71,13 @@ size_flags_vertical = 3
 [node name="ActionList" type="VBoxContainer" parent="PanelContainer/KeyBind/MarginContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_eh16m")
 
 [node name="Audio" type="PanelContainer" parent="PanelContainer"]
 visible = false
 custom_minimum_size = Vector2(600, 400)
 layout_mode = 2
+theme = ExtResource("2_eh16m")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/Audio"]
 layout_mode = 2
@@ -72,6 +95,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PanelContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_eh16m")
 theme_override_fonts/font = ExtResource("2_2gvrg")
 theme_override_font_sizes/font_size = 24
 text = "Master"
@@ -84,6 +108,7 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_eh16m")
 max_value = 1.0
 step = 0.001
 value = 0.5

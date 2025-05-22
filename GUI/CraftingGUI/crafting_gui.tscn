@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbe1kek88maxs"]
+[gd_scene load_steps=12 format=3 uid="uid://dbe1kek88maxs"]
 
+[ext_resource type="Theme" uid="uid://s18iip2r5pk6" path="res://GUI/game_theme.tres" id="1_f71m5"]
 [ext_resource type="Script" uid="uid://dow1ijm5speoe" path="res://GUI/CraftingGUI/CraftingGui.cs" id="1_spyvs"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_fd35o"]
 
@@ -16,6 +17,173 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6treb"]
+bg_color = Color(0.152941, 0.141176, 0.12549, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f71m5"]
+bg_color = Color(0.858824, 0.690196, 0.498039, 1)
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.735238, 0.541802, 0.334102, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34bu8"]
+bg_color = Color(0.1539, 0.142794, 0.123774, 1)
+
+[sub_resource type="Animation" id="Animation_f71m5"]
+resource_name = "open"
+length = 0.3
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("separator:size_flags_stretch_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(10, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SideBarContainer:size_flags_stretch_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.35, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CraftingWindow:size_flags_stretch_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1.3, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SideBarContainer/PanelContainer/Label:text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": ["", "Receitas"]
+}
+
+[sub_resource type="Animation" id="Animation_34bu8"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("separator:size_flags_stretch_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SideBarContainer:size_flags_stretch_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.35, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CraftingWindow:size_flags_stretch_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SideBarContainer/PanelContainer/Label:text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Receitas"]
+}
+
+[sub_resource type="Animation" id="Animation_6treb"]
+resource_name = "close"
+length = 0.3
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("separator:size_flags_stretch_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SideBarContainer:size_flags_stretch_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.35, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CraftingWindow:size_flags_stretch_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1.3, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SideBarContainer/PanelContainer/Label:text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": ["Receitas", ""]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_34bu8"]
+_data = {
+&"RESET": SubResource("Animation_34bu8"),
+&"close": SubResource("Animation_6treb"),
+&"open": SubResource("Animation_f71m5")
+}
+
 [node name="CraftingGUI" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,29 +192,39 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("1_f71m5")
 script = ExtResource("1_spyvs")
 IngridientIconScene = SubResource("PackedScene_f71m5")
 
-[node name="SideBar" type="PanelContainer" parent="."]
+[node name="SideBarContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.35
 
-[node name="TextureRect" type="TextureRect" parent="SideBar"]
+[node name="PanelContainer" type="PanelContainer" parent="SideBarContainer"]
 layout_mode = 2
+theme = ExtResource("1_f71m5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6treb")
 
-[node name="SideBarContainer" type="VBoxContainer" parent="SideBar"]
+[node name="Label" type="Label" parent="SideBarContainer/PanelContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme = ExtResource("1_f71m5")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Receitas"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Header" type="PanelContainer" parent="SideBar/SideBarContainer"]
+[node name="RecipesContainer" type="ItemList" parent="SideBarContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.3
-
-[node name="RecipesContainer" type="ItemList" parent="SideBar/SideBarContainer"]
-layout_mode = 2
-size_flags_vertical = 3
+theme = ExtResource("1_f71m5")
 text_overrun_behavior = 4
+
+[node name="separator" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.0
 
 [node name="CraftingWindow" type="Control" parent="."]
 layout_mode = 2
@@ -58,6 +236,8 @@ offset_left = 143.0
 offset_top = 373.0
 offset_right = 718.0
 offset_bottom = 580.0
+theme = ExtResource("1_f71m5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_f71m5")
 
 [node name="RecipeLayout" type="VBoxContainer" parent="CraftingWindow/RecipeContainer"]
 layout_mode = 2
@@ -65,9 +245,12 @@ layout_mode = 2
 [node name="Description" type="PanelContainer" parent="CraftingWindow/RecipeContainer/RecipeLayout"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("1_f71m5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_34bu8")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CraftingWindow/RecipeContainer/RecipeLayout/Description"]
 layout_mode = 2
+theme = ExtResource("1_f71m5")
 bbcode_enabled = true
 text = "this is the item description"
 horizontal_alignment = 1
@@ -85,5 +268,11 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="CraftButton" type="Button" parent="CraftingWindow/RecipeContainer/RecipeLayout/Actions"]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-text = "Craft"
+text = "    Craft    "
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_34bu8")
+}

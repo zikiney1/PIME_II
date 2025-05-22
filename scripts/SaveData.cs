@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading;
 public static class SaveData{
 
     public static string saveFilePath = "res://Data/saveData/save.txt";
@@ -89,67 +90,78 @@ public static class SaveData{
     /// position, known checkpoints, and discovered recipes to the save file. The data is serialized 
     /// in a specific format for later retrieval.
     /// </remarks>
-    public static void Save(Player player,Vector2 pos){
-        if(saveFilePath == "") return;
+    public static void Save(Player player, Vector2 pos)
+    {
+        Thread saveThread = new(() =>
+        {
+
+            if (saveFilePath == "") return;
+
+            FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
+            StringBuilder sb = new();
+
+            //informação do jogador
+            sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold);
+
+
+            //inventario
+            string inventoryContent = "";
+            foreach (ItemData item in player.inventory.items)
+            {
+                if (item == null) continue;
+                inventoryContent += $"{item.id};{item.quantity}|";
+            }
+            sb.AppendLine(inventoryContent);
+
+            //equipamentos
+            string equipamentsContent = "";
+            foreach (ItemResource equipament in player.equipamentSys.equipaments)
+            {
+                if (equipament == null) continue;
+                equipamentsContent += $"{equipament.id}|";
+            }
+            sb.AppendLine(equipamentsContent);
+
+            //vida dos terrenos
+            string soilsLifesContent = "";
+            foreach (SoilTileData soil in player.plantZoneData.SoilsData)
+            {
+                if (soil == null) continue;
+                soilsLifesContent += $"{soil.soilLife};";
+            }
+            sb.AppendLine(soilsLifesContent);
+
+            //plantas
+            string plantsContent = "";
+            var soilWithPlants = player.plantZoneData.SoilsData.Where(soil => soil != null && soil.plantData != null);
+            foreach (SoilTileData soil in soilWithPlants)
+            {
+                PlantData plant = soil.plantData;
+                PlantResource plantData = plant?.plant;
+                plantsContent += $"{plantData.name};{soil.position};{plant.progress}|";
+            }
+            sb.AppendLine(plantsContent);
+
+            //posição do jogador
+            sb.AppendLine($"{Math.Round(pos.X, 0)}|{Math.Round(pos.Y, 0)}");
+
+            //checkpoints
+            sb.AppendLine(string.Join('|', player.KnowCheckPoints()));
+
+            //receitas
+            sb.AppendLine(string.Join("|",
+                CraftingSystem.GetRecipes()
+                    .Where(x => x.known)
+                    .Select(x => x.name)
+            ));
+
+            file.StoreString(sb.ToString());
+
+
+            file.Close();
+        });
         
-        FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
-        StringBuilder sb = new();
-
-        //informação do jogador
-        sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold);
-
-
-        //inventario
-        string inventoryContent = "";
-        foreach(ItemData item in player.inventory.items){
-            if(item == null) continue;
-            inventoryContent += $"{item.id};{item.quantity}|";
-        }
-        sb.AppendLine(inventoryContent);
-
-        //equipamentos
-        string equipamentsContent = "";
-        foreach(ItemResource equipament in player.equipamentSys.equipaments){
-            if(equipament == null) continue;
-            equipamentsContent += $"{equipament.id}|";
-        }
-        sb.AppendLine(equipamentsContent);
-
-        //vida dos terrenos
-        string soilsLifesContent = "";
-        foreach(SoilTileData soil in player.plantZoneData.SoilsData){
-            if(soil == null) continue;
-            soilsLifesContent += $"{soil.soilLife};";
-        }
-        sb.AppendLine(soilsLifesContent);
-
-        //plantas
-        string plantsContent = "";
-        var soilWithPlants = player.plantZoneData.SoilsData.Where(soil => soil != null && soil.plantData != null);
-        foreach(SoilTileData soil in soilWithPlants){
-            PlantData plant = soil.plantData;
-            PlantResource plantData = plant?.plant;
-            plantsContent += $"{plantData.name};{soil.position};{plant.progress}|";
-        }
-        sb.AppendLine(plantsContent);
-
-        //posição do jogador
-        sb.AppendLine($"{Math.Round(pos.X, 0)}|{Math.Round(pos.Y, 0)}");
-
-        //checkpoints
-        sb.AppendLine(string.Join('|', player.KnowCheckPoints()));
-
-        //receitas
-        sb.AppendLine(string.Join("|",
-            CraftingSystem.GetRecipes()
-                .Where(x => x.known)
-                .Select(x => x.name)
-        ));
-
-        file.StoreString(sb.ToString());
-
-
-        file.Close();
+        saveThread.Start();
 
     }
 

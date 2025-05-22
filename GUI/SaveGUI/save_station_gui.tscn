@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dyeqkrd2byixm"]
+[gd_scene load_steps=4 format=3 uid="uid://dyeqkrd2byixm"]
 
 [ext_resource type="Script" uid="uid://dona0tf7e2n45" path="res://GUI/SaveGUI/SaveStationGui.cs" id="1_k1mlk"]
+[ext_resource type="Theme" uid="uid://s18iip2r5pk6" path="res://GUI/game_theme.tres" id="2_r1t57"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r1t57"]
 
 [node name="SaveStationGUI" type="CenterContainer"]
 anchors_preset = 15
@@ -14,6 +17,7 @@ script = ExtResource("1_k1mlk")
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
 focus_mode = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_r1t57")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -26,9 +30,11 @@ size_flags_vertical = 3
 focus_mode = 1
 
 [node name="Salvar" type="Button" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(30, 50)
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 1
+theme = ExtResource("2_r1t57")
 text = "Salvar"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
@@ -37,25 +43,33 @@ size_flags_vertical = 3
 focus_mode = 1
 
 [node name="Left" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 1
+theme = ExtResource("2_r1t57")
 text = "<"
 
 [node name="Selected" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 50)
 layout_mode = 2
 focus_mode = 1
+theme = ExtResource("2_r1t57")
 text = "Nome Bem Longo de um lugar"
 
 [node name="Right" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 1
+theme = ExtResource("2_r1t57")
 text = ">
 "
 
 [node name="Sair" type="Button" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(30, 50)
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 1
+theme = ExtResource("2_r1t57")
 text = "Sair"

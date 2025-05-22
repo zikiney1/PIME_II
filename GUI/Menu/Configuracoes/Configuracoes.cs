@@ -9,7 +9,7 @@ public partial class Configuracoes : HBoxContainer
     string actionToRemap = "";
     string oldName = "";
     Button remapingButton;
-    Configurator config => manager.configurator;
+    Configurator config => manager.config;
     GameManager manager;
 
     PanelContainer KeyBind;
@@ -31,12 +31,12 @@ public partial class Configuracoes : HBoxContainer
         Audio.Visible = false;
         KeyBind.Visible = true;
 
-        GetNode<Button>("Opções/Lista/Teclas").Pressed += () =>
+        GetNode<Button>("Opções/m/Lista/Teclas").Pressed += () =>
         {
             Audio.Visible = false;
             KeyBind.Visible = true;
         };
-        GetNode<Button>("Opções/Lista/Audio").Pressed += () =>
+        GetNode<Button>("Opções/m/Lista/Audio").Pressed += () =>
         {
             Audio.Visible = true;
             KeyBind.Visible = false;
