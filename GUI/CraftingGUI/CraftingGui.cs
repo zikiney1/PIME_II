@@ -18,6 +18,7 @@ public partial class CraftingGui : HBoxContainer
     Action WhenAnimationEnd;
 
 
+
     public override void _Ready()
     {
         RecipeList = GetNode<ItemList>("SideBarContainer/RecipesContainer");
@@ -43,6 +44,8 @@ public partial class CraftingGui : HBoxContainer
             animationPlayer.Stop(true);
         });
         Deactivate();
+        
+        craftButton.Pressed += () => OnSelectRecipe(selected);
     }
 
     /// <summary>
@@ -55,14 +58,20 @@ public partial class CraftingGui : HBoxContainer
     public void Activate()
     {
         Visible = true;
-        UpdateRecipes();
-        if (RecipeList.ItemCount == 0) return;
-        OnSelectRecipe(selected);
-
-        RecipeList.Select(selected);
-        CallDeferred(nameof(DeferredFocus));
-        
+        animationPlayer.Stop();
         animationPlayer.Play("open");
+        UpdateRecipes();
+
+        animationTimer.WaitTime = animationPlayer.CurrentAnimationLength;
+        WhenAnimationEnd = () =>
+        {
+            OnSelectRecipe(selected);
+
+            if (recipes.Length != 0)RecipeList.Select(selected);
+            CallDeferred(nameof(DeferredFocus));
+        };
+        animationTimer.Start();
+        
     }
     public void DeferredFocus(){
         RecipeList.GrabFocus();
@@ -113,6 +122,7 @@ public partial class CraftingGui : HBoxContainer
     /// It also sets the disabled flag of the craft button to true if the player does not have enough of the ingridients to craft the recipe.
     /// </remarks>
     public void OnSelectRecipe(long index){
+        if(recipes == null || recipes.Length == 0) return;
         RecipeData recipe = recipes[index];
         
         descriptionText.Text = recipe.result.description;

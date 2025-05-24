@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://b6e57l2772r5g" path="res://Components/InteractableArea/saveStation/SaveStation.tscn" id="13_2kxrb"]
 [ext_resource type="PackedScene" uid="uid://pas7jkbmhrut" path="res://Components/InteractableArea/Merchant/Merchant.tscn" id="14_jv3ig"]
 [ext_resource type="Resource" uid="uid://c00sibf58x1mm" path="res://Resources/Items/Adubo_eco.tres" id="15_modcj"]
-[ext_resource type="Resource" uid="uid://ck6o847m6ngwi" path="res://Resources/Items/Ingridient_test1.tres" id="16_86kg1"]
+[ext_resource type="Resource" uid="uid://ck6o847m6ngwi" path="res://Resources/Items/seed_jatoba.tres" id="16_86kg1"]
 [ext_resource type="Resource" uid="uid://ccavfkxd0oc42" path="res://Resources/Items/Ingridient_test2.tres" id="17_t2slw"]
 [ext_resource type="Resource" uid="uid://b1po4fiogb6so" path="res://Resources/Items/InstaHealPotionN2.tres" id="18_86b7u"]
 [ext_resource type="Script" uid="uid://nryvcqplfxb1" path="res://Components/InteractableArea/saveStation/SaveStationManager.cs" id="18_86kg1"]

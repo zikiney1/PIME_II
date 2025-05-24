@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://cr4qft41pwit2"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_hpabx"]
+
+[resource]
+script = ExtResource("1_hpabx")
+id = 9
+level = 1
+name = "Casca de Aroeira"
+description = "Casca com propiedades medicinais muito fortes.
+"
+price = 25
+stackMaxSize = 10
+type = 3
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

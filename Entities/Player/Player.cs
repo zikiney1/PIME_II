@@ -19,6 +19,7 @@ public partial class Player : CharacterBody2D
 
     Area2D HitArea;
     Area2D InteractableRange;
+    Area2D ShieldArea;
     GameManager gameManager;
 
 
@@ -90,6 +91,7 @@ public partial class Player : CharacterBody2D
         PlantCoolDownTimer = NodeMisc.GenTimer(this, 0.5f, () => canPlant = true);
 
         HitArea = GetNode<Area2D>("HitArea");
+        ShieldArea = GetNode<Area2D>("shield");
         GUI = GetNode<GameGui>("Canvas/GameGUI");
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
         ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
@@ -155,7 +157,8 @@ public partial class Player : CharacterBody2D
 
         animationHandler.Play("idle");
         
-        EventHandler.EmitEvent("OnStart");
+        if(GlobalPosition == new Vector2(38.0f,38.0f))
+            EventHandler.EmitEvent("OnStart");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -165,7 +168,20 @@ public partial class Player : CharacterBody2D
         Vector2 direction = InputSystem.GetVector();
 
         float speedModifier = equipamentSys.speed + potionModifier.speed + 1;
-        float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(Input.IsActionPressed("defend")) + 1);
+
+        bool isDefending = Input.IsActionPressed("defend");
+
+        if (isDefending)
+        {
+            ShieldArea.Position = direction * (GameManager.GAMEUNITS/2);
+            ShieldArea.Rotation = direction.Angle();
+            ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        }
+        else
+        {
+            ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+        }
+        float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
 
         animationHandler.Direction(direction);
 
@@ -411,6 +427,31 @@ public partial class Player : CharacterBody2D
     //============================================================================================================
     //============================================================================================================
 
+
+    public void SetHandItem(int index)
+    {
+        if (index < 0) return;
+        if (inventory.IsHandItem(index))
+        {
+            HandItem = inventory.HandItems[index];
+            GUI.UpdateHandItem(HandItem.name, HandItem.icon, HandItem.quantity);
+        }
+    }
+
+    public void SetEquipament(byte id)
+    {
+        ItemResource item = ItemDB.GetItemData(id);
+        if (item == null) return;
+        if (inventory.Contains(id) == false) return;
+
+        inventory.Remove(id);
+        Add(equipamentSys.equipament);
+        equipamentSys.RemoveEquipament();
+        equipamentSys.AddEquipament(item);
+
+        GUI.SetEquipament(item.name, item.icon);
+        GUI.InventoryUpdate();
+    }
 
     /// <summary>
     /// Updates the portrait of the hand item in the GUI.

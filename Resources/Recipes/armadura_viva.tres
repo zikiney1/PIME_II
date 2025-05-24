@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RecipeResource" load_steps=8 format=3 uid="uid://cyx5p6au580mt"]
+
+[ext_resource type="Resource" uid="uid://bs364q5t4j0o0" path="res://Resources/Items/fruto_jatoba.tres" id="1_0rs4d"]
+[ext_resource type="Script" uid="uid://bgepf62ui3nwe" path="res://Resources/RecipeResource.cs" id="1_ya6nm"]
+[ext_resource type="Resource" uid="uid://brkqif6ps2ivj" path="res://Resources/Items/fruto_urucum.tres" id="2_2dcnd"]
+[ext_resource type="Resource" uid="uid://cx0cy1oytb5a1" path="res://Resources/Items/fruto_tucum.tres" id="3_xc0j2"]
+[ext_resource type="Resource" uid="uid://cr4qft41pwit2" path="res://Resources/Items/fruto_aroeira.tres" id="4_225je"]
+[ext_resource type="Resource" uid="uid://c4hne7iq22g8i" path="res://Resources/Items/fruto_uxi.tres" id="5_rqt3g"]
+[ext_resource type="Resource" uid="uid://bwdt544ko5niu" path="res://Resources/Items/eqp_armadura_viva.tres" id="6_bjmmc"]
+
+[resource]
+script = ExtResource("1_ya6nm")
+ingredients = Array[Object]([ExtResource("1_0rs4d"), ExtResource("2_2dcnd"), ExtResource("3_xc0j2"), ExtResource("4_225je"), ExtResource("5_rqt3g")])
+quantity = PackedByteArray(3, 3, 3, 3, 3)
+result = ExtResource("6_bjmmc")
+metadata/_custom_type_script = "uid://bgepf62ui3nwe"

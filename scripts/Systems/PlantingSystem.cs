@@ -59,9 +59,12 @@ public class PlantZoneData{
         this.Columns = columns;
         this.Rows = rows;
         SoilsData = new SoilTileData[columns * rows];
-        for(int i = 0; i < soilsLife.Length; i++){
+        for(int i = 0; i < columns * rows; i++){
             byte soilsLifeTemp = 100;
-            if (soilsLife.Length < i) soilsLifeTemp = soilsLife[i];
+            if (soilsLife != null)
+            {
+                if (soilsLife.Length < i) soilsLifeTemp = soilsLife[i];
+            }
             SoilsData[i] = new SoilTileData(
                 (byte)i,
                 soilsLifeTemp,

@@ -1,7 +1,8 @@
 using Godot;
 using System;
 
-public partial class GameGui : VBoxContainer{
+public partial class GameGui : VBoxContainer
+{
     public Player player;
     public Texture2D[] HeartzTextures;
     public HBoxContainer HeartContainer;
@@ -10,6 +11,8 @@ public partial class GameGui : VBoxContainer{
     public RichTextLabel CoinAmount;
     public TextureRect HandItemIcon;
     public ItemList inventory;
+    public RichTextLabel EquipamentName;
+    public TextureRect EquipamentIcon;
     HeartIcon[] Hearts;
 
     int maxHearts = 0;
@@ -36,6 +39,10 @@ public partial class GameGui : VBoxContainer{
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         inventory = GetNode<ItemList>("GameContainter/HBoxContainer/ItemList");
 
+        EquipamentName = GetNode<RichTextLabel>("MainGUI/Equipament/ItemName");
+        EquipamentIcon = GetNode<TextureRect>("MainGUI/Equipament/Portrait/ItemIcon");
+
+
         animationTimer = NodeMisc.GenTimer(this, 0.5f, () =>
         {
             whenAnimationEnds?.Invoke();
@@ -43,7 +50,10 @@ public partial class GameGui : VBoxContainer{
         });
         inventory.Clear();
         inventory.Visible = false;
+        inventory.ItemClicked += onItemClicked;
     }
+
+
 
     /// <summary>
     /// Initializes the game GUI by setting up the player node, loading heart textures,
@@ -74,11 +84,12 @@ public partial class GameGui : VBoxContainer{
         InventoryUpdate();
     }
 
-    public void InventoryUpdate(){
+    public void InventoryUpdate()
+    {
         inventory.Clear();
-        if(player == null) return;
+        if (player == null) return;
         if (player.inventory == null) return;
-        if(player.inventory.items == null) return;
+        if (player.inventory.items == null) return;
 
 
         foreach (ItemData item in player.inventory.items)
@@ -108,25 +119,42 @@ public partial class GameGui : VBoxContainer{
             Hearts[i].Update(player.CurrentLife(), i);
     }
 
-    public void UpdateHandItem(string name,Texture2D icon, int quantity){
+    public void UpdateHandItem(string name, Texture2D icon, int quantity)
+    {
         HandItemIcon.Texture = icon;
         HandItemName.Text = name;
-        
-        if(quantity >= 1)
+
+        if (quantity >= 1)
             HandItemQuantity.Text = quantity.ToString();
         else
             HandItemQuantity.Text = "";
     }
-    public void SetEmptyHandItem(){
+    public void SetEmptyHandItem()
+    {
         HandItemIcon.Texture = null;
         HandItemName.Text = "";
         HandItemQuantity.Text = "";
     }
 
+    public void SetEquipament(string name, Texture2D icon)
+    {
+        EquipamentName.Text = name;
+        EquipamentIcon.Texture = icon;
+    }
 
     public void UpdateGold()
     {
         CoinAmount.Text = " " + player.gold.ToString();
+    }
+
+    void onItemClicked(long index, Vector2 atPosition, long mouseButtonIndex)
+    {
+        if(mouseButtonIndex != 1) return;
+        ItemData item = player.inventory.items[(int)index];
+        
+        if (item.isHandItem()) player.SetHandItem((int)index);
+        else if (item.resource.type == ItemType.Equipament) player.SetEquipament(item.resource.id);
+            
     }
 }
 

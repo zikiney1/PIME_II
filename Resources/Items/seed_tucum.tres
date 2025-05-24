@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://b0bqjk86crlcy"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_mwfk0"]
+[ext_resource type="Resource" uid="uid://dbgbmkbd2a22q" path="res://Resources/Plants/tucum.tres" id="1_pj7b3"]
+
+[resource]
+script = ExtResource("1_mwfk0")
+id = 3
+level = 1
+name = "Semente de Tucum"
+description = "Produz um tipo de palmeira resistente. Suas fibras são usadas na produção de cordas e armas.
+"
+price = 12
+stackMaxSize = 10
+type = 2
+plantData = ExtResource("1_pj7b3")
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

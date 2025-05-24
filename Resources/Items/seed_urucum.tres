@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://dh13d6hy8hpbv"]
+
+[ext_resource type="Resource" uid="uid://cwiles20jwl8k" path="res://Resources/Plants/urucum.tres" id="1_774nh"]
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_axvqq"]
+
+[resource]
+script = ExtResource("1_axvqq")
+id = 2
+level = 1
+name = "Semente de Urucum"
+description = "Semente da planta de urucum. Suas sementes são usadas como corante e em preparados medicinais.
+"
+price = 8
+stackMaxSize = 15
+type = 2
+plantData = ExtResource("1_774nh")
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

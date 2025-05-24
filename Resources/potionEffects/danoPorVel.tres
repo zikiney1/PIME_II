@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PotionEffectResource" load_steps=2 format=3 uid="uid://bq561mhf0jkeg"]
+
+[ext_resource type="Script" uid="uid://dvtohjjhluks4" path="res://Resources/PotionEffectResource.cs" id="1_hsf2s"]
+
+[resource]
+script = ExtResource("1_hsf2s")
+duration = 15.0
+useLevel = true
+speedAmount = 0.5
+healAmount = 0
+HealBehavior = 0
+takeDamageAmount = 2
+TakeDamageBehavior = 2
+damageAmount = 0
+defenseAmount = 0.0
+metadata/_custom_type_script = "uid://dvtohjjhluks4"

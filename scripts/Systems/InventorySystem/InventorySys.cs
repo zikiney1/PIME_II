@@ -80,8 +80,21 @@ public class InventorySystem {
     public bool Contains(ItemResource item, int quantity = 1) => Contains(item.id, quantity);
 
     public int GetPosition(ItemResource item) => itemPositions[item.id];
+    public ItemResource GetItemByID(byte id) => itemPositions.ContainsKey(id) ? items[itemPositions[id]].resource : null;
 
-    public ItemData this[byte index] {
+    public bool IsHandItem(int index)
+    {
+        if (index < HandItems.Count) {
+            if (items[index] == null) return false;
+            ItemResource item = items[index].resource;
+            return item.type == ItemType.Potion || item.type == ItemType.Seed || item.type == ItemType.Resource;
+        }
+        else
+            return false;
+    }
+
+    public ItemData this[byte index]
+    {
         get
         {
             if (index < items.Count)
@@ -95,10 +108,12 @@ public class InventorySystem {
 
 
 
-public class ItemData{
+public class ItemData
+{
     public byte id => resource.id;
     public string name => resource.name;
     public Texture2D icon => resource.icon;
     public ItemResource resource;
     public int quantity = 1;
+    public bool isHandItem() => resource.type == ItemType.Potion || resource.type == ItemType.Seed || resource.type == ItemType.Resource;
 }

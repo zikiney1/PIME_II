@@ -2,6 +2,7 @@ using Godot;
 
 public static class Events
 {
+
     public static void Setup()
     {
         EventHandler.AddEvent("OnStart", false, () =>
@@ -37,23 +38,27 @@ public static class Events
         EventHandler.AddEvent("vereficaSementes", false, () =>
         {
             //id da semente
-            if (Player.Instance.inventory.Contains(2, 2))
+            if (Player.Instance.inventory.Contains(1, 2))
             {
-                Player.Instance.SetDialog("res://Dialogo/apua/3_2#_apua.txt","");
+                Player.Instance.SetDialog("res://Dialogo/apua/3_2#_apua.txt", "");
                 GameManager.Instance.Apua.dialogPath = "";
                 GameManager.Instance.Apua.EventAtEnd = "";
             }
             else
             {
-                Player.Instance.SetDialog("res://Dialogo/apua/3_3#_apua.txt","");
+                Player.Instance.SetDialog("res://Dialogo/apua/3_3#_apua.txt", "");
             }
         });
+        //fala com karai e compra sementes
         EventHandler.AddEvent("Quest3#Ended", false, () =>
         {
             GameManager.Instance.Karai_dialog.Visible = false;
             GameManager.Instance.Karai_Merchant.Visible = true;
             Player.Instance.RemoveGold(10);
-            //adiciona sementes
+            Player.Instance.Add(1, 2);
+
+            GameManager.Instance.Luna.dialogPath = "res://Dialogo/velhaLuna/5#_velhaLuna.txt";
+            GameManager.Instance.Luna.EventAtEnd = "Quest4#Ended";
         });
     }
 }

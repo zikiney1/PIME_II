@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cdg0jp7odllo"]
+[gd_scene load_steps=30 format=3 uid="uid://cdg0jp7odllo"]
 
 [ext_resource type="Script" uid="uid://bnqm2p5umlph6" path="res://Entities/Player/Player.cs" id="1_cabni"]
 [ext_resource type="Texture2D" uid="uid://b83a7k7xyp1r7" path="res://assets/Sprites/Player/personagem/Protag-1.png" id="3_761t5"]
@@ -14,6 +14,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vweq0"]
 size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jynvv"]
+size = Vector2(5, 20)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x44r4"]
 shader = ExtResource("4_hacra")
@@ -332,6 +335,16 @@ texture = ExtResource("3_761t5")
 hframes = 3
 vframes = 5
 
+[node name="shield" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 24
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="shield"]
+position = Vector2(11, -1)
+shape = SubResource("RectangleShape2D_jynvv")
+disabled = true
+debug_color = Color(0.988272, 0.0296636, 0.269671, 0.42)
+
 [node name="Sprite" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_x44r4")
 texture = ExtResource("3_761t5")
@@ -382,6 +395,7 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableRange"]
 shape = SubResource("RectangleShape2D_t38ms")
+debug_color = Color(0.138, 0.639, 0.28, 0.177)
 
 [node name="Animations" type="Node" parent="."]
 

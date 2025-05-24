@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PlantResource" load_steps=2 format=3 uid="uid://ck3erjtbk7dx2"]
+
+[ext_resource type="Script" uid="uid://ctetg1bf2kml4" path="res://Resources/PlantResource.cs" id="1_mg0ey"]
+
+[resource]
+script = ExtResource("1_mg0ey")
+GrowthProcess = null
+growthDurationSeconds = 150
+resultQuantity = 2
+metadata/_custom_type_script = "uid://ctetg1bf2kml4"

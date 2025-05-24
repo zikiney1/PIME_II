@@ -38,6 +38,7 @@ public partial class Pooling : Node2D
             DropItem d = new();
             d = new();
             d.polling = this;
+            
             this.AddChild(d);
         }
 

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://c4hne7iq22g8i"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_n81vf"]
+
+[resource]
+script = ExtResource("1_n81vf")
+id = 10
+level = 1
+name = "Fruto de Uxi"
+description = "Fruto sagrado usado em poções poderosas e rituais espirituais."
+price = 40
+stackMaxSize = 5
+type = 3
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

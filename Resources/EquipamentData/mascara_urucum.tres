@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EquipamentData" load_steps=2 format=3 uid="uid://0ash2bly5x57"]
+
+[ext_resource type="Script" uid="uid://c4eouedjf2a6i" path="res://Resources/EquipamentData.cs" id="1_y4y8q"]
+
+[resource]
+script = ExtResource("1_y4y8q")
+DamageModifier = 0.0
+DefenseModifier = 0.5
+SpeedModifier = 0.0
+AttackSpeedModifier = 0.0
+metadata/_custom_type_script = "uid://c4eouedjf2a6i"

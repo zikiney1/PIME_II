@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://c50egv6ejl5wb"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_daukq"]
+
+[resource]
+script = ExtResource("1_daukq")
+id = 16
+level = 1
+name = "Aguá Selvagem"
+description = ""
+price = 5
+stackMaxSize = 10
+type = 3
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

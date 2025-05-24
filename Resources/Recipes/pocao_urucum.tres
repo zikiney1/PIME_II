@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RecipeResource" load_steps=5 format=3 uid="uid://dtd13wxodsfdt"]
+
+[ext_resource type="Script" uid="uid://bgepf62ui3nwe" path="res://Resources/RecipeResource.cs" id="1_7lubt"]
+[ext_resource type="Resource" uid="uid://brkqif6ps2ivj" path="res://Resources/Items/fruto_urucum.tres" id="1_bw5ga"]
+[ext_resource type="Resource" uid="uid://cc6t4woyiprjj" path="res://Resources/Items/ing_raiz_de_fogo.tres" id="2_emy23"]
+[ext_resource type="Resource" uid="uid://66ecqvlqlfm0" path="res://Resources/Items/pocao_urucum.tres" id="3_m4x7j"]
+
+[resource]
+script = ExtResource("1_7lubt")
+ingredients = Array[Object]([ExtResource("1_bw5ga"), ExtResource("2_emy23")])
+quantity = PackedByteArray(3, 2)
+result = ExtResource("3_m4x7j")
+metadata/_custom_type_script = "uid://bgepf62ui3nwe"

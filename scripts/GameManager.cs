@@ -17,7 +17,36 @@ public partial class GameManager : Node{
     [Export] public NpcDialogZone Apoena;
     [Export] public NpcDialogZone Apua;
     [Export] public NpcDialogZone Karai_dialog;
+    [Export] public NpcDialogZone Luna;
     [Export] public Merchant Karai_Merchant;
+
+    public string SaveQuests()
+    {
+        string saveDataLine = "";
+        saveDataLine += Apoena.dialogPath + "|";
+        saveDataLine += Apua.dialogPath + "|";
+        saveDataLine += (Karai_dialog.Visible ? "" : Karai_dialog.dialogPath) + "|";
+        return saveDataLine;
+    }
+
+    public void LoadQuests(string saveDataLine)
+    {
+        if(saveDataLine == "") return;
+        string[] saveData = saveDataLine.Split('|');
+        Apoena.dialogPath = saveData[0];
+        Apua.dialogPath = saveData[1];
+        if (saveData[2] == "")
+        {
+            Karai_dialog.Visible = false;
+            Karai_Merchant.Visible = true;
+        }
+        else
+        {
+            Karai_dialog.Visible = true;
+            Karai_Merchant.Visible = false;
+            Karai_dialog.dialogPath = saveData[2];
+        }
+    }
 
     public enum GameState
     {

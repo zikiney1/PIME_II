@@ -49,7 +49,7 @@ public static class ItemDB{
     public static PotionEffect GetPotionEffect(PotionEffectResource resource,int level = 1){
         if (resource == null) return null;
 
-        PotionBuilder pb = new (resource.potionType, resource.duration);
+        PotionBuilder pb = new (resource.duration);
         if(resource.healAmount > 0){
             if(resource.HealBehavior == PotionBuilder.PotionType.Instant){
                 pb.HealInstant(AmountWithLevel(resource.healAmount,level));
@@ -57,15 +57,22 @@ public static class ItemDB{
                 pb.HealOverTime(AmountWithLevel(resource.healAmount,level));
             }
         }
-        if(resource.damageAmount > 0){
-            if(resource.DamageBehavior == PotionBuilder.PotionType.Instant){
-                pb.TakeDamageInstant(resource.healAmount);
+        if(resource.takeDamageAmount > 0){
+            if(resource.TakeDamageBehavior == PotionBuilder.PotionType.Instant){
+                pb.TakeDamageInstant(resource.takeDamageAmount);
+            }else if(resource.TakeDamageBehavior == PotionBuilder.PotionType.Periodic){
+                pb.TakeDamageOverTime(resource.takeDamageAmount);
             }else{
-                pb.TakeDamageOverTime(resource.healAmount);
+                pb.TakeDamageAtEnd(resource.takeDamageAmount);
             }
         }
 
-        if(resource.defenseAmount > 0){
+        if(resource.damageAmount > 0){
+            pb.IncreaseDamage(AmountWithLevel(resource.damageAmount,level));
+        }
+
+        if (resource.defenseAmount > 0)
+        {
             pb.Resistence(resource.defenseAmount);
         }
 
