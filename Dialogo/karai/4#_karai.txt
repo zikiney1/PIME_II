@@ -1,0 +1,7 @@
+arana: Preciso falar com você.
+karai: Ah opa, olá Aranã, veio comprar peixe?
+arana: não, é algo importante, preciso acabar com a raiz dessa planta que consome todas as nossas plantações.
+karai: Isso minha amiga eu não posso te ajudar, mas eu sei que a Velha Luna da vila do Mar tenta até hoje lutar contra essa infestação.
+karai: se você não sabe onde fica, é só seguir pela trilha na floresta de Ka’a, não tem como se perder.
+arana: muito obrigada. A propósito, você teria mais sementes?
+karai: É claro, aqui estão!

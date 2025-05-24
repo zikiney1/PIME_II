@@ -94,7 +94,7 @@ public partial class SaveStationGui : CenterContainer
 
 
     void Save(){
-        player.Save(checkPointList[selectedIndex].savePos);
+        player.Save();
         player.InteractSaveStation(null);
         
     }

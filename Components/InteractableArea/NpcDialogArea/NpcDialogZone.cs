@@ -3,17 +3,12 @@ using System;
 
 public partial class NpcDialogZone : Interactable
 {
-    [Export] DialogResource[] dialogResource;
-    [Export] string EventAtEnd;
-    public override void _Ready(){
-        base._Ready();
-        EventHandler.AddEvent(EventAtEnd,()=>{
-            player.AddGold(10);
-        });
-    }
+    [Export(PropertyHint.File)] public string dialogPath;
+    [Export] public string EventAtEnd;
     public override void Interact()
     {
-        player.InteractDialog(dialogResource,EventAtEnd);
+        if(!Visible) return;
+        player.InteractDialog(dialogPath,EventAtEnd);
 
     }
 }

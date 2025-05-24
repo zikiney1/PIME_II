@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial class DialogGui : VBoxContainer
 {
@@ -14,14 +16,16 @@ public partial class DialogGui : VBoxContainer
     bool endedAnimation = false;
 
     Player player;
-    Sequencer<DialogResource> resourceSequence;
     Sequencer<string> DialogSequence;
+
+    Dictionary<string, Character> Characters = new();
 
     string EventAtEnd = "";
     Action animationTimerEnds;
     public bool isPlayingAnimation => animationPlayer.IsPlaying();
+    bool isFinished = true;
 
-    public override void _Ready()
+    public override void _EnterTree()
     {
         dialogText = GetNode<RichTextLabel>("DialogArea/PanelContainer/MarginContainer/Dialog");
         nameText = GetNode<RichTextLabel>("RichTextLabel/Name");
@@ -38,8 +42,26 @@ public partial class DialogGui : VBoxContainer
             animationPlayer.Stop(true);
         });
         Deactivate(false);
+        SetupCharacters();
     }
 
+
+    public void SetupCharacters()
+    {
+        Character tutorial = new("", "");
+        Character arana = new("Aranã", "res://Dialogo/portrait/arana.png");
+        Character PaiDeArana = new("Pai de Arana", "res://Dialogo/portrait/pai_de_arana.png");
+        Character apoena = new("Apoena", "res://Dialogo/portrait/apoena.png");
+        Character apua = new("Apuã", "res://Dialogo/portrait/apua.png");
+        Character karai = new("Karai", "res://Dialogo/portrait/karai.png");
+
+        Characters.Add("tutorial", tutorial);
+        Characters.Add("arana", arana);
+        Characters.Add("pai_de_arana", PaiDeArana);
+        Characters.Add("apoena", apoena);
+        Characters.Add("apua", apua);
+        Characters.Add("karai", karai);
+    }
 
     /// <summary>
     /// Deactivates the dialog GUI, making it invisible and clearing the current dialog sequence.
@@ -72,48 +94,38 @@ public partial class DialogGui : VBoxContainer
     /// This method makes the dialog GUI visible and initializes the resource sequence with the provided dialog resources. 
     /// If the dialog is null, it signals the player to end the interaction.
     /// </remarks>
-    public void Activate(DialogResource[] dialog,string EventAtEnd,bool playAnimation = true){
+    public void Activate(string DialogSequencePath,string EventAtEnd,bool playAnimation = true){
         dialogText.Text = "";
         portrait.Texture = null;
         nameText.Text = "";
-        if (dialog == null)
+        if (DialogSequencePath == null || DialogSequencePath == "")
         {
             player.InteractDialog(null, "");
             return;
         }
-        this.EventAtEnd = EventAtEnd;
-        resourceSequence = new(dialog);
         Visible = true;
         if (playAnimation)
         {
             animationPlayer.Play("open");
-            animationTimerEnds = () => { SetResource(resourceSequence.Current()); };
+            animationTimerEnds = () =>{ SetDialog(DialogSequencePath, EventAtEnd); };
             animationTimer.WaitTime = animationPlayer.CurrentAnimationLength;
             animationTimer.Start();
         }
         else
         {
-            SetResource(resourceSequence.Current());
+            SetDialog(DialogSequencePath, EventAtEnd);
         }
         
     }
 
-    /// <summary>
-    /// Sets the dialog GUI with the given dialog resource.
-    /// </summary>
-    /// <param name="resource">The dialog resource to set.</param>
-    /// <remarks>
-    /// This method updates the dialog sequence with the sequence from the given dialog resource,
-    /// sets the name text to the character name from the resource, sets the portrait texture to the
-    /// portrait from the resource, and sets the current dialog text to the first element of the
-    /// sequence.
-    /// </remarks>
-    void SetResource(DialogResource resource){
-        DialogSequence = new(resource.GetSequence());
-        nameText.Text = resource.CharacterName;
-        portrait.Texture = resource.portrait;
+    public void SetDialog(string dialogFile, string EventAtEnd)
+    {
+        DialogSequence = new(GetSequence(dialogFile));
         SetDialog(DialogSequence.Current());
+        this.EventAtEnd = EventAtEnd;
+        isFinished = false;
     }
+
 
 
     /// <summary>
@@ -126,14 +138,22 @@ public partial class DialogGui : VBoxContainer
     /// are set to 0 to start the animation from the beginning. The ended animation flag is set to false
     /// to indicate that the animation has not finished yet.
     /// </remarks>
-    void SetDialog(string dialog){
+    void SetDialog(string dialogRaw){
         currentLetter = 0;
         endedAnimation = false;
+        SetCharacter(Characters[dialogRaw.Split(":")[0]]);
+        string dialog = dialogRaw.Split(":")[1];
 
         dialogText.VisibleCharacters = 0;
         dialogText.Text = "";
         dialogText.Text = dialog;
         WordUpdater.Start();
+    }
+
+    void SetCharacter(Character ch)
+    {
+        nameText.Text = ch.name;
+        portrait.Texture = ch.portrait;   
     }
 
     /// <summary>
@@ -179,20 +199,28 @@ public partial class DialogGui : VBoxContainer
     /// Otherwise, it progresses the dialog sequence if it is not finished, or the resource sequence if the dialog is finished.
     /// </remarks>
     void Next(){
-        if(resourceSequence == null || DialogSequence == null) return;
-        if (resourceSequence.isFinished && DialogSequence.isFinished)
+        if(DialogSequence == null) return;
+        if (DialogSequence.isFinished)
         {
-            player.InteractDialog(null, "");
-            EventHandler.EmitEvent(EventAtEnd);
-        }
-        else if (!DialogSequence.isFinished)
-        {
-            SetDialog(DialogSequence.Next());
+            isFinished = true;
+            if (EventAtEnd != "") EventHandler.EmitEvent(EventAtEnd);
+            if(isFinished) player.InteractDialog("", "");
         }
         else
         {
-            SetResource(resourceSequence.Next());
+            SetDialog(DialogSequence.Next());
         }
+    }
+    public string[] GetSequence(string dialogPath){
+        if(FileAccess.FileExists(dialogPath) == false) return null;
+        FileAccess file = FileAccess.Open(dialogPath, FileAccess.ModeFlags.Read);
+        string[] DialogSequence = file.GetAsText()
+                                .Replace("\r","")
+                                .Split('\n')
+                                .Where(x => x != "")
+                                .ToArray();
+        file.Close();
+        return DialogSequence;
     }
 
     public override void _Input(InputEvent @event)
@@ -202,13 +230,32 @@ public partial class DialogGui : VBoxContainer
         {
             if (keyEvent.IsActionPressed("confirm"))
             {
-                if (!endedAnimation){
+                if (!endedAnimation)
+                {
                     cancelAnimation();
                 }
-                else{
+                else
+                {
                     Next();
                 }
             }
+        }
+    }
+}
+
+
+public class Character
+{
+    public string name;
+    public Texture2D portrait;
+    public Character(string name, string portraitPath)
+    {
+        this.name = name;
+        if(portraitPath == "") return;
+        try{
+            this.portrait = ResourceLoader.Load<Texture2D>(portraitPath);
+        }catch(Exception e){
+            GD.PushError(e);
         }
     }
 }

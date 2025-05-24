@@ -1,0 +1,5 @@
+apoena: Olá Aranã, como posso ajudar?
+arana: Eu preciso de ajuda, como eu faço para impedir essa planta de assolar nossas terras?
+apoena: Temo que a resposta seja algo que talvez você não consiga resolver sozinha, peça ajuda a Apuã para te guiar nessa jornada.
+apoena: A propósito, aqui, pegue meu equipamento, você ira precisar
+tutorial: aperte Espaço para fazer o golpe e Shift para se defender

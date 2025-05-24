@@ -1,0 +1,3 @@
+pai_de_arana: Aranã, obrigado por vir, tenho um pedido para te fazer.
+arana: é sobre essa planta que assolou nosso plantio?
+pai_de_arana: Isso, e eu preciso que você fale com o Cacique Apoena sobre isso.

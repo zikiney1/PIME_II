@@ -117,10 +117,16 @@ public partial class GameGui : VBoxContainer{
         else
             HandItemQuantity.Text = "";
     }
+    public void SetEmptyHandItem(){
+        HandItemIcon.Texture = null;
+        HandItemName.Text = "";
+        HandItemQuantity.Text = "";
+    }
 
 
-    public void UpdateGold(){
-        CoinAmount.Text = " "+player.gold.ToString();
+    public void UpdateGold()
+    {
+        CoinAmount.Text = " " + player.gold.ToString();
     }
 }
 

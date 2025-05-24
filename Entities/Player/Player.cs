@@ -43,6 +43,7 @@ public partial class Player : CharacterBody2D
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
     public int gold = 0;
     float Speed = (GameManager.GAMEUNITS) * 1000;
+    public bool canAttack = true;
     Vector2 lastDirection;
     Vector2 MouseDirection;
 
@@ -64,7 +65,7 @@ public partial class Player : CharacterBody2D
     public ReflectionHandler reflectionHandler;
     public ColorRect blur;
 
-    public void Save(Vector2 pos) => SaveData.Save(this, pos);
+    public void Save() => SaveData.Save(this);
     public void UpdateHearts() => GUI.UpdateHearts();
     public void AddStation(SaveStation saveStation) => saveGUI.AddStation(saveStation);
     public string[] KnowCheckPoints() => saveGUI.ToNames();
@@ -138,18 +139,23 @@ public partial class Player : CharacterBody2D
 
         HandItem = inventory[handItemIndex];
 
-        if (HandItem == null)
+        if (HandItem != null)
         {
-            ChangeHandItem();
+            ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+            GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
         }
-        ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+        else
+        {
+            GUI.SetEmptyHandItem();
+        }
 
-        GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
 
         HitArea.BodyEntered += whenHitEnemy;
-        
+
 
         animationHandler.Play("idle");
+        
+        EventHandler.EmitEvent("OnStart");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -218,10 +224,11 @@ public partial class Player : CharacterBody2D
 
     public void DeactivateBlur() => blur.Visible = false;
     public void ActivateBlur() => blur.Visible = true;
-    public void InteractDialog(DialogResource[] dialog, string EventAtEnd)
+    public void SetDialog(string dialogRaw,string EventAtEnd) => dialogGui.SetDialog(dialogRaw,EventAtEnd);
+    public void InteractDialog(string dialogPath, string EventAtEnd)
     {
-        if(dialogGui.isPlayingAnimation) return;
-        if (dialogGui.Visible)
+        if (dialogGui.isPlayingAnimation) return;
+        if (dialogGui.Visible || dialogPath == "")
         {
             dialogGui.Deactivate();
             state = PlayerState.Idle;
@@ -229,7 +236,7 @@ public partial class Player : CharacterBody2D
         }
         else
         {
-            dialogGui.Activate(dialog, EventAtEnd);
+            dialogGui.Activate(dialogPath, EventAtEnd);
             state = PlayerState.Lock;
             blur.Visible = true;
         }
@@ -542,7 +549,7 @@ public partial class Player : CharacterBody2D
 
     void Attack()
     {
-        if (!fightSystem.canAttack) return;
+        if (!fightSystem.canAttack || !canAttack) return;
         float attackSpeedmodifier = -(equipamentSys.attackSpeed + potionModifier.attackSpeed);
 
         if (playerWeapon == PlayerWeapon.Sword)

@@ -14,6 +14,11 @@ public partial class GameManager : Node{
     [Export] Camera camera;
     Random rnd;
 
+    [Export] public NpcDialogZone Apoena;
+    [Export] public NpcDialogZone Apua;
+    [Export] public NpcDialogZone Karai_dialog;
+    [Export] public Merchant Karai_Merchant;
+
     public enum GameState
     {
         Running,
@@ -37,18 +42,20 @@ public partial class GameManager : Node{
     public void DespawnItem(DropItem dropItem)
     {
         pooling.ReturnItem(dropItem);
-    } 
+    }
 
     public override void _EnterTree()
     {
         Instance = this;
-        pooling = new ();
+        pooling = new();
         AddChild(pooling);
 
         config = new();
         ItemDB.SetupItemDB();
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
+        EventHandler.Setup();
+        QuestHandler.Setup();
 
 
 
