@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://cx0cy1oytb5a1"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_hfrhx"]
+
+[resource]
+script = ExtResource("1_hfrhx")
+id = 8
+level = 1
+name = "Fibra de Tucum"
+description = "Fibra vegetal forte usada na criação de equipamentos leves.
+"
+price = 35
+stackMaxSize = 20
+type = 3
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

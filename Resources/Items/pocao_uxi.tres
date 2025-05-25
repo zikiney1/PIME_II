@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://c0jxwx6jmjb42"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_k1j1q"]
+[ext_resource type="Resource" uid="uid://b70b8bx8bqp3p" path="res://Resources/potionEffects/cura_com_tempo.tres" id="1_sd5cj"]
+
+[resource]
+script = ExtResource("1_k1j1q")
+id = 14
+level = 1
+name = "Elixir espiritual de Uxi"
+description = "Um Tônico místico que limpa a mente e revigora os sentidos."
+price = 70
+stackMaxSize = 5
+type = 0
+PotionEffect = ExtResource("1_sd5cj")
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

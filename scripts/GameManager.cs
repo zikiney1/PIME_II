@@ -14,6 +14,66 @@ public partial class GameManager : Node{
     [Export] Camera camera;
     Random rnd;
 
+    [Export] public NpcDialogZone Apoena;
+    [Export] public NpcDialogZone Apua;
+    [Export] public NpcDialogZone Karai_dialog;
+    [Export] public NpcDialogZone Luna;
+    [Export] public NpcDialogZone caua;
+    [Export] public NpcDialogZone thauan;
+    [Export] public NpcDialogZone moacir;
+    [Export] public NpcDialogZone espirito;
+    [Export] public Merchant Karai_Merchant;
+    [Export] public Node moacirQuestEnemies;
+
+    public string SaveQuests()
+    {
+        string saveDataLine = "";
+        saveDataLine += Apoena.dialogPath + "|";
+        saveDataLine += Apua.dialogPath + "|";
+        saveDataLine += (Karai_dialog.Visible ? Karai_dialog.dialogPath : "") + "|";
+        saveDataLine += Luna.dialogPath + "|";
+        saveDataLine += caua.dialogPath + "|";
+        saveDataLine += thauan.dialogPath + "|";
+        saveDataLine += (moacir.Visible? moacir.dialogPath : "") + "|";
+        saveDataLine += espirito.dialogPath;
+        return saveDataLine;
+    }
+
+    public void LoadQuests(string saveDataLine)
+    {
+        if (saveDataLine == "") return;
+        string[] saveData = saveDataLine.Split('|');
+        Apoena.dialogPath = saveData[0];
+        Apua.dialogPath = saveData[1];
+
+        if (saveData[2] == "")
+        {
+            Karai_dialog.Visible = false;
+            Karai_Merchant.Visible = true;
+        }
+        else
+        {
+            Karai_dialog.Visible = true;
+            Karai_Merchant.Visible = false;
+            Karai_dialog.dialogPath = saveData[2];
+        }
+        Luna.dialogPath = saveData[3];
+        caua.dialogPath = saveData[4];
+        thauan.dialogPath = saveData[5];
+
+        if (saveData[6] == "")
+        {
+            moacir.Visible = false;
+        }
+        else
+        {
+            moacir.Visible = true;
+            moacir.dialogPath = saveData[6];
+        }
+
+        espirito.dialogPath = saveData[7];
+    }
+
     public enum GameState
     {
         Running,
@@ -37,19 +97,19 @@ public partial class GameManager : Node{
     public void DespawnItem(DropItem dropItem)
     {
         pooling.ReturnItem(dropItem);
-    } 
+    }
 
     public override void _EnterTree()
     {
         Instance = this;
-        pooling = new ();
+        pooling = new();
         AddChild(pooling);
 
         config = new();
         ItemDB.SetupItemDB();
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
-
+        EventHandler.Setup();
 
 
     }

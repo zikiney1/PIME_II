@@ -104,7 +104,7 @@ size_flags_stretch_ratio = 0.09
 [node name="Control" type="Control" parent="MainGUI/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.4
+size_flags_stretch_ratio = 0.2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainGUI/VBoxContainer"]
 layout_mode = 2
@@ -141,7 +141,7 @@ vertical_alignment = 1
 [node name="Control2" type="Control" parent="MainGUI/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.25
+size_flags_stretch_ratio = 0.4
 
 [node name="ItemRegion" type="VBoxContainer" parent="MainGUI"]
 layout_mode = 2
@@ -149,6 +149,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.15
 
 [node name="Control" type="Control" parent="MainGUI/ItemRegion"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
@@ -168,7 +169,7 @@ theme_override_font_sizes/mono_font_size = 24
 theme_override_font_sizes/normal_font_size = 24
 theme_override_font_sizes/bold_font_size = 24
 bbcode_enabled = true
-text = "Nome do Item"
+text = "Nome do Item Bem longo"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -182,7 +183,8 @@ size_flags_stretch_ratio = 0.5
 alignment = 1
 
 [node name="Portrait" type="TextureRect" parent="MainGUI/ItemRegion/ItemLayout"]
-custom_minimum_size = Vector2(64, 64)
+z_index = 1
+custom_minimum_size = Vector2(66, 66)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
@@ -190,6 +192,7 @@ texture = ExtResource("5_wlqrn")
 expand_mode = 2
 
 [node name="ItemIcon" type="TextureRect" parent="MainGUI/ItemRegion/ItemLayout/Portrait"]
+z_index = -1
 layout_mode = 0
 offset_right = 64.0
 offset_bottom = 64.0
@@ -217,10 +220,52 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control2" type="Control" parent="MainGUI"]
+[node name="Control2" type="Control" parent="MainGUI/ItemRegion"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="Equipament" type="VBoxContainer" parent="MainGUI"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
+
+[node name="ItemName" type="RichTextLabel" parent="MainGUI/Equipament"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_2676r")
+theme_override_fonts/normal_font = ExtResource("4_yd8fi")
+theme_override_fonts/mono_font = ExtResource("4_yd8fi")
+theme_override_fonts/italics_font = ExtResource("4_yd8fi")
+theme_override_fonts/bold_italics_font = ExtResource("4_yd8fi")
+theme_override_fonts/bold_font = ExtResource("4_yd8fi")
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true
+text = "Nome do Equipamento "
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+threaded = true
+
+[node name="Portrait" type="TextureRect" parent="MainGUI/Equipament"]
+z_index = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+texture = ExtResource("5_wlqrn")
+expand_mode = 2
+
+[node name="ItemIcon" type="TextureRect" parent="MainGUI/Equipament/Portrait"]
+z_index = -1
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
 
 [node name="GameContainter" type="VBoxContainer" parent="."]
 layout_mode = 2

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://01ghjtmggcc8"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_mj6jo"]
+
+[resource]
+script = ExtResource("1_mj6jo")
+id = 0
+level = 1
+name = "Nevoa de Cipo Azul"
+description = "Um líquido extraído de cipós raros, com efeito calmante e místico"
+price = 15
+stackMaxSize = 3
+type = 3
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://671lkxu8khmj"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_18m26"]
+[ext_resource type="Resource" uid="uid://ck3erjtbk7dx2" path="res://Resources/Plants/aroeira.tres" id="1_eanv6"]
+
+[resource]
+script = ExtResource("1_18m26")
+id = 4
+level = 1
+name = "Semente de Aroeira"
+description = "Planta medicinal com propriedades cicatrizantes.
+"
+price = 14
+stackMaxSize = 10
+type = 2
+plantData = ExtResource("1_eanv6")
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

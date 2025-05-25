@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://co71nbhy7u30d"]
+[gd_scene load_steps=38 format=3 uid="uid://co71nbhy7u30d"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_0bltp"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="1_kw413"]
@@ -14,13 +14,11 @@
 [ext_resource type="PackedScene" uid="uid://b6e57l2772r5g" path="res://Components/InteractableArea/saveStation/SaveStation.tscn" id="13_2kxrb"]
 [ext_resource type="PackedScene" uid="uid://pas7jkbmhrut" path="res://Components/InteractableArea/Merchant/Merchant.tscn" id="14_jv3ig"]
 [ext_resource type="Resource" uid="uid://c00sibf58x1mm" path="res://Resources/Items/Adubo_eco.tres" id="15_modcj"]
-[ext_resource type="Resource" uid="uid://ck6o847m6ngwi" path="res://Resources/Items/Ingridient_test1.tres" id="16_86kg1"]
+[ext_resource type="Resource" uid="uid://ck6o847m6ngwi" path="res://Resources/Items/seed_jatoba.tres" id="16_86kg1"]
 [ext_resource type="Resource" uid="uid://ccavfkxd0oc42" path="res://Resources/Items/Ingridient_test2.tres" id="17_t2slw"]
 [ext_resource type="Resource" uid="uid://b1po4fiogb6so" path="res://Resources/Items/InstaHealPotionN2.tres" id="18_86b7u"]
 [ext_resource type="Script" uid="uid://nryvcqplfxb1" path="res://Components/InteractableArea/saveStation/SaveStationManager.cs" id="18_86kg1"]
 [ext_resource type="PackedScene" uid="uid://bdsw4lic044d2" path="res://Components/InteractableArea/NpcDialogArea/NPCDialogZone.tscn" id="20_t2slw"]
-[ext_resource type="Resource" uid="uid://dld0vuesnff83" path="res://Dialogo/Resources/teste.tres" id="21_86b7u"]
-[ext_resource type="Resource" uid="uid://bx1kebuoaht0i" path="res://Dialogo/Resources/teste2.tres" id="22_74k5p"]
 [ext_resource type="PackedScene" uid="uid://d3nwgnwjpb005" path="res://Entities/Enemy/Atirador/Atirador.tscn" id="23_m6der"]
 [ext_resource type="Texture2D" uid="uid://cw26f4ab08bii" path="res://assets/Sprites/test/enemy_projectile.png" id="24_qww5e"]
 [ext_resource type="PackedScene" uid="uid://c7qi0gxc1vg1d" path="res://Entities/Enemy/Rolante/Rolante.tscn" id="25_7pc4u"]
@@ -692,7 +690,6 @@ position = Vector2(0, -14)
 
 [node name="NPCDialogZone" parent="." instance=ExtResource("20_t2slw")]
 position = Vector2(50, 197)
-dialogResource = Array[Object]([ExtResource("21_86b7u"), ExtResource("22_74k5p")])
 EventAtEnd = "GetGold"
 
 [node name="Enemys" type="Node" parent="."]

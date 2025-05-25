@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://brkqif6ps2ivj"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_a7xu1"]
+
+[resource]
+script = ExtResource("1_a7xu1")
+id = 7
+level = 1
+name = "Cápsula de Urucum"
+description = "Cápsula com sementes vermelhas usadas como corante e em rituais.
+"
+price = 30
+stackMaxSize = 15
+type = 3
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

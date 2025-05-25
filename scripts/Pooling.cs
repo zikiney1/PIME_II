@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 public partial class Pooling : Node2D
 {
@@ -24,20 +25,19 @@ public partial class Pooling : Node2D
             Projectile p = new();
             p.pooling = this;
             p.DeActivate();
-
             DeactiveProjectiles.Add(p);
             this.AddChild(p);
 
             Coin c = new();
             c.pool = this;
             c.DeActivate();
-
             DeactiveCoins.Add(c);
             this.AddChild(c);
 
             DropItem d = new();
             d = new();
             d.polling = this;
+            poolItems.Add(d);
             this.AddChild(d);
         }
 

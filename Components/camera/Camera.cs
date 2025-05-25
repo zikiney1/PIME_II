@@ -3,7 +3,7 @@ using System;
 
 public partial class Camera : Camera2D
 {
-    [Export] public Player player;   // Path to the player (Node2D)
+    Player player;
 
 
     public override void _Ready()
@@ -12,12 +12,11 @@ public partial class Camera : Camera2D
         PositionSmoothingEnabled = true;
         PositionSmoothingSpeed = 6;
 
-        if(player == null) return;
+        player = Player.Instance;
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if(player == null) return;
         SetScreenPosition();
     }
 
@@ -28,6 +27,7 @@ public partial class Camera : Camera2D
     /// </summary>
     public void SetScreenPosition()
     {
+        if(player == null) player = Player.Instance;
         Vector2 playerPos = player.GlobalPosition;
         Vector2 ScreenSize = GetViewportRect().Size / (Zoom * 1.1f);
 

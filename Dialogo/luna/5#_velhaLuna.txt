@@ -1,0 +1,10 @@
+arana: oi, você é a xamã luna?
+luna: sim, é eu mesma. E você deve ser Aranã...
+arana: Como sabe meu nome?
+luna: [wave amp=20 freq=1]Os espiritos vieram mais rapido que você minha querida[/wave], sua vila precisa de ajuda assim como a minha.
+luna: converse com o nosso cacique Cauã para conseguir mais informações.
+arana: muito obrigado!
+luna: não tão rapido minha jovem, aqui, pegue essas receitas de meus atepassados...
+Você Conseguiu a recita para [color=blue]Elixir espiritual de Uxi[/color]
+Você Conseguiu a recita para [color=blue]Poção Protetora de Aroeira[/color]
+luna: agora vá e converse com Cauã, [wave amp=10 freq=1]Os Espiritos confiam em você[/wave]

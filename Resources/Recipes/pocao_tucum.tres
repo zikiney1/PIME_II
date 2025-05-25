@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RecipeResource" load_steps=5 format=3 uid="uid://i2ktuayjawvx"]
+
+[ext_resource type="Resource" uid="uid://cx0cy1oytb5a1" path="res://Resources/Items/fruto_tucum.tres" id="1_r72v6"]
+[ext_resource type="Script" uid="uid://bgepf62ui3nwe" path="res://Resources/RecipeResource.cs" id="1_veus2"]
+[ext_resource type="Resource" uid="uid://dh13d6hy8hpbv" path="res://Resources/Items/seed_urucum.tres" id="2_fumhv"]
+[ext_resource type="Resource" uid="uid://7wm04y0pg8u6" path="res://Resources/Items/pocao_tucum.tres" id="3_du0v2"]
+
+[resource]
+script = ExtResource("1_veus2")
+ingredients = Array[Object]([ExtResource("1_r72v6"), ExtResource("2_fumhv")])
+quantity = PackedByteArray(1, 2)
+result = ExtResource("3_du0v2")
+metadata/_custom_type_script = "uid://bgepf62ui3nwe"

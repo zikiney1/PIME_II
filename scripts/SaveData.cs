@@ -11,72 +11,107 @@ public static class SaveData{
     /// Loads a save file and sets up the Player with the values from the save file.
     /// </summary>
     /// <param name="player">The player to set up.</param>
-    public static void LoadSaveFile(Player player){
-        if(saveFilePath == "") return;
-        
+    public static void LoadSaveFile(Player player)
+    {
+        if (saveFilePath == "") return;
+        int indexer = 0;
+
         FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Read);
-        string[] lines = file.GetAsText().Replace("\r","").Split('\n');
+        string[] lines = file.GetAsText().Replace("\r", "").Split('\n');
 
         file.Close();
 
         //atualiza as informacoes do jogador
-        string[] pInfo = lines[0].Split('|');
-        player.lifeSystem = new(byte.Parse(pInfo[0]),10);
+        string[] pInfo = lines[indexer].Split('|');
+        player.lifeSystem = new(byte.Parse(pInfo[0]), 10);
         player.handItemIndex = byte.Parse(pInfo[1]);
         player.gold = int.Parse(pInfo[2]);
+        if (pInfo.Length > 3){
+            if(pInfo[3] != "") player.equipamentSys.AddEquipament(byte.Parse(pInfo[3]));
+        }
 
+        indexer++;
         //atualiza o inventario
-        string[] inventoryItems = lines[1].Split('|');
-        foreach(string item in inventoryItems){
-            if(item == "") continue;
-            string[] itemData = item.Split(';');
-            byte id = byte.Parse(itemData[0]);
-            byte quantity = byte.Parse(itemData[1]);
+        if (lines[indexer] != "")
+        {
+            string[] inventoryItems = lines[indexer].Split('|');
+            foreach (string item in inventoryItems)
+            {
+                if (item == "") continue;
+                string[] itemData = item.Split(';');
+                byte id = byte.Parse(itemData[0]);
+                byte quantity = byte.Parse(itemData[1]);
 
-            player.Add(id,quantity);
+                player.Add(id, quantity);
+            }
         }
 
-        //atualiza os equipamentos
-        string[] equipaments = lines[2].Split('|');
-        foreach(string equipament in equipaments){
-            if(equipament == "") continue;
-            byte id = byte.Parse(equipament);
-            player.equipamentSys.AddEquipament(id);
-        }
-
+        indexer++;
         //atualiza a vida dos terrenos
-        string[] soilsLifesRaw = lines[3].Split(';');
-        byte[] soilsLifes = new byte[soilsLifesRaw.Length-1];
-        for(int i=0;i<soilsLifes.Length;i++){
-            if(soilsLifesRaw[i].Trim() == "") continue;
-            soilsLifes[i] = byte.Parse(soilsLifesRaw[i]);
+        if (lines[indexer] != "")
+        {
+            string[] soilsLifesRaw = lines[indexer].Split(';');
+            byte[] soilsLifes = new byte[soilsLifesRaw.Length - 1];
+            for (int i = 0; i < soilsLifes.Length; i++)
+            {
+                if (soilsLifesRaw[i].Trim() == "") continue;
+                soilsLifes[i] = byte.Parse(soilsLifesRaw[i]);
+            }
+            player.plantZoneData = new PlantZoneData(GameManager.SOILTILESIZE, GameManager.SOILTILESIZE, soilsLifes);
         }
-        player.plantZoneData = new PlantZoneData(GameManager.SOILTILESIZE,GameManager.SOILTILESIZE,soilsLifes);
-        if(player.PlantZone != null) player.PlantZone.Setup();
+        else
+        {
+            player.plantZoneData = new PlantZoneData(GameManager.SOILTILESIZE, GameManager.SOILTILESIZE, null);
+        }
+        player.PlantZone.Setup();
 
+        indexer++;
         //atualizar as plantas
-        string[] plants = lines[4].Split('|');
-        foreach(string plant in plants){
-            if(plant == "") continue;
-            string[] itemData = plant.Split(';');
-            string name = itemData[0];
-            int position = int.Parse(itemData[1]);
-            short progress = short.Parse(itemData[2]);
-            player.plantZoneData.Add(name,position,progress);
+        if (lines[indexer] != "")
+        {
+            string[] plants = lines[indexer].Split('|');
+            foreach (string plant in plants)
+            {
+                if (plant == "") continue;
+                string[] itemData = plant.Split(';');
+                string name = itemData[0];
+                int position = int.Parse(itemData[1]);
+                short progress = short.Parse(itemData[2]);
+                player.plantZoneData.Add(name, position, progress);
+            }
         }
 
+        indexer++;
         //coloca a posição do jogador no checkpoint
-        string[] playerPositionRaw = lines[5].Split('|');
-        Vector2 newPosition = new(int.Parse(playerPositionRaw[0]),int.Parse(playerPositionRaw[1]));
-        player.GlobalPosition = newPosition;
+        if (lines[indexer] != "")
+        {
+            string[] playerPositionRaw = lines[indexer].Split('|');
+            Vector2 newPosition = new(int.Parse(playerPositionRaw[0]), int.Parse(playerPositionRaw[1]));
+            player.GlobalPosition = newPosition;
+        }
 
+        indexer++;
         //atualizar os warpszones
-        string[] checkpoints = lines[6].Split('|');
-        player.UpdateKnowsCheckPoints(checkpoints);
+        if (lines[indexer] != "")
+        {
+            string[] checkpoints = lines[indexer].Split('|');
+            player.UpdateKnowsCheckPoints(checkpoints);
+        }
 
+        indexer++;
         //atualizar receitas
-        string[] recepies = lines[7].Split('|');
-        CraftingSystem.DiscoverMultiples(recepies);
+        if (lines[indexer] != "")
+        {
+            string[] recepies = lines[indexer].Split('|');
+            CraftingSystem.DiscoverMultiples(recepies);
+        }
+
+        indexer++;
+        //quests
+        if (lines.Length > 7)
+        {
+            GameManager.Instance.LoadQuests(lines[indexer]);
+        }
 
     }
 
@@ -84,24 +119,27 @@ public static class SaveData{
     /// Saves the current state of the player to a file.
     /// </summary>
     /// <param name="player">The player whose state is to be saved.</param>
-    /// <param name="pos">The current position of the player in the game world.</param>
     /// <remarks>
     /// This function writes the player's life, inventory, equipaments, soil life, planted crops, 
     /// position, known checkpoints, and discovered recipes to the save file. The data is serialized 
     /// in a specific format for later retrieval.
     /// </remarks>
-    public static void Save(Player player, Vector2 pos)
+    public static void Save(Player player)
     {
         Thread saveThread = new(() =>
         {
 
-            if (saveFilePath == "") return;
+            if (saveFilePath == "")
+            {
+                GD.PushError("Save file path is empty");
+                return;
+            }
 
             FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
             StringBuilder sb = new();
 
             //informação do jogador
-            sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold);
+            sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold + "|" + player.equipamentSys.IdData());
 
 
             //inventario
@@ -112,15 +150,6 @@ public static class SaveData{
                 inventoryContent += $"{item.id};{item.quantity}|";
             }
             sb.AppendLine(inventoryContent);
-
-            //equipamentos
-            string equipamentsContent = "";
-            foreach (ItemResource equipament in player.equipamentSys.equipaments)
-            {
-                if (equipament == null) continue;
-                equipamentsContent += $"{equipament.id}|";
-            }
-            sb.AppendLine(equipamentsContent);
 
             //vida dos terrenos
             string soilsLifesContent = "";
@@ -143,7 +172,7 @@ public static class SaveData{
             sb.AppendLine(plantsContent);
 
             //posição do jogador
-            sb.AppendLine($"{Math.Round(pos.X, 0)}|{Math.Round(pos.Y, 0)}");
+            sb.AppendLine($"{Math.Round(player.GlobalPosition.X, 0)}|{Math.Round(player.GlobalPosition.Y, 0)}");
 
             //checkpoints
             sb.AppendLine(string.Join('|', player.KnowCheckPoints()));
@@ -155,9 +184,9 @@ public static class SaveData{
                     .Select(x => x.name)
             ));
 
+            sb.AppendLine(GameManager.Instance.SaveQuests());
+
             file.StoreString(sb.ToString());
-
-
             file.Close();
         });
         

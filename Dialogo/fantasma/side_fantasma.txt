@@ -1,0 +1,4 @@
+espirito: [tornado radius=3 freq=1]Aranã, nos ajude... os cristais vivos...[/tornado]
+arana: oxe, quem são vocês?
+espirito: [tornado radius=3 freq=1] sem tempo explicar... consiga os... e o conhecimento será teu...[/tornado]
+arana: acho que ja ouvi falar desses cristais, tinha um naquele mercante da vila do mar.

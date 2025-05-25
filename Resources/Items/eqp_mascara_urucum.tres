@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://bbahliauma34x"]
+
+[ext_resource type="Resource" uid="uid://0ash2bly5x57" path="res://Resources/EquipamentData/mascara_urucum.tres" id="1_6vgx1"]
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_347l4"]
+
+[resource]
+script = ExtResource("1_347l4")
+id = 21
+level = 1
+name = "Máscara de Urucum Cerimonial"
+description = " Máscara pintada com pigmento de urucum. Dizem que aumenta a percepção e a evasão."
+price = 70
+stackMaxSize = 1
+type = 1
+equipamentData = ExtResource("1_6vgx1")
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

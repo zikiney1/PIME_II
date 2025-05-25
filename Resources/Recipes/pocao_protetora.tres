@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RecipeResource" load_steps=5 format=3 uid="uid://bgkybsj60cmig"]
+
+[ext_resource type="Resource" uid="uid://cr4qft41pwit2" path="res://Resources/Items/fruto_aroeira.tres" id="1_ekso5"]
+[ext_resource type="Script" uid="uid://bgepf62ui3nwe" path="res://Resources/RecipeResource.cs" id="1_sckp1"]
+[ext_resource type="Resource" uid="uid://45moj83vkhu5" path="res://Resources/Items/ing_resina_densa.tres" id="2_ni3ec"]
+[ext_resource type="Resource" uid="uid://bexqm4v54q1x1" path="res://Resources/Items/pocao_protetora_aroeira.tres" id="3_aj6gr"]
+
+[resource]
+script = ExtResource("1_sckp1")
+ingredients = Array[Object]([ExtResource("1_ekso5"), ExtResource("2_ni3ec")])
+quantity = PackedByteArray(2, 2)
+result = ExtResource("3_aj6gr")
+metadata/_custom_type_script = "uid://bgepf62ui3nwe"

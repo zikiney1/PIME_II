@@ -5,10 +5,10 @@
 
 [resource]
 script = ExtResource("1_5s7hy")
-id = 7
+id = 255
 level = 1
 name = "Adubo"
-description = "Adubo natural"
+description = "Adubo natural feito apartir de itens organicos."
 icon = ExtResource("1_6pq8u")
 price = 0
 stackMaxSize = 20

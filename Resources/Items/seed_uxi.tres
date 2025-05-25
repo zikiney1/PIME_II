@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://lnssl3kyjn5n"]
+
+[ext_resource type="Resource" uid="uid://b4mv5c8mufgdy" path="res://Resources/Plants/uxi.tres" id="1_a76gc"]
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_ytu23"]
+
+[resource]
+script = ExtResource("1_ytu23")
+id = 5
+level = 1
+name = "Semente de Uxi"
+description = "Semente da árvore sagrada de uxi. Seus frutos têm valor medicinal e espiritual.
+"
+price = 18
+stackMaxSize = 5
+type = 3
+plantData = ExtResource("1_a76gc")
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

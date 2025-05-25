@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RecipeResource" load_steps=5 format=3 uid="uid://bmm141iatiohp"]
+
+[ext_resource type="Resource" uid="uid://c4hne7iq22g8i" path="res://Resources/Items/fruto_uxi.tres" id="1_62lqw"]
+[ext_resource type="Script" uid="uid://bgepf62ui3nwe" path="res://Resources/RecipeResource.cs" id="1_el1bp"]
+[ext_resource type="Resource" uid="uid://01ghjtmggcc8" path="res://Resources/Items/ing_nevoa_cipo_azul.tres" id="2_qy0qb"]
+[ext_resource type="Resource" uid="uid://c0jxwx6jmjb42" path="res://Resources/Items/pocao_uxi.tres" id="3_oebmf"]
+
+[resource]
+script = ExtResource("1_el1bp")
+ingredients = Array[Object]([ExtResource("1_62lqw"), ExtResource("2_qy0qb")])
+quantity = PackedByteArray(1, 1)
+result = ExtResource("3_oebmf")
+metadata/_custom_type_script = "uid://bgepf62ui3nwe"

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://45moj83vkhu5"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_e4sf2"]
+
+[resource]
+script = ExtResource("1_e4sf2")
+id = 17
+level = 1
+name = "Resina Densa"
+description = "Substância viscosa coletada de árvores antigas, usada para fortalecer compostos.
+"
+price = 5
+stackMaxSize = 5
+type = 3
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

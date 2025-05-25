@@ -19,6 +19,7 @@ public partial class Player : CharacterBody2D
 
     Area2D HitArea;
     Area2D InteractableRange;
+    Area2D ShieldArea;
     GameManager gameManager;
 
 
@@ -43,6 +44,7 @@ public partial class Player : CharacterBody2D
     public float PlantRange = GameManager.GAMEUNITS * 1.5f;
     public int gold = 0;
     float Speed = (GameManager.GAMEUNITS) * 1000;
+    public bool canAttack = true;
     Vector2 lastDirection;
     Vector2 MouseDirection;
 
@@ -64,7 +66,7 @@ public partial class Player : CharacterBody2D
     public ReflectionHandler reflectionHandler;
     public ColorRect blur;
 
-    public void Save(Vector2 pos) => SaveData.Save(this, pos);
+    public void Save() => SaveData.Save(this);
     public void UpdateHearts() => GUI.UpdateHearts();
     public void AddStation(SaveStation saveStation) => saveGUI.AddStation(saveStation);
     public string[] KnowCheckPoints() => saveGUI.ToNames();
@@ -89,6 +91,7 @@ public partial class Player : CharacterBody2D
         PlantCoolDownTimer = NodeMisc.GenTimer(this, 0.5f, () => canPlant = true);
 
         HitArea = GetNode<Area2D>("HitArea");
+        ShieldArea = GetNode<Area2D>("shield");
         GUI = GetNode<GameGui>("Canvas/GameGUI");
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
         ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
@@ -138,18 +141,24 @@ public partial class Player : CharacterBody2D
 
         HandItem = inventory[handItemIndex];
 
-        if (HandItem == null)
+        if (HandItem != null)
         {
-            ChangeHandItem();
+            ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+            GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
         }
-        ItemResource handItemData = ItemDB.GetItemData(HandItem.id);
+        else
+        {
+            GUI.SetEmptyHandItem();
+        }
 
-        GUI.UpdateHandItem(handItemData.name, handItemData.icon, HandItem.quantity);
 
         HitArea.BodyEntered += whenHitEnemy;
-        
+
 
         animationHandler.Play("idle");
+        
+        if(GlobalPosition == new Vector2(38.0f,38.0f))
+            EventHandler.EmitEvent("OnStart");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -159,7 +168,20 @@ public partial class Player : CharacterBody2D
         Vector2 direction = InputSystem.GetVector();
 
         float speedModifier = equipamentSys.speed + potionModifier.speed + 1;
-        float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(Input.IsActionPressed("defend")) + 1);
+
+        bool isDefending = Input.IsActionPressed("defend");
+
+        if (isDefending)
+        {
+            ShieldArea.Position = direction * (GameManager.GAMEUNITS/2);
+            ShieldArea.Rotation = direction.Angle();
+            ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+        }
+        else
+        {
+            ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+        }
+        float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
 
         animationHandler.Direction(direction);
 
@@ -218,10 +240,11 @@ public partial class Player : CharacterBody2D
 
     public void DeactivateBlur() => blur.Visible = false;
     public void ActivateBlur() => blur.Visible = true;
-    public void InteractDialog(DialogResource[] dialog, string EventAtEnd)
+    public void SetDialog(string dialogRaw,string EventAtEnd) => dialogGui.SetDialog(dialogRaw,EventAtEnd);
+    public void InteractDialog(string dialogPath, string EventAtEnd)
     {
-        if(dialogGui.isPlayingAnimation) return;
-        if (dialogGui.Visible)
+        if (dialogGui.isPlayingAnimation) return;
+        if (dialogGui.Visible || dialogPath == "")
         {
             dialogGui.Deactivate();
             state = PlayerState.Idle;
@@ -229,7 +252,7 @@ public partial class Player : CharacterBody2D
         }
         else
         {
-            dialogGui.Activate(dialog, EventAtEnd);
+            dialogGui.Activate(dialogPath, EventAtEnd);
             state = PlayerState.Lock;
             blur.Visible = true;
         }
@@ -405,6 +428,31 @@ public partial class Player : CharacterBody2D
     //============================================================================================================
 
 
+    public void SetHandItem(int index)
+    {
+        if (index < 0) return;
+        if (inventory.IsHandItem(index))
+        {
+            HandItem = inventory.HandItems[index];
+            GUI.UpdateHandItem(HandItem.name, HandItem.icon, HandItem.quantity);
+        }
+    }
+
+    public void SetEquipament(byte id)
+    {
+        ItemResource item = ItemDB.GetItemData(id);
+        if (item == null) return;
+        if (inventory.Contains(id) == false) return;
+
+        inventory.Remove(id);
+        Add(equipamentSys.equipament);
+        equipamentSys.RemoveEquipament();
+        equipamentSys.AddEquipament(item);
+
+        GUI.SetEquipament(item.name, item.icon);
+        GUI.InventoryUpdate();
+    }
+
     /// <summary>
     /// Updates the portrait of the hand item in the GUI.
     /// </summary>
@@ -542,7 +590,7 @@ public partial class Player : CharacterBody2D
 
     void Attack()
     {
-        if (!fightSystem.canAttack) return;
+        if (!fightSystem.canAttack || !canAttack) return;
         float attackSpeedmodifier = -(equipamentSys.attackSpeed + potionModifier.attackSpeed);
 
         if (playerWeapon == PlayerWeapon.Sword)

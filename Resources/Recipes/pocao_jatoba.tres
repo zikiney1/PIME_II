@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RecipeResource" load_steps=5 format=3 uid="uid://ohw2lt67x0kw"]
+
+[ext_resource type="Script" uid="uid://bgepf62ui3nwe" path="res://Resources/RecipeResource.cs" id="1_ni4f0"]
+[ext_resource type="Resource" uid="uid://bs364q5t4j0o0" path="res://Resources/Items/fruto_jatoba.tres" id="1_ya73c"]
+[ext_resource type="Resource" uid="uid://c50egv6ejl5wb" path="res://Resources/Items/ing_agua_selv.tres" id="2_6wtlb"]
+[ext_resource type="Resource" uid="uid://b6lr3j4c012e4" path="res://Resources/Items/pocao_energetica_jatoba.tres" id="3_p07wx"]
+
+[resource]
+script = ExtResource("1_ni4f0")
+ingredients = Array[Object]([ExtResource("1_ya73c"), ExtResource("2_6wtlb")])
+quantity = PackedByteArray(2, 1)
+result = ExtResource("3_p07wx")
+metadata/_custom_type_script = "uid://bgepf62ui3nwe"
