@@ -82,6 +82,7 @@ public partial class GameGui : VBoxContainer
         UpdateHearts();
         UpdateGold();
         InventoryUpdate();
+        SetEquipament("", null);
     }
 
     public void InventoryUpdate()

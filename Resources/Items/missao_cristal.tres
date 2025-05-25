@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://dtluc3mqfw6oo"]
+
+[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_j06n3"]
+
+[resource]
+script = ExtResource("1_j06n3")
+id = 24
+level = 1
+name = "Cristal Vivo"
+description = "Um cristal radiante, ele sussurra nos seus ovidos"
+price = 5
+stackMaxSize = 3
+type = 5
+metadata/_custom_type_script = "uid://bp21ptg4qc36q"

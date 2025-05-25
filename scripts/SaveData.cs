@@ -90,6 +90,7 @@ public static class SaveData{
             player.GlobalPosition = newPosition;
         }
 
+        indexer++;
         //atualizar os warpszones
         if (lines[indexer] != "")
         {
@@ -97,6 +98,7 @@ public static class SaveData{
             player.UpdateKnowsCheckPoints(checkpoints);
         }
 
+        indexer++;
         //atualizar receitas
         if (lines[indexer] != "")
         {
@@ -104,6 +106,8 @@ public static class SaveData{
             CraftingSystem.DiscoverMultiples(recepies);
         }
 
+        indexer++;
+        //quests
         if (lines.Length > 7)
         {
             GameManager.Instance.LoadQuests(lines[indexer]);

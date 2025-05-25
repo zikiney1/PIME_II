@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://s18iip2r5pk6"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://s18iip2r5pk6"]
 
 [ext_resource type="FontFile" uid="uid://cvjan8u6q7fu7" path="res://assets/Fonts/PanasChill.ttf" id="1_7q4o2"]
+[ext_resource type="FontFile" uid="uid://bgbpc4xvl2epj" path="res://assets/Fonts/Pixelon-E4JEg.otf" id="2_ofmyu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3lx27"]
 content_margin_right = 4.0
@@ -53,7 +54,7 @@ border_width_bottom = 5
 border_color = Color(0.673283, 0.514254, 0.268766, 1)
 
 [resource]
-default_font = ExtResource("1_7q4o2")
+default_font = ExtResource("2_ofmyu")
 default_font_size = 20
 Button/colors/font_color = Color(0.152941, 0.0509804, 0.109804, 1)
 Button/colors/font_hover_color = Color(0.352941, 0.152941, 0.266667, 1)

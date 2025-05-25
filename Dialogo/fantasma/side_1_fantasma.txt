@@ -1,0 +1,4 @@
+espirito: [tornado radius=3 freq=1] obrigado Aranã... aqui sua recompensa...[/tornado]
+Você Conseguiu a recita para [color=blue]Tintura de Urucum Explosiva[/color]
+Você Conseguiu a recita para [color=blue]Poção de Força de Tucum[/color]
+aranã: depois dessa eu não duvido de mais nada

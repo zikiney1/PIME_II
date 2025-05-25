@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="PlantResource" load_steps=2 format=3 uid="uid://cwiles20jwl8k"]
+[gd_resource type="Resource" script_class="PlantResource" load_steps=3 format=3 uid="uid://cwiles20jwl8k"]
 
 [ext_resource type="Script" uid="uid://ctetg1bf2kml4" path="res://Resources/PlantResource.cs" id="1_7le0m"]
+[ext_resource type="Resource" uid="uid://brkqif6ps2ivj" path="res://Resources/Items/fruto_urucum.tres" id="1_61yks"]
 
 [resource]
 script = ExtResource("1_7le0m")
 GrowthProcess = null
 growthDurationSeconds = 120
+result = ExtResource("1_61yks")
 resultQuantity = 3
 metadata/_custom_type_script = "uid://ctetg1bf2kml4"

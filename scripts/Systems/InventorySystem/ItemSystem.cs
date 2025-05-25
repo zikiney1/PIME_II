@@ -113,10 +113,12 @@ public static class ItemDB{
     }
 }
 
-public enum ItemType{
+public enum ItemType
+{
     Potion,
     Equipament,
     Seed,
     Ingredient,
-    Resource
+    Resource,
+    Mission
 }

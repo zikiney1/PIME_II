@@ -1,0 +1,4 @@
+moacir: [shake rate=7 level=2]ei garota, você pode me ajudar?[/shake]
+arana: sim o que você precisa?
+moacir: [shake rate=7 level=2] fui atacado por um grupo de cachorro-planta[/shake], você pode me ajudar a recuperar minhas coisas? Prometo te recompensar.
+arana: vou ver o que consigo fazer.

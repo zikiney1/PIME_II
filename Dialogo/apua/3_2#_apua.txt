@@ -1,7 +1,9 @@
-arana: sim, aqui esta.
+arana: sim, aqui estão.
 apua: Muito obrigado pelas sementes Aranã
-arana: nada foi um prazer
-tutorial: para interagir com o solo aperte o mouse com botão direito no terreno
-tutorial: para plantar, tenha em sua mão a semente, para trocar de item na sua mão precione T.
-tutorial: sua planta irá ter um tempo de crescimento, caso ela fique muito tempo plantada, ela irá morrer, então fique atento.
-tutorial: de tempo em tempo o solo ira ficar mais fraco, adube ele para que continue alimentando a planta.
+apua: agora Você poderá plantar essas sementes no Terreno de Plantio
+para interagir com o solo aperte o mouse com botão direito no terreno
+para plantar, tenha em sua mão a semente, para trocar de item na sua mão precione T.
+sua planta irá ter um tempo de crescimento, caso ela fique muito tempo plantada, ela irá morrer, então fique atento.
+de tempo em tempo o solo ira ficar mais fraco, adube ele para que continue alimentando a planta.
+apua: inclusive, aqui, pegue essa receita de Jatobá, irá te servir.
+apua: ah, e aqui vai uma gorjeta pela viagem.

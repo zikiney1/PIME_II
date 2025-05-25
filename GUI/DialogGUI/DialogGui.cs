@@ -56,6 +56,9 @@ public partial class DialogGui : VBoxContainer
         Character karai = new("Karai", "res://Dialogo/portrait/karai.png");
         Character luna = new("Velha Luna", "res://Dialogo/portrait/luna.png");
         Character caua = new("Cauã", "res://Dialogo/portrait/caua.png");
+        Character thauan = new("Thauan", "res://Dialogo/portrait/thauan.png");
+        Character moacir = new("Moacir", "res://Dialogo/portrait/moacir.png");
+        Character espirito = new("Moacir", "res://Dialogo/portrait/espirito.png");
 
         Characters.Add("tutorial", tutorial);
         Characters.Add("arana", arana);
@@ -65,6 +68,9 @@ public partial class DialogGui : VBoxContainer
         Characters.Add("karai", karai);
         Characters.Add("luna", luna);
         Characters.Add("caua", caua);
+        Characters.Add("thauan", thauan);
+        Characters.Add("moacir", moacir);
+        Characters.Add("espirito", espirito);
     }
 
     /// <summary>
@@ -150,9 +156,10 @@ public partial class DialogGui : VBoxContainer
         if (splited.Length < 2){
             dialog = dialogRaw;
         } else {
-            SetCharacter(Characters[dialogRaw.Split(":")[0]]);
+            SetCharacter(Characters[splited[0]]);
             dialog = dialogRaw.Split(":")[1];
         }
+        dialog.Trim();
 
         dialogText.VisibleCharacters = 0;
         dialogText.Text = "";

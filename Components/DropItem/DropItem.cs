@@ -26,6 +26,7 @@ public partial class DropItem : Area2D
     {
         Scale = new Vector2(0.5f, 0.5f);
         sprite = new();
+        // sprite.Material = GD.Load<ShaderMaterial>("res://Shaders/outline.gdshader");
         AddChild(sprite);
 
         CollisionShape2D collision = new()
