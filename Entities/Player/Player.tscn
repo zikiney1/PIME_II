@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://cdg0jp7odllo"]
+[gd_scene load_steps=39 format=3 uid="uid://cdg0jp7odllo"]
 
 [ext_resource type="Script" uid="uid://bnqm2p5umlph6" path="res://Entities/Player/Player.cs" id="1_cabni"]
 [ext_resource type="Script" uid="uid://dc5oud1trtym" path="res://Components/PlayerAudioManager/PlayerAudioManager.cs" id="2_lmeus"]
@@ -15,8 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://cjdydqsnxmsdd" path="res://GUI/Menu/main_menu.tscn" id="5_hacra"]
 [ext_resource type="AudioStream" uid="uid://rwgfar0p0dkg" path="res://assets/audio/songs/raphael goulart - ^o^.wav" id="6_samso"]
 [ext_resource type="AudioStream" uid="uid://764ekg4tuclo" path="res://assets/audio/sfx/player/walk/walk1.wav" id="7_hl213"]
-[ext_resource type="AudioStream" uid="uid://dqysp4ailsokh" path="res://assets/audio/sfx/player/Attack - Explosion 02.wav" id="7_samso"]
+[ext_resource type="AudioStream" uid="uid://bsvge08v1sok2" path="res://assets/audio/sfx/player/attack_sword.wav" id="7_vcmon"]
 [ext_resource type="AudioStream" uid="uid://ck1cn4uxcgq51" path="res://assets/audio/sfx/player/walk/walk3.wav" id="8_e34i1"]
+[ext_resource type="AudioStream" uid="uid://dhrrmnhujfm7f" path="res://assets/audio/sfx/player/Character - Hurt 01.wav" id="8_h6pxy"]
 [ext_resource type="AudioStream" uid="uid://biascylwpw4ld" path="res://assets/audio/sfx/player/walk/walk2.wav" id="10_vcmon"]
 [ext_resource type="Shader" uid="uid://cl5jxu5opacda" path="res://Shaders/blur_effect.gdshader" id="11_jynvv"]
 
@@ -327,7 +328,8 @@ overworld = ExtResource("3_uw7o4")
 boss = ExtResource("4_gallu")
 VilaDoMar = ExtResource("5_gallu")
 anhau = ExtResource("6_samso")
-AttackSound = ExtResource("7_samso")
+AttackSound = ExtResource("7_vcmon")
+HurtSound = ExtResource("8_h6pxy")
 walkSound1 = ExtResource("8_e34i1")
 walkSound2 = ExtResource("7_hl213")
 walkSound3 = ExtResource("10_vcmon")

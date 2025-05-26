@@ -19,6 +19,7 @@ public partial class Rolante : CharacterBody2D
     RayCast2D inFrontCast;
     VisibleOnScreenNotifier2D visibleNotifier;
     Area2D hitArea;
+    AudioHandler audioHandler;
 
     Timer timerToAct;
     Timer stunnedTimer;
@@ -43,6 +44,7 @@ public partial class Rolante : CharacterBody2D
         lifeSystem.WhenDies = Die;
 
         animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
+        audioHandler = GetNode<AudioHandler>("AudioHandler");
 
 
         visibleNotifier = new();
@@ -126,12 +128,14 @@ public partial class Rolante : CharacterBody2D
 
     }
 
-    void Stun() {
+    void Stun()
+    {
         if (!followLastPlayerPos) return;
         isStunned = true;
         stunnedTimer.Start();
         hitArea.GetChild<CollisionShape2D>(0).CallDeferred("set_disabled", true);
         timerToAct.Stop();
+        audioHandler.PlaySpecialSFX(0);
     }
 
     public void StopStun()
@@ -146,6 +150,7 @@ public partial class Rolante : CharacterBody2D
     {
         lifeSystem.GetDamage(modifier, amount);
         animationHandler.Damage();
+        audioHandler.PlayHit();
     }
 
     void WhenAct()
@@ -153,12 +158,20 @@ public partial class Rolante : CharacterBody2D
         playerPos = player.GlobalPosition;
         followLastPlayerPos = true;
         inFrontCast.LookAt(playerPos);
+        audioHandler.PlayShoot();
     }
 
     void Die()
     {
-        manager.SpawnCoins(GlobalPosition, coinsToDrop);
-        QueueFree();
+        animationHandler.Die();
+        Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
+        {
+            manager.SpawnCoins(GlobalPosition, coinsToDrop);
+            QueueFree();
+
+        });
+        toDie.Start();
+        audioHandler.PlayDie();
     }
 
     void WhenHit(Node2D body)

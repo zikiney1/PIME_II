@@ -1,9 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://b6n38xyg3tlgo"]
+[gd_scene load_steps=16 format=3 uid="uid://b6n38xyg3tlgo"]
 
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_kofeu"]
 [ext_resource type="Script" uid="uid://cl62n0yepsvex" path="res://Entities/Boss/Boss.cs" id="1_y4shp"]
 [ext_resource type="Texture2D" uid="uid://cqa38vajpykt1" path="res://assets/Sprites/test/enemy_projectile2.png" id="2_01fwt"]
 [ext_resource type="Shader" uid="uid://ch401k1srlcv7" path="res://Shaders/HitShader.gdshader" id="2_ssfxk"]
+[ext_resource type="AudioStream" uid="uid://bksxj0gfe6oov" path="res://assets/audio/sfx/boss/projetil.wav" id="3_ssdo8"]
+[ext_resource type="AudioStream" uid="uid://wf24uiqqimge" path="res://assets/audio/sfx/boss/pisada.wav" id="4_4b386"]
+[ext_resource type="AudioStream" uid="uid://cwo2j5w6c5g0s" path="res://assets/audio/sfx/boss/pedras.wav" id="5_yk8l1"]
+[ext_resource type="AudioStream" uid="uid://d3k36nj6nqsof" path="res://assets/audio/sfx/boss/boss_walk.wav" id="6_4b386"]
+[ext_resource type="AudioStream" uid="uid://de318c4twqkus" path="res://assets/audio/sfx/boss/girada.wav" id="6_bgnjk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_np8sd"]
 shader = ExtResource("2_ssfxk")
@@ -59,6 +64,11 @@ collision_layer = 4
 collision_mask = 9
 script = ExtResource("1_y4shp")
 BulletTexture = ExtResource("2_01fwt")
+ShootSound = ExtResource("3_ssdo8")
+PisadaSound = ExtResource("4_4b386")
+PisadaRocksSound = ExtResource("5_yk8l1")
+WalkSound = ExtResource("6_4b386")
+GiradaSound = ExtResource("6_bgnjk")
 
 [node name="Sprtie" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_np8sd")
@@ -100,6 +110,8 @@ position = Vector2(0, -128)
 texture = ExtResource("1_kofeu")
 
 [node name="CollisionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
 shape = SubResource("RectangleShape2D_y4shp")
@@ -118,3 +130,7 @@ root_node = NodePath("../..")
 
 [node name="RocksAnimationPlayer" type="AnimationPlayer" parent="Animations"]
 root_node = NodePath("../..")
+
+[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="."]
+max_distance = 10000.0
+bus = &"SFX"

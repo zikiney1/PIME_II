@@ -120,7 +120,6 @@ public partial class GameManager : Node{
         base._Ready();
         rnd = new();
         player = Player.Instance;
-        player.GetNode<AudioStreamPlayer2D>("AudioManager/SongPlayer").ProcessMode = ProcessModeEnum.Always;
         camera.ProcessMode = ProcessModeEnum.Always;
         AudioSetup();
     }

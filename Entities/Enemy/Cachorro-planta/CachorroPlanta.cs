@@ -13,6 +13,7 @@ public partial class CachorroPlanta : CharacterBody2D
     LifeSystem lifeSystem;
     FightSystem fightSystem;
     AnimationHandler animationHandler;
+    AudioHandler audioHandler;
 
     Player player;
     GameManager manager;
@@ -25,6 +26,7 @@ public partial class CachorroPlanta : CharacterBody2D
     Area2D HitArea;
 
     bool isInVision => VisionCast.IsColliding() && VisionCast.GetCollider() == player;
+    bool isGoingToDie = false;
 
     public override void _Ready()
     {
@@ -38,6 +40,7 @@ public partial class CachorroPlanta : CharacterBody2D
         lifeSystem = new(totalLife, totalLife);
         lifeSystem.WhenDies += Die;
         animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
+        audioHandler = GetNode<AudioHandler>("AudioHandler");
 
         VisionCast = new()
         {
@@ -77,6 +80,7 @@ public partial class CachorroPlanta : CharacterBody2D
 
     public override void _Process(double delta)
     {
+        if (isGoingToDie) return;
         if (!MathM.IsInRange(GlobalPosition, player.GlobalPosition, GameManager.GAMEUNITS * distanceToPlayer))
         {
             DeActivate();
@@ -86,7 +90,7 @@ public partial class CachorroPlanta : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        base._PhysicsProcess(delta);
+        if (isGoingToDie) return;
 
         VisionCast.LookAt(player.GlobalPosition);
 
@@ -94,13 +98,17 @@ public partial class CachorroPlanta : CharacterBody2D
 
         Vector2 nextPos = navAgent.GetNextPathPosition();
         Velocity = GlobalPosition.DirectionTo(nextPos) * Speed * GameManager.GAMEUNITS * (float)delta;
+        audioHandler.PlayWalk();
         MoveAndSlide();
     }
 
     public void Damage(float modifier, int amount = 1)
     {
+        if (isGoingToDie) return;
+
         lifeSystem.GetDamage(modifier, amount);
         animationHandler.Damage();
+        audioHandler.PlayHit();
     }
 
     void NavUpdate() {
@@ -110,13 +118,20 @@ public partial class CachorroPlanta : CharacterBody2D
 
     void Die()
     {
-        manager.SpawnCoins(GlobalPosition, coinsToDrop);
-        QueueFree();
+        animationHandler.Die();
+        Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
+        {
+            manager.SpawnCoins(GlobalPosition, coinsToDrop);
+            QueueFree();
+        });
+        toDie.Start();
+        audioHandler.PlayDie();
+        isGoingToDie = true;
     }
     
     void WhenHit(Node body)
     {
-        if(!fightSystem.canAttack) return;
+        if(!fightSystem.canAttack || isGoingToDie) return;
         if (body is Player p)
         {
             p.Damage(damage);

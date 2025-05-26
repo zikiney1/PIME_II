@@ -44,6 +44,8 @@ public partial class PlayerAudioManager : Node
     {
         base._EnterTree();
         Instance = this;
+        songPlayer.ProcessMode = ProcessModeEnum.Always;
+        sfxPlayer.ProcessMode = ProcessModeEnum.Always;
     }
 
     public override void _Ready()
@@ -58,7 +60,7 @@ public partial class PlayerAudioManager : Node
     public void PlayZarabatan() => PlaySFX(ZarabatanSound);
     public void PlayHurt() => PlaySFX(HurtSound);
 
-    void PlaySFX(AudioStream stream)
+    public void PlaySFX(AudioStream stream)
     {
         sfxPlayer.Stream = stream;
         sfxPlayer.Play();

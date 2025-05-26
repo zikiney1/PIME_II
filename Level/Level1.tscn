@@ -443,6 +443,7 @@ shape = SubResource("RectangleShape2D_an3c4")
 disabled = true
 
 [node name="Player" parent="." node_paths=PackedStringArray("PlantZone", "checkPointManager") instance=ExtResource("8_5ecgi")]
+position = Vector2(-120, -99)
 PlantZone = NodePath("../PlantingZone")
 checkPointManager = NodePath("../SaveStationManager")
 
@@ -545,6 +546,7 @@ shape = SubResource("RectangleShape2D_4ig53")
 
 [node name="Boss" parent="Boss" instance=ExtResource("10_iuwwb")]
 position = Vector2(2734, 2331)
+damage = 2
 
 [node name="inimigos" type="Node" parent="."]
 

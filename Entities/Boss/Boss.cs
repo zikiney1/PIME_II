@@ -6,6 +6,13 @@ public partial class Boss : CharacterBody2D
     [Export] public int damage = 3;
     [Export] Texture2D BulletTexture;
 
+    [ExportGroup("Audio")]
+    [Export] public AudioStream ShootSound;
+    [Export] public AudioStream PisadaSound;
+    [Export] public AudioStream PisadaRocksSound;
+    [Export] public AudioStream WalkSound;
+    [Export] public AudioStream GiradaSound;
+
     public static Boss Instance;
 
     enum BossStates
@@ -23,6 +30,7 @@ public partial class Boss : CharacterBody2D
     Action whenStateCoolDownEnds;
     int timesInTheState = 0;
     AnimationHandler animationHandler;
+    AudioStreamPlayer2D audioPlayer;
 
 
     Area2D HitArea;
@@ -51,6 +59,7 @@ public partial class Boss : CharacterBody2D
     public override void _EnterTree()
     {
         base._EnterTree();
+        audioPlayer = GetNode<AudioStreamPlayer2D>("AudioPlayer");
         Instance = this;
         HitArea = GetNode<Area2D>("HitArea");
         HitAreaCollision = HitArea.GetNode<CollisionShape2D>("CollisionShape2D");
@@ -103,6 +112,14 @@ public partial class Boss : CharacterBody2D
         }
     }
 
+    void PlaySFX(AudioStream stream)
+    {
+        try{
+            audioPlayer.Stop();
+            audioPlayer.Stream = stream;
+            audioPlayer.Play();
+        }catch{}
+    }
 
 
     void StateUpdate()
@@ -144,20 +161,24 @@ public partial class Boss : CharacterBody2D
     {
         HitArea.LookAt(player.GlobalPosition);
         HitArea.Rotate(1.57f);
+
         pisadaShape = new RectangleShape2D()
         {
             Size = new Vector2(32, 0)
         };
+
         HitAreaCollision.Shape = pisadaShape;
         HitAreaCollision.Position = new Vector2(0, 0);
         HitAreaCollision.Disabled = false;
+
+        PlaySFX(PisadaSound);
         pisadaUpdater.Start();
     }
     void PisadaEnd()
     {
         timesInTheState++;
         HitAreaCollision.Disabled = true;
-        
+
         if (timesInTheState >= 3)
         {
             restart();
@@ -169,6 +190,7 @@ public partial class Boss : CharacterBody2D
                 PisadaStart();
             };
             inStateCoolDown.Start();
+            PlaySFX(WalkSound);
         }
     }
 
@@ -183,6 +205,9 @@ public partial class Boss : CharacterBody2D
             pisadaShape.Size = new Vector2(pisadaShape.Size.X, pisadaShape.Size.Y + GameManager.GAMEUNITS);
             HitAreaCollision.Shape = pisadaShape;
             HitAreaCollision.Position = new Vector2(0, -pisadaShape.Size.Y / 2);
+
+            PlaySFX(PisadaRocksSound);
+
             pisadaUpdater.Start();
         }
     }
@@ -206,6 +231,9 @@ public partial class Boss : CharacterBody2D
     void Atirar()
     {
         if(isToStopShooting) return;
+
+        PlaySFX(ShootSound);
+
         if (isShootingNormal)
         {
             ShootNormal();
@@ -255,6 +283,7 @@ public partial class Boss : CharacterBody2D
         {
             Size = new Vector2(320, 32)
         };
+        PlaySFX(GiradaSound);
 
         // Aceleração suave
         tween?.Kill();
@@ -280,6 +309,7 @@ public partial class Boss : CharacterBody2D
             StopRotation();
             return;
         }
+        audioPlayer.Stop();
 
         // Desaceleração suave
         tween = GetTree().CreateTween();

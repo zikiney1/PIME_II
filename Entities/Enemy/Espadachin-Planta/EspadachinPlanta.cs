@@ -13,6 +13,7 @@ public partial class EspadachinPlanta : Area2D
     [Export] byte coinsToDrop = 1;
     RayCast2D rayCast;
     VisibleOnScreenNotifier2D visibleNotifier;
+    AudioHandler audioHandler;
 
     Timer timerToAct;
     Timer DieTimer;
@@ -35,7 +36,7 @@ public partial class EspadachinPlanta : Area2D
         lifeSystem.WhenDies += Die;
 
         animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
-
+        audioHandler = GetNode<AudioHandler>("AudioHandler");
 
         visibleNotifier = new();
         visibleNotifier.ScreenEntered += Activate;
@@ -110,16 +111,19 @@ public partial class EspadachinPlanta : Area2D
     {
         lifeSystem.GetDamage(modifier, amount);
         animationHandler.Damage();
+        audioHandler.PlayHit();
     }
 
     void Act()
     {
         playerPos = player.GlobalPosition;
         followLastPlayerPos = true;
+        audioHandler.PlayShoot();
     }
     void Die()
     {
-        Timer toDie = NodeMisc.GenTimer(this, 2.2f, () =>
+        animationHandler.Die();
+        Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
         {
             if (!isGoingToDie) manager.SpawnCoins(GlobalPosition, coinsToDrop);
             else manager.SpawnCoins(GlobalPosition, coinsToDrop / 2);
@@ -127,7 +131,7 @@ public partial class EspadachinPlanta : Area2D
             QueueFree();
         });
         toDie.Start();
-        animationHandler.Play("die");
+        audioHandler.PlayDie();
         
     }
     void WhenHit(Node2D body)

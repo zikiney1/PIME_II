@@ -75,7 +75,6 @@ public partial class Pooling : Node2D
     public Projectile GetBullet(uint maskLayer, Vector2 position, Vector2 direction)
     {
         Projectile pj;
-        GD.Print(DeactiveProjectiles.Count);
         if (DeactiveProjectiles.Count > 0)
         {
             pj = DeactiveProjectiles.Last();

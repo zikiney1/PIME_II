@@ -1,8 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctnt4pp71fjhm"]
+[gd_scene load_steps=14 format=3 uid="uid://ctnt4pp71fjhm"]
 
 [ext_resource type="Script" uid="uid://d2jku8u6kov83" path="res://Entities/Enemy/Espadachin-Planta/EspadachinPlanta.cs" id="1_lyila"]
 [ext_resource type="Shader" uid="uid://dm1qa0fffgrnm" path="res://Shaders/Espadachin-Planta_shader.gdshader" id="2_6odco"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_chtde"]
+[ext_resource type="Script" uid="uid://cl3o3ab6ernub" path="res://Entities/Enemy/AudioHandler.cs" id="4_6odco"]
+[ext_resource type="AudioStream" uid="uid://bnv4v2etr8osm" path="res://assets/audio/sfx/enemy/enemy_hit.wav" id="5_po3l1"]
+[ext_resource type="AudioStream" uid="uid://cb8p38ubq3pit" path="res://assets/audio/sfx/enemy/enemy_die.wav" id="6_ca21q"]
+[ext_resource type="AudioStream" uid="uid://da13xwj56mvbd" path="res://assets/audio/sfx/enemy/rolante_se_joga.wav" id="7_ca21q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6odco"]
 
@@ -129,3 +133,9 @@ texture = ExtResource("2_chtde")
 libraries = {
 &"": SubResource("AnimationLibrary_chtde")
 }
+
+[node name="AudioHandler" type="AudioStreamPlayer2D" parent="."]
+script = ExtResource("4_6odco")
+hitted = ExtResource("5_po3l1")
+die = ExtResource("6_ca21q")
+shoot = ExtResource("7_ca21q")
