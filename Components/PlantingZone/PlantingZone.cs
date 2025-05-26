@@ -220,7 +220,7 @@ public partial class SoilTile : Sprite2D{
     void CollectPlant(){
         if (!data.IsDead())
         {
-            int profit = (int)Math.Floor(MathM.ProfitAtProgress(data.GetProgress(), data.GetPlantResultQuantity()));
+            int profit = MathM.ProfitAtProgress(data.GetProgress(), data.GetPlantResultQuantity(),data.GrowthDuration());
             Father.gameManager.SpawnItem(GlobalPosition, data.GetPlantResult(), profit);
             Father.gameManager.SpawnItem(GlobalPosition, data.GetSeed(), 1 );
         }

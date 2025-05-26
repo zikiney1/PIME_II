@@ -144,72 +144,64 @@ public static class SaveData
     /// </remarks>
     public static void Save(Player player)
     {
-        Thread saveThread = new(() =>
+        if (saveFilePath == "")
         {
+            GD.PushError("Save file path is empty");
+            return;
+        }
 
-            if (saveFilePath == "")
-            {
-                GD.PushError("Save file path is empty");
-                return;
-            }
+        FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
+        StringBuilder sb = new();
 
-            FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
-            StringBuilder sb = new();
-
-            //informação do jogador
-            sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold + "|" + player.equipamentSys.IdData());
+        //informação do jogador
+        sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold + "|" + player.equipamentSys.IdData());
 
 
-            //inventario
-            string inventoryContent = "";
-            foreach (ItemData item in player.inventory.items)
-            {
-                if (item == null) continue;
-                inventoryContent += $"{item.id};{item.quantity}|";
-            }
-            sb.AppendLine(inventoryContent);
+        //inventario
+        string inventoryContent = "";
+        foreach (ItemData item in player.inventory.items)
+        {
+            if (item == null) continue;
+            inventoryContent += $"{item.id};{item.quantity}|";
+        }
+        sb.AppendLine(inventoryContent);
 
-            //vida dos terrenos
-            string soilsLifesContent = "";
-            foreach (SoilTileData soil in player.plantZoneData.SoilsData)
-            {
-                if (soil == null) continue;
-                soilsLifesContent += $"{soil.soilLife};";
-            }
-            sb.AppendLine(soilsLifesContent);
+        //vida dos terrenos
+        string soilsLifesContent = "";
+        foreach (SoilTileData soil in player.plantZoneData.SoilsData)
+        {
+            if (soil == null) continue;
+            soilsLifesContent += $"{soil.soilLife};";
+        }
+        sb.AppendLine(soilsLifesContent);
 
-            //plantas
-            string plantsContent = "";
-            var soilWithPlants = player.plantZoneData.SoilsData.Where(soil => soil != null && soil.plantData != null);
-            foreach (SoilTileData soil in soilWithPlants)
-            {
-                PlantData plant = soil.plantData;
-                PlantResource plantData = plant?.plant;
-                plantsContent += $"{plantData.name};{soil.position};{plant.progress}|";
-            }
-            sb.AppendLine(plantsContent);
+        //plantas
+        string plantsContent = "";
+        var soilWithPlants = player.plantZoneData.SoilsData.Where(soil => soil != null && soil.plantData != null);
+        foreach (SoilTileData soil in soilWithPlants)
+        {
+            PlantData plant = soil.plantData;
+            PlantResource plantData = plant?.plant;
+            plantsContent += $"{plantData.name};{soil.position};{plant.progress}|";
+        }
+        sb.AppendLine(plantsContent);
 
-            //posição do jogador
-            sb.AppendLine($"{Math.Round(player.GlobalPosition.X, 0)}|{Math.Round(player.GlobalPosition.Y, 0)}");
+        sb.AppendLine($"{Math.Round(player.GlobalPosition.X, 0)}|{Math.Round(player.GlobalPosition.Y, 0)}");
 
-            //checkpoints
-            sb.AppendLine(string.Join('|', player.KnowCheckPoints()));
+        //checkpoints
+        sb.AppendLine(string.Join('|', player.KnowCheckPoints()));
 
-            //receitas
-            sb.AppendLine(string.Join("|",
-                CraftingSystem.GetRecipes()
-                    .Where(x => x.known)
-                    .Select(x => x.name)
-            ));
+        //receitas
+        sb.AppendLine(string.Join("|",
+            CraftingSystem.GetRecipes()
+                .Where(x => x.known)
+                .Select(x => x.name)
+        ));
 
-            sb.AppendLine(GameManager.Instance.SaveQuests());
+        sb.AppendLine(GameManager.Instance.SaveQuests());
 
-            file.StoreString(sb.ToString());
-            file.Close();
-        });
-
-        saveThread.Start();
-
+        file.StoreString(sb.ToString());
+        file.Close();
     }
 
     public static void CreateEmptySaveFile()

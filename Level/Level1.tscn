@@ -459,14 +459,14 @@ BossPosition = Vector2(2525, 2327)
 [node name="SaveStationManager" type="Node" parent="."]
 script = ExtResource("16_y26i4")
 
-[node name="Vila Ybirá" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition") instance=ExtResource("17_yrf7i")]
+[node name="Vila Anhau" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition") instance=ExtResource("17_yrf7i")]
 position = Vector2(556, 40)
 SavePosition = NodePath("Node2D")
 
-[node name="CraftZone" parent="SaveStationManager/Vila Ybirá" instance=ExtResource("10_x6qm1")]
+[node name="CraftZone" parent="SaveStationManager/Vila Anhau" instance=ExtResource("10_x6qm1")]
 position = Vector2(-120, 0)
 
-[node name="Node2D" type="Node2D" parent="SaveStationManager/Vila Ybirá"]
+[node name="Node2D" type="Node2D" parent="SaveStationManager/Vila Anhau"]
 position = Vector2(0, 20)
 
 [node name="Floresta ka\'a" parent="SaveStationManager" node_paths=PackedStringArray("SavePosition") instance=ExtResource("17_yrf7i")]

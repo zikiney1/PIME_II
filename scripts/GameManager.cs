@@ -111,6 +111,7 @@ public partial class GameManager : Node{
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
         EventHandler.Setup();
+        DialogManager.Setup();
 
 
     }

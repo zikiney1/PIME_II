@@ -104,11 +104,11 @@ public partial class DialogGui : VBoxContainer
     /// This method makes the dialog GUI visible and initializes the resource sequence with the provided dialog resources. 
     /// If the dialog is null, it signals the player to end the interaction.
     /// </remarks>
-    public void Activate(string DialogSequencePath,string EventAtEnd,bool playAnimation = true){
+    public void Activate(string DialogID,string EventAtEnd,bool playAnimation = true){
         dialogText.Text = "";
         portrait.Texture = null;
         nameText.Text = "";
-        if (DialogSequencePath == null || DialogSequencePath == "")
+        if (DialogID == null || DialogID == "")
         {
             player.InteractDialog(null, "");
             return;
@@ -117,20 +117,20 @@ public partial class DialogGui : VBoxContainer
         if (playAnimation)
         {
             animationPlayer.Play("open");
-            animationTimerEnds = () =>{ SetDialog(DialogSequencePath, EventAtEnd); };
+            animationTimerEnds = () =>{ SetDialog(DialogID, EventAtEnd); };
             animationTimer.WaitTime = animationPlayer.CurrentAnimationLength;
             animationTimer.Start();
         }
         else
         {
-            SetDialog(DialogSequencePath, EventAtEnd);
+            SetDialog(DialogID, EventAtEnd);
         }
         
     }
 
-    public void SetDialog(string dialogFile, string EventAtEnd)
+    public void SetDialog(string dialogID, string EventAtEnd)
     {
-        DialogSequence = new(GetSequence(dialogFile));
+        DialogSequence = new(DialogManager.GetDialog(dialogID));
         SetDialog(DialogSequence.Current());
         this.EventAtEnd = EventAtEnd;
         isFinished = false;
@@ -239,15 +239,8 @@ public partial class DialogGui : VBoxContainer
         }
     }
     public string[] GetSequence(string dialogPath){
-        if(FileAccess.FileExists(dialogPath) == false) return null;
-        FileAccess file = FileAccess.Open(dialogPath, FileAccess.ModeFlags.Read);
-        string[] DialogSequence = file.GetAsText()
-                                .Replace("\r","")
-                                .Split('\n')
-                                .Where(x => x != "")
-                                .ToArray();
-        file.Close();
-        return DialogSequence;
+        
+        return DialogManager.GetDialog(dialogPath);
     }
 
     public override void _Input(InputEvent @event)
