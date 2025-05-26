@@ -15,7 +15,7 @@ public static class Events
             GameManager.Instance.moacir.Visible = true;
             GameManager.Instance.moacir.dialogPath = "res://Dialogo/moacir/side_1_moacir.txt";
             GameManager.Instance.moacir.EventAtEnd = "side_moacir_start";
-            
+
         });
         //apos primeiro dialogo
         EventHandler.AddEvent("FirstQuest", false, () =>
@@ -141,10 +141,29 @@ public static class Events
             }
             else
             {
-                Player.Instance.SetDialog("res://Dialogo/fantasma/side_2_fantasmas.txt", "");           
+                Player.Instance.SetDialog("res://Dialogo/fantasma/side_2_fantasmas.txt", "");
             }
         });
-        
 
+        // ========= Triggers =================
+        EventHandler.AddEvent("boss_start", false, () =>
+        {
+            Camera.Instance.SetToBoss();
+            Boss.Instance.Activate();
+            PlayerAudioManager.Instance.PlaySong(PlayerAudioManager.SongToPlay.Boss);
+            GameManager.Instance.BossEntrance.GetNode<CollisionShape2D>("CollisionShape2D").Position = new(4.0f, 0);
+        });
+        EventHandler.AddEvent("vila_do_mar_enter", false, () =>
+        {
+            PlayerAudioManager.Instance.PlaySong(PlayerAudioManager.SongToPlay.VilaDoMar);
+        });
+        EventHandler.AddEvent("anhau_enter", false, () =>
+        {
+            PlayerAudioManager.Instance.PlaySong(PlayerAudioManager.SongToPlay.Anhau);
+        });
+        EventHandler.AddEvent("overworld_enter", false, () =>
+        {
+            PlayerAudioManager.Instance.PlaySong(PlayerAudioManager.SongToPlay.Overworld);
+        });
     }
 }

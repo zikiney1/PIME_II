@@ -15,19 +15,21 @@ public partial class Projectile : Area2D
     {
         collision = new();
         sprite = new();
+
+
         visibleNotifier = new();
+        visibleNotifier.ScreenExited += DeSpawn;
 
-        AddChild(sprite);
-        AddChild(collision);
-        AddChild(visibleNotifier);
-
-        visibleNotifier.ScreenExited += () => { this.DeSpawn(); };
         BodyEntered += (body) =>
         {
             if (!Visible) return;
             WhenBodyEnter?.Invoke(body);
             DeSpawn();
         };
+
+        AddChild(sprite);
+        AddChild(collision);
+        AddChild(visibleNotifier);
 
         DeActivate();
     }
@@ -62,5 +64,6 @@ public partial class Projectile : Area2D
     public void DeSpawn()
     {
         pooling.ReturnBullet(this);
+        DeActivate();
     }
 }

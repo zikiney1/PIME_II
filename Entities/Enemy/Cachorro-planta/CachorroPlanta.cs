@@ -77,7 +77,7 @@ public partial class CachorroPlanta : CharacterBody2D
 
     public override void _Process(double delta)
     {
-        if (!MathM.IsInRange(GlobalPosition, player.GlobalPosition, GameManager.GAMEUNITS * distanceToPlayer * 2))
+        if (!MathM.IsInRange(GlobalPosition, player.GlobalPosition, GameManager.GAMEUNITS * distanceToPlayer))
         {
             DeActivate();
         }

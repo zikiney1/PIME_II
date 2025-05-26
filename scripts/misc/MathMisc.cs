@@ -40,6 +40,13 @@ public static class MathM
         return new Vector2(Mathf.Lerp(a.X, b.X, t), Mathf.Lerp(a.Y, b.Y, t));
     }
 
+    public static Vector2 DegreeToVec2(float angle)
+    {
+        float radians = Mathf.DegToRad(angle);
+        Vector2 vector = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        return vector;
+    }
+
     
 
 }

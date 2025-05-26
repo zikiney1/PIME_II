@@ -3,9 +3,26 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading;
-public static class SaveData{
+public static class SaveData
+{
 
     public static string saveFilePath = "res://Data/saveData/save.txt";
+
+    public static void TryLoadSaveFile(Player p)
+    {
+        if(!FileAccess.FileExists(saveFilePath))
+            CreateEmptySaveFile();
+        
+        try
+        {
+            LoadSaveFile(p);
+        }
+        catch
+        {
+            CreateEmptySaveFile();
+            LoadSaveFile(p);
+        }
+    }
 
     /// <summary>
     /// Loads a save file and sets up the Player with the values from the save file.
@@ -26,8 +43,9 @@ public static class SaveData{
         player.lifeSystem = new(byte.Parse(pInfo[0]), 10);
         player.handItemIndex = byte.Parse(pInfo[1]);
         player.gold = int.Parse(pInfo[2]);
-        if (pInfo.Length > 3){
-            if(pInfo[3] != "") player.equipamentSys.AddEquipament(byte.Parse(pInfo[3]));
+        if (pInfo.Length > 3)
+        {
+            if (pInfo[3] != "") player.equipamentSys.AddEquipament(byte.Parse(pInfo[3]));
         }
 
         indexer++;
@@ -189,9 +207,18 @@ public static class SaveData{
             file.StoreString(sb.ToString());
             file.Close();
         });
-        
+
         saveThread.Start();
 
+    }
+
+    public static void CreateEmptySaveFile()
+    {
+        string empty = "10|0|0|\n\n\n\n64|128\n\n";
+
+        FileAccess file = FileAccess.Open(SaveData.saveFilePath, FileAccess.ModeFlags.Write);
+        file.StoreString(empty);
+        file.Close();
     }
 
 }

@@ -28,6 +28,7 @@ public partial class Player : CharacterBody2D
     Timer PlantCoolDownTimer;
     Timer AnimationTimer;
 
+    PlayerAudioManager audioManager;
 
     public Action WhenPlantUpdate;
 
@@ -41,9 +42,9 @@ public partial class Player : CharacterBody2D
     bool isDefending = false;
     bool canPlant = true;
     public byte handItemIndex = 0;
-    public float PlantRange = GameManager.GAMEUNITS * 1.5f;
+    public float PlantRange = GameManager.GAMEUNITS ;
     public int gold = 0;
-    float Speed = (GameManager.GAMEUNITS) * 1000;
+    float Speed = GameManager.GAMEUNITS * 200;
     public bool canAttack = true;
     Vector2 lastDirection;
     Vector2 MouseDirection;
@@ -108,6 +109,7 @@ public partial class Player : CharacterBody2D
             GetNode<Sprite2D>("Sprite"),
             GetNode<Sprite2D>("WaterReflection")
         );
+        audioManager = GetNode<PlayerAudioManager>("AudioManager");
 
         AnimationTimer = NodeMisc.GenTimer(this, 0.1f, () => { whenAnimationEnds?.Invoke(); });
 
@@ -115,14 +117,14 @@ public partial class Player : CharacterBody2D
 
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
         blur.Visible = false;
+        
     }
 
 
     public override void _Ready()
     {
-        Speed = GameManager.GAMEUNITS * 350;
-
-        SaveData.LoadSaveFile(this);
+        audioManager.PlaySong(PlayerAudioManager.SongToPlay.Overworld);
+        SaveData.TryLoadSaveFile(this);
         plantZoneData.WhenUpdate += PlantZone.Update;
         GUI.Setup();
 
@@ -154,10 +156,11 @@ public partial class Player : CharacterBody2D
 
         HitArea.BodyEntered += whenHitEnemy;
 
+        
 
         animationHandler.Play("idle");
-        
-        if(GlobalPosition == new Vector2(38.0f,38.0f))
+                
+        if (GlobalPosition == new Vector2(64, 128))
             EventHandler.EmitEvent("OnStart");
     }
 
@@ -168,12 +171,11 @@ public partial class Player : CharacterBody2D
         Vector2 direction = InputSystem.GetVector();
 
         float speedModifier = equipamentSys.speed + potionModifier.speed + 1;
-
         bool isDefending = Input.IsActionPressed("defend");
 
         if (isDefending)
         {
-            ShieldArea.Position = direction * (GameManager.GAMEUNITS/2);
+            ShieldArea.Position = direction * (GameManager.GAMEUNITS/4);
             ShieldArea.Rotation = direction.Angle();
             ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
         }
@@ -181,8 +183,8 @@ public partial class Player : CharacterBody2D
         {
             ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
         }
-        float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
 
+        float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
         animationHandler.Direction(direction);
 
         if (direction != Vector2.Zero)
@@ -190,11 +192,13 @@ public partial class Player : CharacterBody2D
             state = PlayerState.Walking;
             Velocity = direction * speedTotal * (float)delta;
             lastDirection = direction;
+            audioManager.PlayWalk();
         }
         else
         {
             state = PlayerState.Idle;
             Velocity = Vector2.Zero;
+            audioManager.StopSFX();
         }
 
         MoveAndSlide();
@@ -587,6 +591,11 @@ public partial class Player : CharacterBody2D
     //============================================================================================================
     //============================================================================================================
 
+    public void ChangeSong()
+    {
+        
+    }
+
 
     void Attack()
     {
@@ -595,16 +604,18 @@ public partial class Player : CharacterBody2D
 
         if (playerWeapon == PlayerWeapon.Sword)
         {
-            HitArea.Position = lastDirection * GameManager.GAMEUNITS;
+            HitArea.Position = lastDirection * (GameManager.GAMEUNITS / 2);
             HitArea.Rotation = lastDirection.Angle();
             HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(false);
+            audioManager.PlayAttack();
         }
         else
         {
-            var e = gameManager.GetBullet(GameManager.PlayerBulletMask, GlobalPosition, MouseDirection);
+            var e = gameManager.GetBullet(HitArea.CollisionMask, GlobalPosition, MouseDirection);
             e.SetTexture(BulletTexture);
             e.WhenBodyEnter = whenHitEnemy;
             e.speed = bulletSpeed;
+            audioManager.PlayZarabatan();
         }
 
         if (state == PlayerState.Attacking) return;
@@ -645,7 +656,8 @@ public partial class Player : CharacterBody2D
             if (body is Atirador a) a.Damage(damageModifier);
             else if (body is Rolante r) r.Damage(damageModifier);
             else if (body is EspadachinPlanta e) e.Damage(damageModifier);
-            else if(body is CachorroPlanta c) c.Damage(damageModifier);
+            else if (body is CachorroPlanta c) c.Damage(damageModifier);
+            else if (body is Boss b) b.Damage(damageModifier);
         }
     }
 
