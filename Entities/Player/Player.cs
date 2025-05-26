@@ -28,7 +28,7 @@ public partial class Player : CharacterBody2D
     Timer PlantCoolDownTimer;
     Timer AnimationTimer;
 
-    PlayerAudioManager audioManager;
+    public PlayerAudioManager audioManager;
 
     public Action WhenPlantUpdate;
 
@@ -45,7 +45,7 @@ public partial class Player : CharacterBody2D
     public float PlantRange = GameManager.GAMEUNITS ;
     public int gold = 0;
     float Speed = GameManager.GAMEUNITS * 200;
-    public bool canAttack = true;
+    public bool canAttack = false;
     Vector2 lastDirection;
     Vector2 MouseDirection;
 
@@ -173,18 +173,19 @@ public partial class Player : CharacterBody2D
         float speedModifier = equipamentSys.speed + potionModifier.speed + 1;
         bool isDefending = Input.IsActionPressed("defend");
 
-        if (isDefending)
+        float speedTotal;
+        if (isDefending && canAttack)
         {
-            ShieldArea.Position = direction * (GameManager.GAMEUNITS/4);
+            ShieldArea.Position = direction * (GameManager.GAMEUNITS / 4);
             ShieldArea.Rotation = direction.Angle();
             ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+            speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
         }
         else
         {
             ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+            speedTotal = (Speed * speedModifier);
         }
-
-        float speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
         animationHandler.Direction(direction);
 
         if (direction != Vector2.Zero)

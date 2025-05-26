@@ -153,9 +153,13 @@ public partial class DialogGui : VBoxContainer
         endedAnimation = false;
         string[] splited = dialogRaw.Split(":");
         string dialog;
-        if (splited.Length < 2){
+        if (splited.Length < 2)
+        {
             dialog = dialogRaw;
-        } else {
+            SetNoCharacter();
+        }
+        else
+        {
             SetCharacter(Characters[splited[0]]);
             dialog = dialogRaw.Split(":")[1];
         }
@@ -170,7 +174,12 @@ public partial class DialogGui : VBoxContainer
     void SetCharacter(Character ch)
     {
         nameText.Text = ch.name;
-        portrait.Texture = ch.portrait;   
+        portrait.Texture = ch.portrait;
+    }
+    void SetNoCharacter()
+    {
+        nameText.Text = "";
+        portrait.Texture = null;
     }
 
     /// <summary>
@@ -193,6 +202,7 @@ public partial class DialogGui : VBoxContainer
 
         currentLetter++;
         dialogText.VisibleCharacters = currentLetter;
+        player.audioManager.PlayDialog();
         WordUpdater.Start();
     }
 

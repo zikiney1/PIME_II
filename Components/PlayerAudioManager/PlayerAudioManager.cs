@@ -44,8 +44,6 @@ public partial class PlayerAudioManager : Node
     {
         base._EnterTree();
         Instance = this;
-        songPlayer.ProcessMode = ProcessModeEnum.Always;
-        sfxPlayer.ProcessMode = ProcessModeEnum.Always;
     }
 
     public override void _Ready()
@@ -53,6 +51,8 @@ public partial class PlayerAudioManager : Node
         songPlayer = GetNode<AudioStreamPlayer2D>("SongPlayer");
         sfxPlayer = GetNode<AudioStreamPlayer2D>("SFXPlayer");
         walkPlayer = GetNode<AudioStreamPlayer2D>("WalkPlayer");
+        songPlayer.ProcessMode = ProcessModeEnum.Always;
+        sfxPlayer.ProcessMode = ProcessModeEnum.Always;
 
     }
     public void PlayDialog() => PlaySFX(dialogSound);
