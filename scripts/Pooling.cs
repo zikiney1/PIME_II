@@ -20,7 +20,7 @@ public partial class Pooling : Node2D
     public override void _Ready()
     {
         base._Ready();
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 40; i++)
         {
             Projectile p = new();
             p.pooling = this;
@@ -37,6 +37,7 @@ public partial class Pooling : Node2D
             DropItem d = new();
             d = new();
             d.polling = this;
+            d.Deactivate();
             poolItems.Add(d);
             this.AddChild(d);
         }
@@ -74,7 +75,6 @@ public partial class Pooling : Node2D
     public Projectile GetBullet(uint maskLayer, Vector2 position, Vector2 direction)
     {
         Projectile pj;
-
         if (DeactiveProjectiles.Count > 0)
         {
             pj = DeactiveProjectiles.Last();

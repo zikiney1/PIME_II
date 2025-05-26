@@ -3,37 +3,48 @@ using System;
 
 public partial class Camera : Camera2D
 {
-    Player player;
+    [Export] Vector2 ScreenSize = new Vector2(480, 320);
+    [Export] Vector2 BossPosition;
+
+    Vector2 curScreen = new();
+
+    bool isInBooss = false;
+
+    public static Camera Instance { get; private set; }
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+        Instance = this;
+    }
 
 
     public override void _Ready()
     {
-        SetScreenPosition();
-        PositionSmoothingEnabled = true;
-        PositionSmoothingSpeed = 6;
-
-        player = Player.Instance;
+        TopLevel = true;
+        GlobalPosition = GetParent<Node2D>().GlobalPosition;
+        UpdateScreen(curScreen);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        SetScreenPosition();
+        if (isInBooss) return;
+        Vector2 parentScreen = (GetParent<Node2D>().GlobalPosition / ScreenSize).Floor();
+        if (!parentScreen.IsEqualApprox(curScreen))
+        {
+            UpdateScreen(parentScreen);
+        }
     }
 
-
-    /// <summary>
-    /// Adjusts the camera's global position to center around the player's current grid-based position,
-    /// ensuring smooth transitions by aligning the camera to the calculated grid center based on the player's position.
-    /// </summary>
-    public void SetScreenPosition()
+    public void UpdateScreen(Vector2 newScreen)
     {
-        if(player == null) player = Player.Instance;
-        Vector2 playerPos = player.GlobalPosition;
-        Vector2 ScreenSize = GetViewportRect().Size / (Zoom * 1.1f);
-
-        float x = (float)(Math.Floor(playerPos.X / ScreenSize.X) * ScreenSize.X + ScreenSize.X / 2);
-        float y = (float)(Math.Floor(playerPos.Y / ScreenSize.Y) * ScreenSize.Y + ScreenSize.Y / 2);
-        GlobalPosition = new Vector2(x, y);
+        curScreen = newScreen;
+        Position = curScreen * ScreenSize + ScreenSize * 0.5f;
     }
 
+    public void SetToBoss()
+    {
+        isInBooss = true;
+        Position = BossPosition;
+        Zoom = new Vector2(2,2);
+    }
 }

@@ -1,0 +1,136 @@
+[gd_scene load_steps=16 format=3 uid="uid://b6n38xyg3tlgo"]
+
+[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_kofeu"]
+[ext_resource type="Script" uid="uid://cl62n0yepsvex" path="res://Entities/Boss/Boss.cs" id="1_y4shp"]
+[ext_resource type="Texture2D" uid="uid://cqa38vajpykt1" path="res://assets/Sprites/test/enemy_projectile2.png" id="2_01fwt"]
+[ext_resource type="Shader" uid="uid://ch401k1srlcv7" path="res://Shaders/HitShader.gdshader" id="2_ssfxk"]
+[ext_resource type="AudioStream" uid="uid://bksxj0gfe6oov" path="res://assets/audio/sfx/boss/projetil.wav" id="3_ssdo8"]
+[ext_resource type="AudioStream" uid="uid://wf24uiqqimge" path="res://assets/audio/sfx/boss/pisada.wav" id="4_4b386"]
+[ext_resource type="AudioStream" uid="uid://cwo2j5w6c5g0s" path="res://assets/audio/sfx/boss/pedras.wav" id="5_yk8l1"]
+[ext_resource type="AudioStream" uid="uid://d3k36nj6nqsof" path="res://assets/audio/sfx/boss/boss_walk.wav" id="6_4b386"]
+[ext_resource type="AudioStream" uid="uid://de318c4twqkus" path="res://assets/audio/sfx/boss/girada.wav" id="6_bgnjk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_np8sd"]
+shader = ExtResource("2_ssfxk")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y4shp"]
+size = Vector2(48, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kofeu"]
+size = Vector2(32, 128)
+
+[sub_resource type="Animation" id="Animation_nkxek"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprtie:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_01fwt"]
+resource_name = "take_damage"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprtie:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_70fya"]
+_data = {
+&"RESET": SubResource("Animation_nkxek"),
+&"take_damage": SubResource("Animation_01fwt")
+}
+
+[node name="Boss" type="CharacterBody2D" groups=["EnemyGroup"]]
+collision_layer = 4
+collision_mask = 9
+script = ExtResource("1_y4shp")
+BulletTexture = ExtResource("2_01fwt")
+ShootSound = ExtResource("3_ssdo8")
+PisadaSound = ExtResource("4_4b386")
+PisadaRocksSound = ExtResource("5_yk8l1")
+WalkSound = ExtResource("6_4b386")
+GiradaSound = ExtResource("6_bgnjk")
+
+[node name="Sprtie" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_np8sd")
+scale = Vector2(3, 3)
+texture = ExtResource("1_kofeu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_y4shp")
+debug_color = Color(0.935099, 0.236754, 0.249821, 0.42)
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(0, -72)
+shape = SubResource("RectangleShape2D_kofeu")
+disabled = true
+debug_color = Color(0.952514, 0.134387, 0.437936, 0.42)
+
+[node name="rock1" type="Sprite2D" parent="HitArea"]
+visible = false
+position = Vector2(0, -32)
+texture = ExtResource("1_kofeu")
+
+[node name="rock2" type="Sprite2D" parent="HitArea"]
+visible = false
+position = Vector2(0, -64)
+texture = ExtResource("1_kofeu")
+
+[node name="rock3" type="Sprite2D" parent="HitArea"]
+visible = false
+position = Vector2(0, -96)
+texture = ExtResource("1_kofeu")
+
+[node name="rock4" type="Sprite2D" parent="HitArea"]
+visible = false
+position = Vector2(0, -128)
+texture = ExtResource("1_kofeu")
+
+[node name="CollisionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
+shape = SubResource("RectangleShape2D_y4shp")
+debug_color = Color(0.935, 0.237, 0.25, 0.21)
+
+[node name="Animations" type="Node" parent="."]
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="Animations"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_70fya")
+}
+
+[node name="SpriteAnimationPlayer" type="AnimationPlayer" parent="Animations"]
+root_node = NodePath("../..")
+
+[node name="RocksAnimationPlayer" type="AnimationPlayer" parent="Animations"]
+root_node = NodePath("../..")
+
+[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="."]
+max_distance = 10000.0
+bus = &"SFX"

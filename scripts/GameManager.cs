@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Godot;
 public partial class GameManager : Node{
 
-    public readonly static byte GAMEUNITS = 16;
+    public readonly static byte GAMEUNITS = 32;
     public readonly static byte SOILTILESIZE = 3;
 
     public readonly static uint PlayerBulletMask = 28;
@@ -24,6 +24,7 @@ public partial class GameManager : Node{
     [Export] public NpcDialogZone espirito;
     [Export] public Merchant Karai_Merchant;
     [Export] public Node moacirQuestEnemies;
+    [Export] public StaticBody2D BossEntrance;
 
     public string SaveQuests()
     {
@@ -34,7 +35,7 @@ public partial class GameManager : Node{
         saveDataLine += Luna.dialogPath + "|";
         saveDataLine += caua.dialogPath + "|";
         saveDataLine += thauan.dialogPath + "|";
-        saveDataLine += (moacir.Visible? moacir.dialogPath : "") + "|";
+        saveDataLine += (moacir.Visible ? moacir.dialogPath : "") + "|";
         saveDataLine += espirito.dialogPath;
         return saveDataLine;
     }
@@ -110,6 +111,7 @@ public partial class GameManager : Node{
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
         EventHandler.Setup();
+        DialogManager.Setup();
 
 
     }
@@ -119,7 +121,6 @@ public partial class GameManager : Node{
         base._Ready();
         rnd = new();
         player = Player.Instance;
-        player.GetNode<AudioStreamPlayer2D>("Audio/AudioStreamPlayer2D").ProcessMode = ProcessModeEnum.Always;
         camera.ProcessMode = ProcessModeEnum.Always;
         AudioSetup();
     }

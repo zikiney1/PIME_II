@@ -1,8 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://c7qi0gxc1vg1d"]
+[gd_scene load_steps=16 format=3 uid="uid://c7qi0gxc1vg1d"]
 
 [ext_resource type="Script" uid="uid://d08hjo7neo4sa" path="res://Entities/Enemy/Rolante/Rolante.cs" id="1_6g53m"]
 [ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_2yjkb"]
 [ext_resource type="Shader" uid="uid://ch401k1srlcv7" path="res://Shaders/HitShader.gdshader" id="2_xn7e5"]
+[ext_resource type="Script" uid="uid://cl3o3ab6ernub" path="res://Entities/Enemy/AudioHandler.cs" id="4_n313q"]
+[ext_resource type="AudioStream" uid="uid://bnv4v2etr8osm" path="res://assets/audio/sfx/enemy/enemy_hit.wav" id="5_kcqxl"]
+[ext_resource type="AudioStream" uid="uid://b01uvqxmnsdyc" path="res://assets/audio/sfx/enemy/walk_enemy.wav" id="6_xa0gx"]
+[ext_resource type="AudioStream" uid="uid://cb8p38ubq3pit" path="res://assets/audio/sfx/enemy/enemy_die.wav" id="7_bpekd"]
+[ext_resource type="AudioStream" uid="uid://da13xwj56mvbd" path="res://assets/audio/sfx/enemy/rolante_se_joga.wav" id="8_1axm0"]
+[ext_resource type="AudioStream" uid="uid://wf24uiqqimge" path="res://assets/audio/sfx/boss/pisada.wav" id="9_6xpht"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xn7e5"]
 size = Vector2(16, 16)
@@ -81,3 +87,11 @@ root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_bm6pv")
 }
+
+[node name="AudioHandler" type="AudioStreamPlayer2D" parent="."]
+script = ExtResource("4_n313q")
+hitted = ExtResource("5_kcqxl")
+walk = ExtResource("6_xa0gx")
+die = ExtResource("7_bpekd")
+shoot = ExtResource("8_1axm0")
+specialSFX = Array[AudioStream]([ExtResource("9_6xpht")])

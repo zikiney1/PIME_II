@@ -24,20 +24,31 @@ public static class MathM
     /// <param name="totalProfit">Total profit to distribute (0–255).</param>
     /// <param name="spread">Spread of the bell curve in normalized units (default = 0.15).</param>
     /// <returns>Instantaneous profit value (can be fractional).</returns>
-    public static double ProfitAtProgress(double progress, double totalProfit, double spread = 0.15)
+    public static int ProfitAtProgress(int progresso, int pico, int maxProgresso)
     {
-        double normProgress = progress / 255.0;  // normalize to 0.0–1.0
-        double mean = 0.5;
-        double exponent = -Math.Pow(normProgress - mean, 2) / (2 * Math.Pow(spread, 2));
-        double pdf = Math.Exp(exponent) / (spread * Math.Sqrt(2 * Math.PI));
+        if (progresso < 0 || progresso > maxProgresso || pico < 0 || pico > maxProgresso)
+            return 0;
 
-        // Scale to ensure area under the curve matches totalProfit
-        return pdf * totalProfit;
+        if (progresso <= pico)
+        {
+            return (int)Math.Floor((double)progresso / pico);
+        }
+        else
+        {
+            return (int)Math.Floor((double)((maxProgresso - progresso) / (maxProgresso - pico)));
+        }
     }
 
     public static Vector2 Lerp(Vector2 a, Vector2 b, float t)
     {
         return new Vector2(Mathf.Lerp(a.X, b.X, t), Mathf.Lerp(a.Y, b.Y, t));
+    }
+
+    public static Vector2 DegreeToVec2(float angle)
+    {
+        float radians = Mathf.DegToRad(angle);
+        Vector2 vector = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        return vector;
     }
 
     

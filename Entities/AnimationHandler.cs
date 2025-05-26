@@ -4,7 +4,7 @@ public class AnimationHandler
     public AnimationPlayer characterAnimPlayer;
     public AnimationPlayer hitAnimPlayer;
 
-    
+
     public AnimationHandler(AnimationPlayer characterAnimPlayer, AnimationPlayer hitAnimPlayer)
     {
         this.characterAnimPlayer = characterAnimPlayer;
@@ -12,7 +12,7 @@ public class AnimationHandler
     }
     public void Direction(Vector2 direction)
     {
-        
+
         if (direction.Y < 0)
             characterAnimPlayer.Play("walk_up");
         else if (direction.Y > 0)
@@ -72,6 +72,11 @@ public class AnimationHandler
     public void Damage()
     {
         hitAnimPlayer.Play("take_damage");
+    }
+
+    public void Die()
+    {
+        characterAnimPlayer.Play("die");
     }
 
 }

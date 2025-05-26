@@ -22,6 +22,7 @@ public partial class Atirador : StaticBody2D
     Timer FireTimer;
     VisibleOnScreenNotifier2D visibleNotifier;
     Timer lookTimer;
+    AudioHandler audioHandler;
 
 
     int currentBullet = 0;
@@ -45,6 +46,7 @@ public partial class Atirador : StaticBody2D
         fightSystem = new(this, attackSpeed);
         lifeSystem.WhenDies += Die;
         animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
+        audioHandler = GetNode<AudioHandler>("AudioHandler");
 
         originalRotation = Rotation;
 
@@ -98,9 +100,7 @@ public partial class Atirador : StaticBody2D
         if (rayCast.IsColliding() && rayCast.GetCollider() == player)
         {
             // Rotaciona até o jogador
-            Vector2 toPlayer = player.GlobalPosition - GlobalPosition;
-            float targetAngle = toPlayer.Angle();
-            Rotation = Mathf.LerpAngle(Rotation, targetAngle, (float)delta * rotationSpeed);
+            Rotation = Mathf.LerpAngle(Rotation, (player.GlobalPosition - GlobalPosition).Angle(), (float)delta * rotationSpeed);
             lookTimer.Stop();
             lookToOrigin = false;
 
@@ -132,11 +132,19 @@ public partial class Atirador : StaticBody2D
         lifeSystem.GetDamage(modifier, amount);
         FireTimer.Stop();
         animationHandler.Damage();
+        audioHandler.PlayHit();
     }
 
     
     public void Die()
     {
+        animationHandler.Die();
+        Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
+        {
+            manager.SpawnCoins(GlobalPosition, coinsToDrop);
+            QueueFree();
+        });
+        toDie.Start();
         manager.SpawnCoins(GlobalPosition, coinsToDrop);
         QueueFree();
     }
@@ -153,19 +161,22 @@ public partial class Atirador : StaticBody2D
     {
         Vector2 direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(Rotation));
 
-        var e = manager.GetBullet(GameManager.EnemyBulletMask,GlobalPosition,direction);
+        var e = manager.GetBullet(GameManager.EnemyBulletMask, GlobalPosition, direction);
         e.SetTexture(BulletTexture);
         e.speed = bulletSpeed;
         e.WhenBodyEnter = WhenEnterBody;
         currentBullet++;
 
-        if (currentBullet >= bulletQuantity){
+        if (currentBullet >= bulletQuantity)
+        {
             currentBullet = 0;
             FireTimer.Stop();
         }
-        else{
+        else
+        {
             FireTimer.Start();
         }
+        audioHandler.PlayShoot();
     }
 
     public void WhenEnterBody(Node2D body)

@@ -37,6 +37,7 @@ public static class EventHandler
     }
     public static void EmitEvent(string name)
     {
+        if(name == null || name == "") return;
         if (events.ContainsKey(name))
         {
             if (events[name] == null) return;

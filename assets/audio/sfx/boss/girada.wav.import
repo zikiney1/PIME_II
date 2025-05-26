@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://daif76xkgn2lt"
-path="res://.godot/imported/overworld.wav-dfebd1baa58e65f5ae6999a645b8f1cd.sample"
+uid="uid://de318c4twqkus"
+path="res://.godot/imported/girada.wav-8155c24f85cc0f259e96f67eac1e60e9.sample"
 
 [deps]
 
-source_file="res://assets/songs/overworld.wav"
-dest_files=["res://.godot/imported/overworld.wav-dfebd1baa58e65f5ae6999a645b8f1cd.sample"]
+source_file="res://assets/audio/sfx/boss/girada.wav"
+dest_files=["res://.godot/imported/girada.wav-8155c24f85cc0f259e96f67eac1e60e9.sample"]
 
 [params]
 
