@@ -226,9 +226,9 @@ public partial class GameManager : Node{
 
     public static string GUIPath() => "res://assets/GUI/";
 
-    
-
-    public void GameOver(){
-        GetTree().ChangeSceneToFile("res://Scenes/GameOver.tscn");
+    public void GoToMainMenu(){
+        GetTree().Paused = false;
+        GetTree().ChangeSceneToFile("res://GUI/TelasPrincipais/MenuPrincipal.tscn");
     }
+
 }

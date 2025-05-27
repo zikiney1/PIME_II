@@ -1,0 +1,199 @@
+[gd_scene load_steps=11 format=3 uid="uid://cxkkkpysy7ml"]
+
+[ext_resource type="Script" uid="uid://r6wdiajo3p31" path="res://GUI/TelasPrincipais/TelaCreditos.cs" id="1_rsbh7"]
+[ext_resource type="FontFile" uid="uid://bgbpc4xvl2epj" path="res://assets/Fonts/Pixelon-E4JEg.otf" id="2_xai2q"]
+[ext_resource type="AudioStream" uid="uid://38fleg55wegl" path="res://assets/audio/songs/raphael goulart - eggcredits.wav" id="3_7w18y"]
+[ext_resource type="FontFile" uid="uid://cwtjloy6xs3e6" path="res://assets/Fonts/CutePixel.ttf" id="4_u1tir"]
+
+[sub_resource type="Animation" id="Animation_7w18y"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("creditos:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(700, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_xai2q"]
+resource_name = "creditos"
+length = 40.0
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("creditos:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(700, -0.25, 0, 0.25, 0, -1300, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 39.8)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u1tir"]
+_data = {
+&"RESET": SubResource("Animation_7w18y"),
+&"creditos": SubResource("Animation_xai2q")
+}
+
+[sub_resource type="Animation" id="Animation_8fcbx"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../porradaText:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../porradaText:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_u1tir"]
+resource_name = "porrada"
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../porradaText:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(1.1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.633333, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../porradaText:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(1.1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.633333, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8fcbx"]
+_data = {
+&"RESET": SubResource("Animation_8fcbx"),
+&"porrada": SubResource("Animation_u1tir")
+}
+
+[node name="TelaCreditos" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rsbh7")
+
+[node name="creditos" type="RichTextLabel" parent="."]
+layout_mode = 2
+offset_top = -1257.25
+offset_right = 1302.0
+offset_bottom = 90.7539
+theme_override_fonts/normal_font = ExtResource("2_xai2q")
+theme_override_fonts/mono_font = ExtResource("2_xai2q")
+theme_override_fonts/italics_font = ExtResource("2_xai2q")
+theme_override_fonts/bold_italics_font = ExtResource("2_xai2q")
+theme_override_fonts/bold_font = ExtResource("2_xai2q")
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "Integrantes:
+
+Alexander Cabral Santiago Lucena
+RM: 24213725
+
+Gabriela Cavalcante Rocha
+RM: 24214389
+
+Henrique Souza Costa 
+RM: 24213710
+
+José Carlos Gomez do Nascimento
+RM: 24112780
+
+Julia Volpato de Souza 
+RM: 24214384
+
+Pesquisa:
+José Carlos Gomez do Nascimento
+
+Roteiro: José Carlos Gomez do Nascimento/ Henrique Souza Costa
+
+Programação: Henrique Souza Costa
+
+Arte: 
+Alexander Cabral Santiago Lucena
+Gabriela Cavalcante Rocha
+José Carlos Gomez do Nascimento
+Julia Volpato de Souza
+
+Musicas de:
+Raphael Goulart
+
+Sound Design:
+Henrique Souza Costa
+
+Level Design:
+Henrique Souza Costa
+
+Agradecimento especial:
+Thauan pela receita da Armadura viva
+
+Atuação de Pai de aranã feita por:
+[shake rate=30.0 level=2 connected=1][color=red] NULL POINTER EXCEPTION[/color][/shake]"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_u1tir")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_7w18y")
+autoplay = true
+bus = &"Musica"
+
+[node name="porradasPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimationPlayer")
+libraries = {
+&"": SubResource("AnimationLibrary_8fcbx")
+}
+
+[node name="porradaText" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 952.0
+offset_top = 630.0
+offset_right = 1245.0
+offset_bottom = 674.0
+rotation = -0.328436
+theme_override_fonts/normal_font = ExtResource("4_u1tir")
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "0x Porradas para ir pro menu"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -16,6 +16,7 @@ public partial class MainMenu : CenterContainer
         };
 
         GetNode<Button>("menu/Resume").Pressed += Resume;
+        GetNode<Button>("menu/Main Menu").Pressed += GameManager.Instance.GoToMainMenu;
         GetNode<Button>("menu/Configuração").Pressed += () =>
         {
             GetNode<VBoxContainer>("menu").Visible = false;

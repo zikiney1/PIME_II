@@ -66,6 +66,7 @@ public partial class Player : CharacterBody2D
     public AnimationHandler animationHandler;
     public ReflectionHandler reflectionHandler;
     public ColorRect blur;
+    public GameOver gameOver;
 
     public void Save() => SaveData.Save(this);
     public void UpdateHearts() => GUI.UpdateHearts();
@@ -100,6 +101,7 @@ public partial class Player : CharacterBody2D
         InteractableRange = GetNode<Area2D>("InteractableRange");
         dialogGui = GetNode<DialogGui>("Canvas/DialogGUI");
         mainMenu = GetNode<MainMenu>("Canvas/MainMenu");
+        gameOver = GetNode<GameOver>("Canvas/GameOver");
         blur = GetNode<ColorRect>("Canvas/blur");
         animationHandler = new(
             GetNode<AnimationPlayer>("Animations/CharacterAnimationPlayer"),
@@ -166,7 +168,7 @@ public partial class Player : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (state == PlayerState.Attacking || CraftGUI.Visible || state == PlayerState.Lock) return;
+        if (state == PlayerState.Attacking || CraftGUI.Visible || state == PlayerState.Lock || state == PlayerState.Dead) return;
 
         Vector2 direction = InputSystem.GetVector();
 
@@ -207,13 +209,14 @@ public partial class Player : CharacterBody2D
 
     public override void _Process(double delta)
     {
+        if(state == PlayerState.Dead) return;
         reflectionHandler.Update();
     }
 
 
     public override void _Input(InputEvent @event)
     {
-        if (state == PlayerState.Lock) return;
+        if (state == PlayerState.Lock || state == PlayerState.Dead) return;
         if (@event is InputEventKey KeyEvent)
         {
             if (KeyEvent.IsActionPressed("defend"))
@@ -634,12 +637,14 @@ public partial class Player : CharacterBody2D
     }
     void Die()
     {
-        GD.Print("YOU DIED");
+        state = PlayerState.Dead;
+        gameOver.Activate();
+        animationHandler.Die();
     }
 
     public void Damage(int amount)
     {
-        if (fightSystem.isInvencible) return;
+        if (fightSystem.isInvencible || state == PlayerState.Dead) return;
         float modifier = potionModifier.defense + equipamentSys.defense;
         lifeSystem.GetDamage(modifier, amount);
         UpdateHearts();

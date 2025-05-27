@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://38fleg55wegl"
+path="res://.godot/imported/raphael goulart - eggcredits.wav-6a977137654df72f82957640a067e7d5.sample"
+
+[deps]
+
+source_file="res://assets/audio/songs/raphael goulart - eggcredits.wav"
+dest_files=["res://.godot/imported/raphael goulart - eggcredits.wav-6a977137654df72f82957640a067e7d5.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
