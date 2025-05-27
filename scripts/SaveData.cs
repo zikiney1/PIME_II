@@ -23,6 +23,7 @@ public static class SaveData
             LoadSaveFile(p);
         }
     }
+    public static bool ContainsSaveFile() => FileAccess.FileExists(saveFilePath);
 
     /// <summary>
     /// Loads a save file and sets up the Player with the values from the save file.

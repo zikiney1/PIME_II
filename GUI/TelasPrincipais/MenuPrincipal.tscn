@@ -1,0 +1,337 @@
+[gd_scene load_steps=11 format=3 uid="uid://dl4tgedb2t78c"]
+
+[ext_resource type="Theme" uid="uid://s18iip2r5pk6" path="res://GUI/game_theme.tres" id="1_02mbr"]
+[ext_resource type="FontFile" uid="uid://dc3x7je2fp4ap" path="res://assets/Fonts/Crang.ttf" id="1_6ibqu"]
+[ext_resource type="Script" uid="uid://bop8t8ohxlan1" path="res://GUI/TelasPrincipais/MenuPrincipal.cs" id="1_c3gut"]
+[ext_resource type="PackedScene" uid="uid://cj41dg5qmemyg" path="res://GUI/Menu/Configuracoes/configuracoes.tscn" id="3_7562w"]
+[ext_resource type="Texture2D" uid="uid://ch6bqn1r0ugr0" path="res://assets/Belas-Artes_Logo.png" id="5_p71ow"]
+[ext_resource type="AudioStream" uid="uid://cg4ihak6y3q44" path="res://assets/audio/songs/raphael goulart - ave.wav" id="6_plfjd"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6ibqu"]
+
+[sub_resource type="Animation" id="Animation_p71ow"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainMenu:theme_override_constants/margin_bottom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainMenu/VBoxContainer/Nome do jogo:visible_characters")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control/TextureRect:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.127409, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control/TextureRect:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-7, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Control/TextureRect:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(539, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control/TextureRect:size:x")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1042, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Control/TextureRect:size:y")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(594, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_c3gut"]
+resource_name = "enter"
+length = 1.5
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainMenu:theme_override_constants/margin_bottom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(1500, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 50, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 0.9)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainMenu/VBoxContainer/Nome do jogo:visible_characters")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 16, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.3, 0.9)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control/TextureRect:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.127409, -0.25, 0, 0.25, 0, 0.127409, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.3, 0.9, 1.2)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control/TextureRect:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -7, -0.25, 0, 0.25, 0, -7, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.3, 0.9, 1.2)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Control/TextureRect:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(-150, -0.25, 0, 0.25, 0, 570.05, -0.25, 0, 0.25, 0, 539, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.3, 0.8, 1.2)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control/TextureRect:size:x")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1042, -0.25, 0, 0.25, 0, 1042, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.3, 0.9, 1.2)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Control/TextureRect:size:y")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 594, -0.25, 0, 0.25, 0, 594, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0.3, 0.9, 1.2)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p71ow"]
+_data = {
+&"RESET": SubResource("Animation_p71ow"),
+&"enter": SubResource("Animation_c3gut")
+}
+
+[node name="MenuPrincipal" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_6ibqu")
+script = ExtResource("1_c3gut")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 2
+offset_left = -7.0
+offset_top = 539.0
+offset_right = 1035.0
+offset_bottom = 1133.0
+rotation = 0.127409
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_p71ow")
+
+[node name="warning" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 300
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="warning"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="warning/VBoxContainer"]
+custom_minimum_size = Vector2(80, 70)
+layout_mode = 2
+theme = ExtResource("1_02mbr")
+theme_override_font_sizes/normal_font_size = 20
+text = "Você tem certeza Disso?
+Todo o seu progresso no save anterior será deletado"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="warning/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Sim" type="Button" parent="warning/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+theme = ExtResource("1_02mbr")
+text = "Sim"
+
+[node name="Nao" type="Button" parent="warning/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+theme = ExtResource("1_02mbr")
+text = "Não
+"
+
+[node name="MainMenu" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 400
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu"]
+layout_mode = 2
+alignment = 1
+
+[node name="Nome do jogo" type="RichTextLabel" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("1_6ibqu")
+theme_override_fonts/mono_font = ExtResource("1_6ibqu")
+theme_override_fonts/italics_font = ExtResource("1_6ibqu")
+theme_override_fonts/bold_italics_font = ExtResource("1_6ibqu")
+theme_override_fonts/bold_font = ExtResource("1_6ibqu")
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[shake rate=5 level=5 connected=1]Sementes Do Caos"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="space4" type="Control" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+
+[node name="Novo" type="Button" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(70, 60)
+layout_mode = 2
+theme = ExtResource("1_02mbr")
+text = "Iniciar Novo Jogo"
+
+[node name="space" type="Control" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Carregar" type="Button" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(70, 60)
+layout_mode = 2
+theme = ExtResource("1_02mbr")
+text = "Carregar ultimo jogo"
+
+[node name="space2" type="Control" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Configuracoes" type="Button" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(70, 60)
+layout_mode = 2
+theme = ExtResource("1_02mbr")
+text = "Configurações"
+
+[node name="space3" type="Control" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Creditos" type="Button" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(70, 60)
+layout_mode = 2
+theme = ExtResource("1_02mbr")
+text = "Creditos
+"
+
+[node name="space5" type="Control" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Sair" type="Button" parent="MainMenu/VBoxContainer"]
+custom_minimum_size = Vector2(70, 60)
+layout_mode = 2
+theme = ExtResource("1_02mbr")
+text = "Sair
+"
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 650
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_right = 650
+theme_override_constants/margin_bottom = 200
+
+[node name="Configuracoes" parent="MarginContainer2" instance=ExtResource("3_7562w")]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_p71ow")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_plfjd")
+autoplay = true
+bus = &"Musica"

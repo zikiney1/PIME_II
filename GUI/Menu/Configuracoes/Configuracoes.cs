@@ -9,7 +9,7 @@ public partial class Configuracoes : HBoxContainer
     string actionToRemap = "";
     string oldName = "";
     Button remapingButton;
-    Configurator config => manager.config;
+    Configurator config;
     GameManager manager;
 
     PanelContainer KeyBind;
@@ -20,7 +20,18 @@ public partial class Configuracoes : HBoxContainer
 
     public override void _Ready()
     {
-        manager = GameManager.Instance;
+        if (GameManager.Instance == null)
+        {
+            if(Configurator.Instance != null)
+                config = Configurator.Instance;
+            else
+                config = new();
+        }
+        else
+        {
+            manager = GameManager.Instance;
+            config = manager.config;
+        }
         KeyBind = GetNode<PanelContainer>("PanelContainer/KeyBind");
         Audio = GetNode<PanelContainer>("PanelContainer/Audio");
 
