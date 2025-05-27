@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://i3w1qngsr0pb"]
+[gd_scene load_steps=42 format=3 uid="uid://i3w1qngsr0pb"]
 
 [ext_resource type="Script" uid="uid://bwxm2w8v4xhj3" path="res://scripts/GameManager.cs" id="1_mljhq"]
 [ext_resource type="PackedScene" uid="uid://dqh8rnsol2son" path="res://Components/PlantingZone/planting_zone.tscn" id="2_sw7xv"]
@@ -6,48 +6,31 @@
 [ext_resource type="Texture2D" uid="uid://3ck66hulvq3r" path="res://assets/Planting/soil_tile_1.png" id="4_devxu"]
 [ext_resource type="Texture2D" uid="uid://dlbbp77o5aftb" path="res://assets/Planting/soil_tile_2.png" id="5_dfyb3"]
 [ext_resource type="Texture2D" uid="uid://fm5nu7257tie" path="res://assets/Planting/soil_tile_3.png" id="6_6mgq4"]
-[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="6_iuwwb"]
-[ext_resource type="Resource" uid="uid://xe08w0iuqb36" path="res://Resources/potionEffects/InstaHealEffect.tres" id="7_iuwwb"]
+[ext_resource type="Resource" uid="uid://671lkxu8khmj" path="res://Resources/Items/seed_aroeira.tres" id="6_jn7w3"]
+[ext_resource type="Resource" uid="uid://b6lr3j4c012e4" path="res://Resources/Items/pocao_energetica_jatoba.tres" id="7_devxu"]
 [ext_resource type="Texture2D" uid="uid://bck6an7qb6io0" path="res://assets/Planting/soil_tile_4.png" id="7_swnsj"]
 [ext_resource type="PackedScene" uid="uid://cdg0jp7odllo" path="res://Entities/Player/Player.tscn" id="8_5ecgi"]
-[ext_resource type="Texture2D" uid="uid://jjqteghryssn" path="res://assets/ItemsIcons/HealingPotion.png" id="8_6qh2r"]
-[ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="9_4ig53"]
+[ext_resource type="Resource" uid="uid://01ghjtmggcc8" path="res://Resources/Items/ing_nevoa_cipo_azul.tres" id="8_dfyb3"]
+[ext_resource type="Resource" uid="uid://bflbtroanvp0n" path="res://Resources/Items/eqp_tunica_cipo_Seco.tres" id="9_6mgq4"]
 [ext_resource type="Script" uid="uid://dhnilo0a8g0yc" path="res://Components/camera/Camera.cs" id="9_k8w68"]
 [ext_resource type="PackedScene" uid="uid://b6n38xyg3tlgo" path="res://Entities/Boss/boss.tscn" id="10_iuwwb"]
+[ext_resource type="Resource" uid="uid://dtluc3mqfw6oo" path="res://Resources/Items/missao_cristal.tres" id="10_swnsj"]
 [ext_resource type="PackedScene" uid="uid://cf44ck1h3xwkp" path="res://Components/InteractableArea/CraftZone/CraftZone.tscn" id="10_x6qm1"]
+[ext_resource type="Resource" uid="uid://lnssl3kyjn5n" path="res://Resources/Items/seed_uxi.tres" id="11_5ecgi"]
 [ext_resource type="PackedScene" uid="uid://pas7jkbmhrut" path="res://Components/InteractableArea/Merchant/Merchant.tscn" id="11_uuobp"]
+[ext_resource type="Resource" uid="uid://dh13d6hy8hpbv" path="res://Resources/Items/seed_urucum.tres" id="12_k8w68"]
 [ext_resource type="Resource" uid="uid://c00sibf58x1mm" path="res://Resources/Items/Adubo_eco.tres" id="12_oa7dg"]
 [ext_resource type="Resource" uid="uid://ck6o847m6ngwi" path="res://Resources/Items/seed_jatoba.tres" id="13_egjdj"]
+[ext_resource type="Resource" uid="uid://b0bqjk86crlcy" path="res://Resources/Items/seed_tucum.tres" id="13_x6qm1"]
+[ext_resource type="Resource" uid="uid://c50egv6ejl5wb" path="res://Resources/Items/ing_agua_selv.tres" id="14_uuobp"]
+[ext_resource type="Resource" uid="uid://cc6t4woyiprjj" path="res://Resources/Items/ing_raiz_de_fogo.tres" id="15_oa7dg"]
+[ext_resource type="Resource" uid="uid://45moj83vkhu5" path="res://Resources/Items/ing_resina_densa.tres" id="16_egjdj"]
 [ext_resource type="Script" uid="uid://nryvcqplfxb1" path="res://Components/InteractableArea/saveStation/SaveStationManager.cs" id="16_y26i4"]
+[ext_resource type="Resource" uid="uid://cv32ks30d15wd" path="res://Resources/Items/eqp_peitoral_aroeira.tres" id="17_v54j0"]
 [ext_resource type="PackedScene" uid="uid://b6e57l2772r5g" path="res://Components/InteractableArea/saveStation/SaveStation.tscn" id="17_yrf7i"]
 [ext_resource type="PackedScene" uid="uid://bdsw4lic044d2" path="res://Components/InteractableArea/NpcDialogArea/NPCDialogZone.tscn" id="18_2en7k"]
 [ext_resource type="Script" uid="uid://dcgm0irggh6ko" path="res://Components/EventTrigger/EventTrigger.cs" id="23_6qh2r"]
 [ext_resource type="Texture2D" uid="uid://dl8yowdr0hby0" path="res://assets/Sprites/test/Autotile Grass and Dirt Path Tileset.png" id="26_dcrcu"]
-
-[sub_resource type="Resource" id="Resource_6qh2r"]
-script = ExtResource("9_4ig53")
-id = 3
-level = 1
-name = ""
-description = ""
-icon = ExtResource("6_iuwwb")
-price = 0
-stackMaxSize = 10
-type = 3
-metadata/_custom_type_script = "uid://bp21ptg4qc36q"
-
-[sub_resource type="Resource" id="Resource_4kmxf"]
-script = ExtResource("9_4ig53")
-id = 1
-level = 2
-name = "Poção de cura instantanea"
-description = "Uma simples poção de cura instantanea"
-icon = ExtResource("8_6qh2r")
-price = 0
-stackMaxSize = 3
-type = 0
-PotionEffect = ExtResource("7_iuwwb")
-metadata/_custom_type_script = "uid://bp21ptg4qc36q"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_an3c4"]
 size = Vector2(144, 144)
@@ -398,7 +381,7 @@ position = Vector2(538, 339)
 visible = false
 collision_layer = 2
 collision_mask = 2
-shopItems = Array[Object]([ExtResource("12_oa7dg"), ExtResource("13_egjdj"), SubResource("Resource_6qh2r"), SubResource("Resource_4kmxf")])
+shopItems = Array[Object]([ExtResource("12_oa7dg"), ExtResource("13_egjdj"), ExtResource("6_jn7w3"), ExtResource("7_devxu"), ExtResource("8_dfyb3"), ExtResource("9_6mgq4")])
 
 [node name="Karai" parent="NPCs Dialogos/Karai" instance=ExtResource("18_2en7k")]
 
@@ -419,7 +402,7 @@ position = Vector2(510, 2902)
 position = Vector2(864, 3064)
 collision_layer = 2
 collision_mask = 2
-shopItems = Array[Object]([ExtResource("12_oa7dg"), ExtResource("13_egjdj"), SubResource("Resource_6qh2r"), SubResource("Resource_4kmxf")])
+shopItems = Array[Object]([ExtResource("12_oa7dg"), ExtResource("10_swnsj"), ExtResource("11_5ecgi"), ExtResource("12_k8w68"), ExtResource("13_x6qm1"), ExtResource("14_uuobp"), ExtResource("15_oa7dg"), ExtResource("16_egjdj"), ExtResource("17_v54j0")])
 
 [node name="moacir" parent="NPCs Dialogos" instance=ExtResource("18_2en7k")]
 position = Vector2(-242, 1795)
