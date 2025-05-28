@@ -106,14 +106,15 @@ public partial class GameManager : Node{
         pooling = new();
         AddChild(pooling);
 
-        config = new();
+
         ItemDB.SetupItemDB();
         CraftingSystem.SetupRecipes();
         PlantingSystem.SetupPlantSystem();
         EventHandler.Setup();
         DialogManager.Setup();
 
-
+        if (Configurator.Instance != null) config = Configurator.Instance;
+        else config = new();
     }
 
     public override void _Ready()
@@ -127,6 +128,10 @@ public partial class GameManager : Node{
 
     void AudioSetup()
     {
+        if (config == null || config.Audio == null)
+        {
+            config = new();
+        }
         int MasterBusIndex = AudioServer.GetBusIndex("Master");
         int SFXBusIndex = AudioServer.GetBusIndex("SFX");
         int MusicBusIndex = AudioServer.GetBusIndex("Musica");
