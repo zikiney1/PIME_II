@@ -19,7 +19,7 @@ public partial class Player : CharacterBody2D
 
     Area2D HitArea;
     Area2D InteractableRange;
-    Area2D ShieldArea;
+    StaticBody2D ShieldCollision;
     GameManager gameManager;
 
 
@@ -39,7 +39,7 @@ public partial class Player : CharacterBody2D
     DialogGui dialogGui;
     MainMenu mainMenu;
 
-    bool isDefending = false;
+    public bool isDefending = false;
     bool canPlant = true;
     public byte handItemIndex = 0;
     public float PlantRange = GameManager.GAMEUNITS ;
@@ -48,6 +48,7 @@ public partial class Player : CharacterBody2D
     public bool canAttack = false;
     Vector2 lastDirection;
     Vector2 MouseDirection;
+    public Vector2 direction;
 
     ItemData HandItem = null;
     public PotionModifier potionModifier = new();
@@ -93,7 +94,7 @@ public partial class Player : CharacterBody2D
         PlantCoolDownTimer = NodeMisc.GenTimer(this, 0.5f, () => canPlant = true);
 
         HitArea = GetNode<Area2D>("HitArea");
-        ShieldArea = GetNode<Area2D>("shield");
+        ShieldCollision = GetNode<StaticBody2D>("shield");
         GUI = GetNode<GameGui>("Canvas/GameGUI");
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
         ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
@@ -119,7 +120,7 @@ public partial class Player : CharacterBody2D
 
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
         blur.Visible = false;
-        
+
     }
 
 
@@ -170,22 +171,22 @@ public partial class Player : CharacterBody2D
     {
         if (state == PlayerState.Attacking || CraftGUI.Visible || state == PlayerState.Lock || state == PlayerState.Dead) return;
 
-        Vector2 direction = InputSystem.GetVector();
+        direction = InputSystem.GetVector();
 
         float speedModifier = equipamentSys.speed + potionModifier.speed + 1;
-        bool isDefending = Input.IsActionPressed("defend");
+        isDefending = Input.IsActionPressed("defend");
 
         float speedTotal;
         if (isDefending && canAttack)
         {
-            ShieldArea.Position = direction * (GameManager.GAMEUNITS / 4);
-            ShieldArea.Rotation = direction.Angle();
-            ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+            ShieldCollision.Position = direction * (GameManager.GAMEUNITS / 4);
+            ShieldCollision.Rotation = direction.Angle();
+            ShieldCollision.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
             speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
         }
         else
         {
-            ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+            ShieldCollision.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
             speedTotal = (Speed * speedModifier);
         }
         animationHandler.Direction(direction);

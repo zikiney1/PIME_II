@@ -31,8 +31,10 @@ public partial class Boss : CharacterBody2D
     int timesInTheState = 0;
     AnimationHandler animationHandler;
     AudioStreamPlayer2D audioPlayer;
+    AnimationPlayer effectsPlayer;
 
-    Sprite2D sprite;
+    Sprite2D effectSprite;
+    Vector2 effectSpriteInitialPos;
     Area2D HitArea;
     CollisionShape2D HitAreaCollision;
     Player player;
@@ -42,7 +44,6 @@ public partial class Boss : CharacterBody2D
 
     Timer pisadaUpdater;
     RectangleShape2D pisadaShape;
-    AnimationPlayer rocksAnimationPlayer;
 
     Timer atirarCoolDownTimer;
     Timer temporizadorDeTiro; //quanto tempo até parar de atirar
@@ -61,14 +62,16 @@ public partial class Boss : CharacterBody2D
         base._EnterTree();
         audioPlayer = GetNode<AudioStreamPlayer2D>("AudioPlayer");
         Instance = this;
-        HitArea = GetNode<Area2D>("Sprite/HitArea");
+        HitArea = GetNode<Area2D>("HitArea");
         HitAreaCollision = HitArea.GetNode<CollisionShape2D>("CollisionShape2D");
 
         HitArea.BodyEntered += Hit;
         GetNode<Area2D>("CollisionArea").BodyEntered += Hit;
         GetNode<CollisionShape2D>("CollisionArea/CollisionShape2D").Disabled = true;
 
-        sprite = GetNode<Sprite2D>("Sprite");
+        effectSprite = HitArea.GetNode<Sprite2D>("effects");
+        effectSpriteInitialPos = effectSprite.Position;
+        effectsPlayer = GetNode<AnimationPlayer>("Animations/EffectsAnimationPlayer");
 
         StateUpdaterTimer = NodeMisc.GenTimer(this, 4, StateUpdate);
         inStateCoolDown = NodeMisc.GenTimer(this, 2f, () => whenStateCoolDownEnds?.Invoke());
@@ -82,7 +85,6 @@ public partial class Boss : CharacterBody2D
             GetNode<AnimationPlayer>("Animations/SpriteAnimationPlayer"),
             GetNode<AnimationPlayer>("Animations/HitAnimationPlayer")
         );
-        rocksAnimationPlayer = GetNode<AnimationPlayer>("Animations/RocksAnimationPlayer");
         lifeSystem.WhenDies += Die;
     }
 
@@ -105,7 +107,7 @@ public partial class Boss : CharacterBody2D
     {
         if (bossState == BossStates.Giratoria && curSpeed > 0)
         {
-            sprite.RotationDegrees += (float)(curSpeed * delta);
+            HitArea.RotationDegrees += (float)(curSpeed * delta);
             GlobalPosition += (player.Position - GlobalPosition).Normalized() * GameManager.GAMEUNITS /4 * (float)delta;
         }
         if (bossState == BossStates.pisada && !inStateCoolDown.IsStopped())
@@ -165,8 +167,9 @@ public partial class Boss : CharacterBody2D
     // ================================ pisada =====================================
     void PisadaStart()
     {
-
-        if (GetDir().Y > 0)
+        effectSprite.Position = effectSpriteInitialPos;
+        effectSprite.RotationDegrees = -90;
+        if (GetDir().Y < 0)
             animationHandler.Play("pisada_down");
         else
             animationHandler.Play("pisada_up");
@@ -191,6 +194,7 @@ public partial class Boss : CharacterBody2D
 
             tm.QueueFree();
             PlaySFX(PisadaSound);
+            effectsPlayer.Play("pedras");
         });
         tm.Start();
 
@@ -241,12 +245,14 @@ public partial class Boss : CharacterBody2D
         isToStopShooting = false;
         atirarCoolDownTimer.Start();
         temporizadorDeTiro.Start();
+        animationHandler.Play("ball_start");
     }
 
     void ShootEnd()
     {
         isToStopShooting = true;
         atirarCoolDownTimer.Stop();
+        animationHandler.Play("ball_end");
         restart();
     }
 
@@ -298,7 +304,11 @@ public partial class Boss : CharacterBody2D
     {
         curSpeed = 0f;
         HitArea.RotationDegrees = 0;
-        sprite.RotationDegrees = 0;
+        effectSprite.Position = Vector2.Zero;
+        effectSprite.Scale = new Vector2(2, 2);
+        effectSprite.RotationDegrees = 0;
+        effectsPlayer.Play("laminaStart");
+        animationHandler.Play("ball_start");
 
         HitAreaCollision.Disabled = false;
         HitAreaCollision.Position = Vector2.Zero;
@@ -332,7 +342,6 @@ public partial class Boss : CharacterBody2D
             StopRotation();
             return;
         }
-        audioPlayer.Stop();
 
         // Desaceleração suave
         tween = GetTree().CreateTween();
@@ -354,7 +363,10 @@ public partial class Boss : CharacterBody2D
         curSpeed = 0f;
         HitAreaCollision.Disabled = true;
         HitArea.RotationDegrees = 0;
-        sprite.RotationDegrees = 0;
+        effectSprite.Scale = Vector2.One;
+        audioPlayer.Stop();
+        effectsPlayer.Play("laminaEnd");
+        animationHandler.Play("ball_end");
     }
     // =============================== Giratoria ===================================
 
