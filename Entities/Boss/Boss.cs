@@ -32,7 +32,7 @@ public partial class Boss : CharacterBody2D
     AnimationHandler animationHandler;
     AudioStreamPlayer2D audioPlayer;
 
-
+    Sprite2D sprite;
     Area2D HitArea;
     CollisionShape2D HitAreaCollision;
     Player player;
@@ -61,12 +61,14 @@ public partial class Boss : CharacterBody2D
         base._EnterTree();
         audioPlayer = GetNode<AudioStreamPlayer2D>("AudioPlayer");
         Instance = this;
-        HitArea = GetNode<Area2D>("HitArea");
+        HitArea = GetNode<Area2D>("Sprite/HitArea");
         HitAreaCollision = HitArea.GetNode<CollisionShape2D>("CollisionShape2D");
 
         HitArea.BodyEntered += Hit;
         GetNode<Area2D>("CollisionArea").BodyEntered += Hit;
         GetNode<CollisionShape2D>("CollisionArea/CollisionShape2D").Disabled = true;
+
+        sprite = GetNode<Sprite2D>("Sprite");
 
         StateUpdaterTimer = NodeMisc.GenTimer(this, 4, StateUpdate);
         inStateCoolDown = NodeMisc.GenTimer(this, 2f, () => whenStateCoolDownEnds?.Invoke());
@@ -103,12 +105,14 @@ public partial class Boss : CharacterBody2D
     {
         if (bossState == BossStates.Giratoria && curSpeed > 0)
         {
-            RotationDegrees += (float)(curSpeed * delta);
+            sprite.RotationDegrees += (float)(curSpeed * delta);
             GlobalPosition += (player.Position - GlobalPosition).Normalized() * GameManager.GAMEUNITS /4 * (float)delta;
         }
         if (bossState == BossStates.pisada && !inStateCoolDown.IsStopped())
         {
-            GlobalPosition += (player.Position - GlobalPosition).Normalized() * GameManager.GAMEUNITS * 2 * (float)delta;
+            Vector2 direction = GetDir();
+            GlobalPosition += direction * GameManager.GAMEUNITS * 2 * (float)delta;
+            animationHandler.Direction(MathM.RoundedVector(direction));
         }
     }
 
@@ -120,6 +124,8 @@ public partial class Boss : CharacterBody2D
             audioPlayer.Play();
         }catch{}
     }
+
+    Vector2 GetDir() => (player.Position - GlobalPosition).Normalized();
 
 
     void StateUpdate()
@@ -159,21 +165,37 @@ public partial class Boss : CharacterBody2D
     // ================================ pisada =====================================
     void PisadaStart()
     {
-        HitArea.LookAt(player.GlobalPosition);
-        HitArea.Rotate(1.57f);
 
-        pisadaShape = new RectangleShape2D()
+        if (GetDir().Y > 0)
+            animationHandler.Play("pisada_down");
+        else
+            animationHandler.Play("pisada_up");
+
+        Timer tm = new();
+
+
+        tm = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime()/2, () =>
         {
-            Size = new Vector2(32, 0)
-        };
+            HitArea.LookAt(player.GlobalPosition);
+            HitArea.Rotate(1.57f);
 
-        HitAreaCollision.Shape = pisadaShape;
-        HitAreaCollision.Position = new Vector2(0, 0);
-        HitAreaCollision.Disabled = false;
+            pisadaShape = new RectangleShape2D()
+            {
+                Size = new Vector2(32, 0)
+            };
 
-        PlaySFX(PisadaSound);
-        pisadaUpdater.Start();
+            HitAreaCollision.Shape = pisadaShape;
+            HitAreaCollision.Position = new Vector2(0, 0);
+            HitAreaCollision.Disabled = false;
+            pisadaUpdater.Start();
+
+            tm.QueueFree();
+            PlaySFX(PisadaSound);
+        });
+        tm.Start();
+
     }
+
     void PisadaEnd()
     {
         timesInTheState++;
@@ -276,6 +298,7 @@ public partial class Boss : CharacterBody2D
     {
         curSpeed = 0f;
         HitArea.RotationDegrees = 0;
+        sprite.RotationDegrees = 0;
 
         HitAreaCollision.Disabled = false;
         HitAreaCollision.Position = Vector2.Zero;
@@ -330,7 +353,8 @@ public partial class Boss : CharacterBody2D
         tween?.Kill();
         curSpeed = 0f;
         HitAreaCollision.Disabled = true;
-        RotationDegrees = 0;
+        HitArea.RotationDegrees = 0;
+        sprite.RotationDegrees = 0;
     }
     // =============================== Giratoria ===================================
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 public static class ItemDB{
     public static Dictionary<byte, ItemResource> itemDB = new();
+    static bool activated = false;
 
     /// <summary>
     /// Sets up the item database by loading all the items in the <c>res://Resources/Items/</c> directory.
@@ -15,29 +16,34 @@ public static class ItemDB{
     /// If an item has an equipament data, the stack max size is set to 1.
     /// If an item has a plant data, the seed is set to the item itself.
     /// </remarks>
-    public static void SetupItemDB(){
+    public static void SetupItemDB()
+    {
+        if(activated) return;
         const string path = "res://Resources/Items/";
         DirAccess dir = DirAccess.Open(path);
-        if(dir == null) return;
+        if (dir == null) return;
         dir.ListDirBegin();
         string fileName;
-        while((fileName = dir.GetNext()) != ""){
+        while ((fileName = dir.GetNext()) != "")
+        {
             ItemResource item = GD.Load<ItemResource>(path + "/" + fileName);
 
-            if(itemDB.ContainsKey(item.id))continue;
+            if (itemDB.ContainsKey(item.id)) continue;
 
-            int level = item.PotionEffect == null ? 1 : item.PotionEffect.useLevel? item.level : 1;
-            
+            int level = item.PotionEffect == null ? 1 : item.PotionEffect.useLevel ? item.level : 1;
+
 
             item.effect = GetPotionEffect(item.PotionEffect, level);
-            if(item.equipamentData != null){
-                if(item.stackMaxSize != 1) item.stackMaxSize = 1;
+            if (item.equipamentData != null)
+            {
+                if (item.stackMaxSize != 1) item.stackMaxSize = 1;
             }
-            
-            if(item.plantData != null) item.plantData.seed = item;
-            
+
+            if (item.plantData != null) item.plantData.seed = item;
+
             itemDB.Add(item.id, item);
-        }   
+            activated = true;
+        }
     }
     
     /// <summary>

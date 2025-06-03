@@ -13,7 +13,6 @@ public partial class GameOver : PanelContainer
         GetNode<Button>("MarginContainer/VBoxContainer/HBoxContainer/reload").Pressed += RestartScene;
         GetNode<Button>("MarginContainer/VBoxContainer/HBoxContainer/sair").Pressed += GoToMainMenu;
 
-
     }
     public void Activate()
     {

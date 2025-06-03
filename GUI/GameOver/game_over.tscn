@@ -27,7 +27,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(2100, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(2000, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
 
@@ -43,7 +43,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.48, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.5, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 0.5)
 }
 tracks/1/type = "bezier"
@@ -76,7 +76,7 @@ script = ExtResource("1_yyuv5")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 2100
+theme_override_constants/margin_left = 2000
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 200
 theme_override_constants/margin_bottom = 50

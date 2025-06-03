@@ -17,8 +17,25 @@ public static class SaveData
         {
             LoadSaveFile(p);
         }
-        catch
+        catch(Exception e)
         {
+            GD.PrintErr(e);
+            FileAccess oldfile = FileAccess.Open(saveFilePath, FileAccess.ModeFlags.Read);
+            if (FileAccess.FileExists(saveFilePath + ".bk"))
+            {
+                int i = 1;
+                while (FileAccess.FileExists(saveFilePath + "." + i + ".bk")) i++;
+                FileAccess backupfile = FileAccess.Open(saveFilePath + "." + i + ".bk", FileAccess.ModeFlags.Write);
+                backupfile.StoreString(oldfile.GetAsText());
+                backupfile.Close();
+            }
+            else
+            {
+                FileAccess backupfile = FileAccess.Open(saveFilePath + ".bk", FileAccess.ModeFlags.Write);
+                backupfile.StoreString(oldfile.GetAsText());
+                backupfile.Close();
+                oldfile.Close();
+            }
             CreateEmptySaveFile();
             LoadSaveFile(p);
         }
@@ -47,6 +64,10 @@ public static class SaveData
         if (pInfo.Length > 3)
         {
             if (pInfo[3] != "") player.equipamentSys.AddEquipament(byte.Parse(pInfo[3]));
+        }
+        if (pInfo.Length > 4)
+        {
+            player.canAttack = pInfo[4] != "0";
         }
 
         indexer++;
@@ -155,7 +176,8 @@ public static class SaveData
         StringBuilder sb = new();
 
         //informação do jogador
-        sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold + "|" + player.equipamentSys.IdData());
+        sb.AppendLine(player.lifeSystem.CurrentLife() + "|" + player.handItemIndex + "|" + player.gold + "|" + player.equipamentSys.IdData() + "|" + (player.canAttack ? "1" : "0"));
+        //vida | item na mão | dinheiro | equipamento | pode atacar
 
 
         //inventario

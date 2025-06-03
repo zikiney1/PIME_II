@@ -158,12 +158,12 @@ public partial class Player : CharacterBody2D
 
         HitArea.BodyEntered += whenHitEnemy;
 
-        
-
         animationHandler.Play("idle");
-                
+
         if (GlobalPosition == new Vector2(64, 128))
             EventHandler.EmitEvent("OnStart");
+            
+        GD.Print(canAttack);
     }
 
     public override void _PhysicsProcess(double delta)

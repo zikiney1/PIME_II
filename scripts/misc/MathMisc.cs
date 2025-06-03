@@ -39,6 +39,8 @@ public static class MathM
         }
     }
 
+    public static Vector2 RoundedVector(Vector2 vector) => new Vector2(Mathf.Round(vector.X), Mathf.Round(vector.Y));
+
     public static Vector2 Lerp(Vector2 a, Vector2 b, float t)
     {
         return new Vector2(Mathf.Lerp(a.X, b.X, t), Mathf.Lerp(a.Y, b.Y, t));
