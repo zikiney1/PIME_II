@@ -49,7 +49,11 @@ public partial class ShopGui : VBoxContainer
             OnSelectItem();
         };
         confirmButton.Pressed += WhenConfirm;
-        exitButton.Pressed += Deactivate;
+        exitButton.Pressed += () =>
+        {
+            player.InteractMerchant(null);
+            Deactivate();
+        };
 
         changeModeButton.Pressed += () => {
             inBuyMode = !inBuyMode;
@@ -73,11 +77,12 @@ public partial class ShopGui : VBoxContainer
     /// It also selects the currently selected item in the item list.
     /// </para>
     /// </remarks>
-    public void Activate(ItemResource[] items){
+    public void Activate(ItemResource[] items, Texture2D MerchantBanner = null){
         if(items == null){
             GD.PushError("shopItems is null");
             return;
         }
+        MerchantTexture.Texture = MerchantBanner;
         shopItems = items;
         Visible = true;
         Update();
@@ -85,8 +90,10 @@ public partial class ShopGui : VBoxContainer
         OnSelectItem();
     }
 
-    public void Deactivate(){
+    public void Deactivate()
+    {
         Visible = false;
+        MerchantTexture.Texture = null;
     }
 
     

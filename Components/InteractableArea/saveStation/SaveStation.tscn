@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b6e57l2772r5g"]
 
 [ext_resource type="Script" uid="uid://3tie45uvnbx8" path="res://Components/InteractableArea/saveStation/SaveStation.cs" id="1_q5ey6"]
-[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_dvesp"]
+[ext_resource type="Texture2D" uid="uid://dfpjirax74g4i" path="res://assets/Sprites/test/promps.png" id="2_q5ey6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vt8a2"]
 size = Vector2(16, 16)
@@ -12,7 +12,10 @@ collision_mask = 2
 script = ExtResource("1_q5ey6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_dvesp")
+texture = ExtResource("2_q5ey6")
+hframes = 24
+vframes = 6
+frame = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_vt8a2")

@@ -267,7 +267,7 @@ public partial class Player : CharacterBody2D
         }
     }
 
-    public void InteractMerchant(ItemResource[] shopItems)
+    public void InteractMerchant(ItemResource[] shopItems, Texture2D merchantBanner = null)
     {
         if (ShopGUI.Visible){
             ShopGUI.Deactivate();
@@ -275,7 +275,7 @@ public partial class Player : CharacterBody2D
             blur.Visible = false;
         }
         else{
-            ShopGUI.Activate(shopItems);
+            ShopGUI.Activate(shopItems,merchantBanner);
             state = PlayerState.Lock;
             blur.Visible = true;
         }

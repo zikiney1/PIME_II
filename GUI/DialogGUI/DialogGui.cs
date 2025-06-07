@@ -130,6 +130,7 @@ public partial class DialogGui : VBoxContainer
 
     public void SetDialog(string dialogID, string EventAtEnd)
     {
+        if(dialogID == null || dialogID == "") return;
         DialogSequence = new(DialogManager.GetDialog(dialogID));
         SetDialog(DialogSequence.Current());
         this.EventAtEnd = EventAtEnd;

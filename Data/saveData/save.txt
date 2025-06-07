@@ -1,8 +1,8 @@
-5|0|2||1
-
+10|0|5||1
+1;2|
 100;100;100;100;100;100;100;100;100;
 
-2525|2360
-Floresta ka'a
-
-2#_apoena||||||side_1_moacir|side_fantasma
+550|54
+Vila Anhau
+pocao_jatoba
+2_1#_apoena;|;||5#_velhaLuna;Quest4#Ended|;|;|side_1_moacir;side_moacir_start|side_fantasma;side_espirito_start|
