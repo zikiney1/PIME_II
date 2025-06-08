@@ -23,23 +23,22 @@ public partial class Pooling : Node2D
         for (int i = 0; i < 40; i++)
         {
             Projectile p = new();
+            this.AddChild(p);
             p.pooling = this;
             p.DeActivate();
             DeactiveProjectiles.Add(p);
-            this.AddChild(p);
 
             Coin c = new();
+            this.AddChild(c);
             c.pool = this;
             c.DeActivate();
             DeactiveCoins.Add(c);
-            this.AddChild(c);
 
             DropItem d = new();
-            d = new();
+            this.AddChild(d);
             d.polling = this;
             d.Deactivate();
             poolItems.Add(d);
-            this.AddChild(d);
         }
 
     }

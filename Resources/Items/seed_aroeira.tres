@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://671lkxu8khmj"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://671lkxu8khmj"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_18m26"]
 [ext_resource type="Resource" uid="uid://ck3erjtbk7dx2" path="res://Resources/Plants/aroeira.tres" id="1_eanv6"]
+[ext_resource type="Texture2D" uid="uid://b5l32lx7bb32v" path="res://assets/Sprites/items/seed_aroeira.png" id="1_rehcp"]
 
 [resource]
 script = ExtResource("1_18m26")
@@ -10,6 +11,7 @@ level = 1
 name = "Semente de Aroeira"
 description = "Planta medicinal com propriedades cicatrizantes.
 "
+icon = ExtResource("1_rehcp")
 price = 14
 stackMaxSize = 10
 type = 2

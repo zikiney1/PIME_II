@@ -25,6 +25,8 @@ public partial class PlantingZone : Node2D
     /// properties have been set.
     /// </remarks>
     public void Setup(){
+        int soilSize = GameManager.GAMEUNITS/2;
+
         data = player.plantZoneData;
         Soils = new SoilTile[data.Columns * data.Rows];
         for(int i = 0; i < Soils.Length; i++){
@@ -32,8 +34,8 @@ public partial class PlantingZone : Node2D
                 this,
                 SoilTextureStates,
                 player.plantZoneData[i],
-                (i % data.Rows) * GameManager.GAMEUNITS,
-                (i / data.Columns) * GameManager.GAMEUNITS
+                (i % data.Rows) * soilSize,
+                (i / data.Columns) * soilSize
             );
             AddChild(Soils[i]);
             player.plantZoneData[i].WhenPlantSet += Soils[i].SetPlant;

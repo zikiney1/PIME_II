@@ -10,7 +10,7 @@ public partial class Rolante : CharacterBody2D
     [Export] byte totalLife = 4;
     [Export] byte damage = 1;
     [Export] float rotationSpeed = 50f;
-    [Export] float speed = 1000;
+    [Export] float speed = 700;
     [Export] float timeToAct = 2f;
     [Export] float StunnedTime = 1f;
     [Export] byte coinsToDrop = 1;

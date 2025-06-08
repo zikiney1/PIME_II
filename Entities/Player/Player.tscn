@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://cdg0jp7odllo"]
+[gd_scene load_steps=44 format=3 uid="uid://cdg0jp7odllo"]
 
 [ext_resource type="Script" uid="uid://bnqm2p5umlph6" path="res://Entities/Player/Player.cs" id="1_cabni"]
 [ext_resource type="Script" uid="uid://dc5oud1trtym" path="res://Components/PlayerAudioManager/PlayerAudioManager.cs" id="2_lmeus"]
@@ -231,6 +231,29 @@ tracks/3/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../Canvas/ColorRect:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Canvas/ColorRect:color:a")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
 
 [sub_resource type="Animation" id="Animation_x44r4"]
 resource_name = "take_damage"
@@ -317,12 +340,41 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.5)
 }
 
+[sub_resource type="Animation" id="Animation_mgqku"]
+resource_name = "win_fx"
+length = 3.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Canvas/ColorRect:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Canvas/ColorRect:color:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.4, 0.6, 0.9, 1.1, 1.4, 2, 3)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_761t5"]
 _data = {
 &"RESET": SubResource("Animation_761t5"),
 &"take_damage": SubResource("Animation_x44r4"),
 &"teleport_end": SubResource("Animation_hl213"),
-&"teleport_start": SubResource("Animation_samso")
+&"teleport_start": SubResource("Animation_samso"),
+&"win_fx": SubResource("Animation_mgqku")
 }
 
 [node name="Player" type="CharacterBody2D"]
@@ -429,6 +481,14 @@ visible = false
 offset_top = 0.0
 offset_right = 4.0
 offset_bottom = -1.0
+
+[node name="ColorRect" type="ColorRect" parent="Canvas"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="InteractableRange" type="Area2D" parent="."]
 collision_layer = 2

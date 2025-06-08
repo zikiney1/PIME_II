@@ -22,6 +22,13 @@ public partial class GameGui : VBoxContainer
 
     Action whenAnimationEnds;
 
+    [Export] Texture2D CoinTexture;
+    TextureRect CoinIcon;
+    AtlasTexture atlasTexture;
+    Timer CoinAnimationTimer;
+    byte currentFrame = 0;
+
+
     public override void _EnterTree()
     {
         HeartzTextures = [
@@ -35,6 +42,7 @@ public partial class GameGui : VBoxContainer
         HandItemName = GetNode<RichTextLabel>("MainGUI/ItemRegion/ItemName");
         HandItemIcon = GetNode<TextureRect>("MainGUI/ItemRegion/ItemLayout/Portrait/ItemIcon");
         HandItemQuantity = GetNode<RichTextLabel>("MainGUI/ItemRegion/ItemLayout/Portrait/QuantityLabel");
+        CoinIcon = GetNode<TextureRect>("MainGUI/VBoxContainer/HBoxContainer/CoinIcon");
         CoinAmount = GetNode<RichTextLabel>("MainGUI/VBoxContainer/HBoxContainer/CoinAmount");
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         inventory = GetNode<ItemList>("GameContainter/HBoxContainer/ItemList");
@@ -51,6 +59,19 @@ public partial class GameGui : VBoxContainer
         inventory.Clear();
         inventory.Visible = false;
         inventory.ItemClicked += onItemClicked;
+
+        atlasTexture = new();
+        atlasTexture.Atlas = CoinTexture;
+        atlasTexture.Region = new Rect2(0, 0, 32, 32);
+
+        CoinIcon.Texture = atlasTexture;
+        CoinAnimationTimer = NodeMisc.GenTimer(this, 0.2f, () =>
+        {
+            currentFrame = (byte)((currentFrame + 1) % 4);
+            atlasTexture.Region = new Rect2(currentFrame * 32, 0, 32, 32);
+            CoinAnimationTimer.Start();
+        });
+        CoinAnimationTimer.Start(); 
     }
 
 

@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://bexqm4v54q1x1"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://bexqm4v54q1x1"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_wau2s"]
 [ext_resource type="Resource" uid="uid://62hv3odhfpxl" path="res://Resources/potionEffects/defensa.tres" id="1_yn11d"]
+[ext_resource type="Texture2D" uid="uid://2hmkq2mql8fi" path="res://assets/Sprites/items/pocao_aroeira.png" id="2_0r4a5"]
 
 [resource]
 script = ExtResource("1_wau2s")
@@ -9,6 +10,7 @@ id = 12
 level = 1
 name = "Poção Protetora de Aroeira"
 description = "Fortalece a pele e a resistencia contra ataques físicos."
+icon = ExtResource("2_0r4a5")
 price = 55
 stackMaxSize = 5
 type = 0

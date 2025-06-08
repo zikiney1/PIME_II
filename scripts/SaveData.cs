@@ -26,7 +26,7 @@ public static class SaveData
                 int i = 1;
                 while (FileAccess.FileExists(saveFilePath + "." + i + ".bk")) i++;
                 FileAccess backupfile = FileAccess.Open(saveFilePath + "." + i + ".bk", FileAccess.ModeFlags.Write);
-                backupfile.StoreString(oldfile.GetAsText());
+                backupfile.StoreString(oldfile.GetAsText() + "\n\nError:\n\n" + e);
                 backupfile.Close();
             }
             else

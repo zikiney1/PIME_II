@@ -84,7 +84,7 @@ public partial class EspadachinPlanta : Area2D
             if (MathM.IsInRange(GlobalPosition, playerPos, 5f))
             {
                 followLastPlayerPos = false;
-                if (DieTimer.IsStopped())
+                if (!isGoingToDie)
                 {
                     DieTimer.Start();
                     isGoingToDie = true;
@@ -109,6 +109,7 @@ public partial class EspadachinPlanta : Area2D
 
     public void Damage(float modifier, int amount = 1)
     {
+        if(isGoingToDie) return;
         lifeSystem.GetDamage(modifier, amount);
         animationHandler.Damage();
         audioHandler.PlayHit();

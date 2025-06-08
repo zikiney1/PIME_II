@@ -5,7 +5,7 @@ using Godot;
 public partial class GameManager : Node{
 
     public readonly static byte GAMEUNITS = 32;
-    public readonly static byte SOILTILESIZE = 3;
+    public readonly static byte SOILTILESIZE = 5;
 
     public readonly static uint PlayerBulletMask = 28;
     public readonly static uint EnemyBulletMask = 9;

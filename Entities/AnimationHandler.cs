@@ -10,6 +10,11 @@ public class AnimationHandler
         this.characterAnimPlayer = characterAnimPlayer;
         this.hitAnimPlayer = hitAnimPlayer;
     }
+
+    public void SetVel(float vel)
+    {
+        characterAnimPlayer.SpeedScale = vel;
+    }
     public void Direction(Vector2 direction)
     {
 

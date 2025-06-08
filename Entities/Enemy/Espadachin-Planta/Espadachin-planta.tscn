@@ -121,7 +121,6 @@ visible = false
 shape = SubResource("RectangleShape2D_6odco")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-modulate = Color(1, 0.92549, 0.14902, 1)
 material = SubResource("ShaderMaterial_eqvbx")
 texture = ExtResource("2_chtde")
 

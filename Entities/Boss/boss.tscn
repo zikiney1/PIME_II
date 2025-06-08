@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://b6n38xyg3tlgo"]
+[gd_scene load_steps=33 format=3 uid="uid://b6n38xyg3tlgo"]
 
 [ext_resource type="Script" uid="uid://cl62n0yepsvex" path="res://Entities/Boss/Boss.cs" id="1_y4shp"]
 [ext_resource type="Texture2D" uid="uid://cqa38vajpykt1" path="res://assets/Sprites/test/enemy_projectile2.png" id="2_01fwt"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://cwo2j5w6c5g0s" path="res://assets/audio/sfx/boss/pedras.wav" id="5_yk8l1"]
 [ext_resource type="AudioStream" uid="uid://d3k36nj6nqsof" path="res://assets/audio/sfx/boss/boss_walk.wav" id="6_4b386"]
 [ext_resource type="AudioStream" uid="uid://de318c4twqkus" path="res://assets/audio/sfx/boss/girada.wav" id="6_bgnjk"]
+[ext_resource type="AudioStream" uid="uid://c42be8hun8u3m" path="res://assets/audio/sfx/boss/boss_win.wav" id="8_bgnjk"]
 [ext_resource type="Texture2D" uid="uid://bph5qvhri0bgl" path="res://assets/Sprites/boss/boss_spritesheet.png" id="9_yk8l1"]
 [ext_resource type="Texture2D" uid="uid://dmu3s7pwfwbdr" path="res://assets/Sprites/boss/effects.png" id="10_yk8l1"]
 
@@ -307,6 +308,7 @@ PisadaSound = ExtResource("4_4b386")
 PisadaRocksSound = ExtResource("5_yk8l1")
 WalkSound = ExtResource("6_4b386")
 GiradaSound = ExtResource("6_bgnjk")
+DieSound = ExtResource("8_bgnjk")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_np8sd")

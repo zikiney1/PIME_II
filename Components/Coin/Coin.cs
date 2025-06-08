@@ -12,18 +12,21 @@ public partial class Coin : Area2D
     public byte quantity = 0;
     Sprite2D sp;
 
+    Timer animationTimer;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        Scale = new Vector2(0.25f, 0.25f);
         sp = new()
         {
             Texture = GD.Load<Texture2D>("res://assets/Sprites/test/coin.png")
         };
+        sp.Hframes = 4;
         CollisionShape2D cs = new()
         {
             Shape = new RectangleShape2D()
             {
-                Size = new(sp.Texture.GetWidth() * 2, sp.Texture.GetHeight() * 2)
+                Size = new((sp.Texture.GetWidth()/4), sp.Texture.GetHeight())
             }
         };
         player = Player.Instance;
@@ -39,6 +42,14 @@ public partial class Coin : Area2D
                 pool.ReturnCoin(this);
             }
         };
+
+        animationTimer = NodeMisc.GenTimer(this, 0.2f, () =>
+        {
+            sp.Frame = (sp.Frame + 1) % 4;
+            animationTimer.Start();
+            GD.Print(sp.Frame);
+        });
+        
     }
     public override void _Process(double delta)
     {
@@ -56,15 +67,19 @@ public partial class Coin : Area2D
     }
 
 
-    public void DeActivate(){
+    public void DeActivate()
+    {
         Visible = false;
         SetPhysicsProcess(false);
         SetProcess(false);
+        animationTimer.Stop();
     }
-    
-    public void Activate(){
+
+    public void Activate()
+    {
         Visible = true;
         SetPhysicsProcess(true);
         SetProcess(true);
+        animationTimer.Start();
     }
 }
