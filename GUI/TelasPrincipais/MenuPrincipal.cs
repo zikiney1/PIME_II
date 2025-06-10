@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class MenuPrincipal : PanelContainer
+public partial class MenuPrincipal : Control
 {
     //res://Level/Level1.tscn
     MarginContainer mainMenu;

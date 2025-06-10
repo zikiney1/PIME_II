@@ -24,7 +24,7 @@ public partial class DropItem : Area2D
     /// </remarks>
     public override void _Ready()
     {
-        Scale = new Vector2(0.5f, 0.5f);
+        Scale = new Vector2(0.25f, 0.25f);
         sprite = new();
         // sprite.Material = GD.Load<ShaderMaterial>("res://Shaders/outline.gdshader");
         AddChild(sprite);

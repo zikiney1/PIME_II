@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://b6lr3j4c012e4"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://b6lr3j4c012e4"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_b367n"]
 [ext_resource type="Resource" uid="uid://xe08w0iuqb36" path="res://Resources/potionEffects/InstaHealEffect.tres" id="1_d04l8"]
+[ext_resource type="Texture2D" uid="uid://jmlm7rs4h56o" path="res://assets/Sprites/items/pocao_jatoba.png" id="2_a0r71"]
 
 [resource]
 script = ExtResource("1_b367n")
@@ -10,6 +11,7 @@ level = 1
 name = "Poção Energética de Jatobá"
 description = "Uma bebida revitalizante Feita com o fruto doce de Jatobá
 "
+icon = ExtResource("2_a0r71")
 price = 60
 stackMaxSize = 5
 type = 0

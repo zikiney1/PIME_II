@@ -96,8 +96,15 @@ public partial class CachorroPlanta : CharacterBody2D
 
         if (navAgent.IsNavigationFinished()) return;
 
+        animationHandler.Play("walk");
+
         Vector2 nextPos = navAgent.GetNextPathPosition();
-        Velocity = GlobalPosition.DirectionTo(nextPos) * Speed * GameManager.GAMEUNITS * (float)delta;
+        Vector2 dir = GlobalPosition.DirectionTo(nextPos);
+
+        if (dir.X > 0) GetNode<Sprite2D>("Sprite").FlipH = true;
+        else GetNode<Sprite2D>("Sprite").FlipH = false;
+
+        Velocity = dir * Speed * GameManager.GAMEUNITS * (float)delta;
         audioHandler.PlayWalk();
         MoveAndSlide();
     }

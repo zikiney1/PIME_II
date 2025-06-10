@@ -4,6 +4,7 @@ using Godot;
 
 public static class CraftingSystem{
     static Dictionary<string, RecipeData> recipes = new();
+    static bool activated = false;
 
     /// <summary>
     /// Sets up the crafting system by loading all the recipes in the <c>res://Resources/Recipes/</c> directory.
@@ -14,21 +15,25 @@ public static class CraftingSystem{
     /// If a recipe is already in the database, it is skipped.
     /// If a recipe has a null result, it is skipped.
     /// </remarks>
-    public static void SetupRecipes(){
+    public static void SetupRecipes()
+    {
+        if (activated) return;
         const string path = "res://Resources/Recipes/";
         DirAccess dir = DirAccess.Open(path);
-        if(dir == null) return;
+        if (dir == null) return;
         dir.ListDirBegin();
         string fileName;
         string name = "";
-        while((fileName = dir.GetNext()) != ""){
+        while ((fileName = dir.GetNext()) != "")
+        {
             RecipeResource recipe = GD.Load<RecipeResource>(path + "/" + fileName);
-            if(recipe == null) continue;
-            name = fileName.Replace(".tres","");
-            if(recipes.ContainsKey(name)) continue;
-            if(recipe.result == null) continue;
-            recipes.Add(name, new(recipe,name));
+            if (recipe == null) continue;
+            name = fileName.Replace(".tres", "");
+            if (recipes.ContainsKey(name)) continue;
+            if (recipe.result == null) continue;
+            recipes.Add(name, new(recipe, name));
         }
+        activated = true;
     }
     
     /// <summary>

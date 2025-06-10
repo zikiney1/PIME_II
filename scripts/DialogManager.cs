@@ -7,9 +7,11 @@ public static class DialogManager
 {
     const string DIALOG_PATH = "res://Dialogs/";
     static Dictionary<string, string[]> dialogDic = new();
+    static bool activated = false;
 
     public static void Setup()
     {
+        if (activated) return;
         ReadDialogFile("res://Dialogo/Pai de arana/1#_pai_para_arana.txt");
 
         ReadDialogFile("res://Dialogo/aponema/2#_apoena.txt");
@@ -38,8 +40,9 @@ public static class DialogManager
         ReadDialogFile("res://Dialogo/fantasma/side_2_fantasmas.txt");
         ReadDialogFile("res://Dialogo/fantasma/side_3_fantasma.txt");
         ReadDialogFile("res://Dialogo/fantasma/side_fantasma.txt");
-        
+
         ReadDialogFile("res://Dialogo/tutorial/tuto_save_stations.txt");
+        activated = true;
     }
     public static string[] GetDialog(string name) => dialogDic[name];
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl8yowdr0hby0"
-path="res://.godot/imported/Autotile Grass and Dirt Path Tileset.png-c2e8970b64b562c1507fe7e94030a01d.ctex"
+uid="uid://hv0kj4bl741l"
+path="res://.godot/imported/planta-espadachin.png-ae9383d7d3b703999dbffaadf2fb6632.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Sprites/test/Autotile Grass and Dirt Path Tileset.png"
-dest_files=["res://.godot/imported/Autotile Grass and Dirt Path Tileset.png-c2e8970b64b562c1507fe7e94030a01d.ctex"]
+source_file="res://assets/Sprites/enemys/espadachin-planta/planta-espadachin.png"
+dest_files=["res://.godot/imported/planta-espadachin.png-ae9383d7d3b703999dbffaadf2fb6632.ctex"]
 
 [params]
 

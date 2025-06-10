@@ -1,15 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://e6qtwhofe5ag"]
+[gd_scene load_steps=19 format=3 uid="uid://e6qtwhofe5ag"]
 
-[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="1_drfle"]
 [ext_resource type="Script" uid="uid://crmyq7j1qm6jo" path="res://Entities/Enemy/Cachorro-planta/CachorroPlanta.cs" id="1_h57yh"]
 [ext_resource type="Shader" uid="uid://ch401k1srlcv7" path="res://Shaders/HitShader.gdshader" id="2_55v2f"]
+[ext_resource type="Texture2D" uid="uid://cgwrg8k6yxq67" path="res://assets/Sprites/enemys/cachorro-planta/cachorro_planta.png" id="3_kcje4"]
 [ext_resource type="Script" uid="uid://cl3o3ab6ernub" path="res://Entities/Enemy/AudioHandler.cs" id="4_mbwrt"]
 [ext_resource type="AudioStream" uid="uid://bnv4v2etr8osm" path="res://assets/audio/sfx/enemy/enemy_hit.wav" id="5_kcje4"]
 [ext_resource type="AudioStream" uid="uid://b01uvqxmnsdyc" path="res://assets/audio/sfx/enemy/walk_enemy.wav" id="6_sq6uw"]
 [ext_resource type="AudioStream" uid="uid://cb8p38ubq3pit" path="res://assets/audio/sfx/enemy/enemy_die.wav" id="7_sare6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h57yh"]
-size = Vector2(16, 16)
+size = Vector2(18, 17)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mbwrt"]
 shader = ExtResource("2_55v2f")
@@ -17,6 +17,7 @@ shader_parameter/active = false
 shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_55v2f"]
+size = Vector2(15, 15)
 
 [sub_resource type="Animation" id="Animation_mbwrt"]
 length = 0.001
@@ -36,7 +37,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_55v2f"]
 resource_name = "take_damage"
 length = 0.4
-loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -45,7 +45,7 @@ tracks/0/path = NodePath("../Sprite:material:shader_parameter/active")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
@@ -57,18 +57,109 @@ _data = {
 &"take_damage": SubResource("Animation_55v2f")
 }
 
+[sub_resource type="Animation" id="Animation_sq6uw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sare6"]
+resource_name = "idle"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_2dxa6"]
+resource_name = "walk"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_3g8qg"]
+resource_name = "die"
+length = 0.8
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3g8qg"]
+_data = {
+&"RESET": SubResource("Animation_sq6uw"),
+&"die": SubResource("Animation_3g8qg"),
+&"idle": SubResource("Animation_sare6"),
+&"walk": SubResource("Animation_2dxa6")
+}
+
 [node name="Cachorro-planta" type="CharacterBody2D" groups=["EnemyGroup"]]
 collision_layer = 4
 collision_mask = 13
 script = ExtResource("1_h57yh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 0.5)
 shape = SubResource("RectangleShape2D_h57yh")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 modulate = Color(0.254902, 0.905882, 0.239216, 1)
 material = SubResource("ShaderMaterial_mbwrt")
-texture = ExtResource("1_drfle")
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_kcje4")
+hframes = 7
+vframes = 2
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 5.0
@@ -79,6 +170,7 @@ debug_path_custom_color = Color(1, 0.054902, 0.0313726, 1)
 [node name="HitArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(-1.5, 1.5)
 shape = SubResource("RectangleShape2D_55v2f")
 
 [node name="Animation" type="Node" parent="."]
@@ -89,6 +181,9 @@ libraries = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Animation"]
+libraries = {
+&"": SubResource("AnimationLibrary_3g8qg")
+}
 
 [node name="AudioHandler" type="AudioStreamPlayer2D" parent="."]
 script = ExtResource("4_mbwrt")

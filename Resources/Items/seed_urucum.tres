@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://dh13d6hy8hpbv"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://dh13d6hy8hpbv"]
 
 [ext_resource type="Resource" uid="uid://cwiles20jwl8k" path="res://Resources/Plants/urucum.tres" id="1_774nh"]
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_axvqq"]
+[ext_resource type="Texture2D" uid="uid://db7ledty8kv6v" path="res://assets/Sprites/items/seed_urucum.png" id="1_be17j"]
 
 [resource]
 script = ExtResource("1_axvqq")
@@ -10,6 +11,7 @@ level = 1
 name = "Semente de Urucum"
 description = "Semente da planta de urucum. Suas sementes são usadas como corante e em preparados medicinais.
 "
+icon = ExtResource("1_be17j")
 price = 8
 stackMaxSize = 15
 type = 2

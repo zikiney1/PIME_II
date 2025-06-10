@@ -1,12 +1,20 @@
-[gd_resource type="Resource" script_class="PlantResource" load_steps=3 format=3 uid="uid://dbgbmkbd2a22q"]
+[gd_resource type="Resource" script_class="PlantResource" load_steps=10 format=3 uid="uid://dbgbmkbd2a22q"]
 
+[ext_resource type="Texture2D" uid="uid://b7ef6af60qcfk" path="res://assets/Planting/plantas/tucum/tucum_dead.png" id="1_3dqf3"]
 [ext_resource type="Resource" uid="uid://cx0cy1oytb5a1" path="res://Resources/Items/fruto_tucum.tres" id="1_lu74j"]
 [ext_resource type="Script" uid="uid://ctetg1bf2kml4" path="res://Resources/PlantResource.cs" id="1_x2r2l"]
+[ext_resource type="Texture2D" uid="uid://ubweqflabu23" path="res://assets/Planting/plantas/tucum/tucum_0.png" id="2_2v6gj"]
+[ext_resource type="Texture2D" uid="uid://cs2horya70jw4" path="res://assets/Planting/plantas/tucum/tucum_1.png" id="3_i5ou6"]
+[ext_resource type="Texture2D" uid="uid://d128mqmu6n24k" path="res://assets/Planting/plantas/tucum/tucum_2.png" id="4_1xk1d"]
+[ext_resource type="Texture2D" uid="uid://b5u3p4blb66a5" path="res://assets/Planting/plantas/tucum/tucum_3.png" id="5_v05gq"]
+[ext_resource type="Texture2D" uid="uid://c6u18t0yl1ox3" path="res://assets/Planting/plantas/tucum/tucum_4.png" id="6_e6xcs"]
+[ext_resource type="Texture2D" uid="uid://cm4c2vbuy8g8h" path="res://assets/Planting/plantas/tucum/tucum_5.png" id="7_jxu3e"]
 
 [resource]
 script = ExtResource("1_x2r2l")
-GrowthProcess = null
-growthDurationSeconds = 240
+GrowthProcess = Array[Texture2D]([ExtResource("2_2v6gj"), ExtResource("3_i5ou6"), ExtResource("4_1xk1d"), ExtResource("5_v05gq"), ExtResource("6_e6xcs"), ExtResource("7_jxu3e")])
+DeadPlant = ExtResource("1_3dqf3")
+growthDurationSeconds = 90
 result = ExtResource("1_lu74j")
-resultQuantity = 4
+resultQuantity = 3
 metadata/_custom_type_script = "uid://ctetg1bf2kml4"

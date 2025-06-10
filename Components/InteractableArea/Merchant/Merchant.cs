@@ -4,6 +4,7 @@ using System;
 public partial class Merchant : Interactable
 {
     [Export(PropertyHint.ArrayType)] ItemResource[] shopItems;
+    [Export] public Texture2D MerchantBanner;
     public override void Interact(){
         base.Interact();
         if (!Visible) return;
@@ -12,7 +13,7 @@ public partial class Merchant : Interactable
             GD.PushError("shopItems is null");
             return;
         }
-        player.InteractMerchant(shopItems);
+        player.InteractMerchant(shopItems,MerchantBanner);
     }
 
 }

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Godot;
 public partial class GameManager : Node{
 
     public readonly static byte GAMEUNITS = 32;
-    public readonly static byte SOILTILESIZE = 3;
+    public readonly static byte SOILTILESIZE = 5;
 
     public readonly static uint PlayerBulletMask = 28;
     public readonly static uint EnemyBulletMask = 9;
@@ -14,6 +15,7 @@ public partial class GameManager : Node{
     [Export] Camera camera;
     Random rnd;
 
+    [ExportGroup("Npcs And Quests")]
     [Export] public NpcDialogZone Apoena;
     [Export] public NpcDialogZone Apua;
     [Export] public NpcDialogZone Karai_dialog;
@@ -26,17 +28,20 @@ public partial class GameManager : Node{
     [Export] public Node moacirQuestEnemies;
     [Export] public StaticBody2D BossEntrance;
 
+    [ExportGroup("Micelanious")]
+    [Export]AnimationPlayer beachAnimation;
+
     public string SaveQuests()
     {
         string saveDataLine = "";
-        saveDataLine += Apoena.dialogPath + "|";
-        saveDataLine += Apua.dialogPath + "|";
-        saveDataLine += (Karai_dialog.Visible ? Karai_dialog.dialogPath : "") + "|";
-        saveDataLine += Luna.dialogPath + "|";
-        saveDataLine += caua.dialogPath + "|";
-        saveDataLine += thauan.dialogPath + "|";
-        saveDataLine += (moacir.Visible ? moacir.dialogPath : "") + "|";
-        saveDataLine += espirito.dialogPath;
+        saveDataLine += Apoena.dialogPath + ";" + Apoena.EventAtEnd+ "|";
+        saveDataLine += Apua.dialogPath +";" + Apua.EventAtEnd +"|";
+        saveDataLine += (Karai_dialog.Visible ? Karai_dialog.dialogPath + ";" + Karai_dialog.EventAtEnd : "") + "|";
+        saveDataLine += Luna.dialogPath + ";" + Luna.EventAtEnd+ "|";
+        saveDataLine += caua.dialogPath + ";" + caua.EventAtEnd+ "|";
+        saveDataLine += thauan.dialogPath + ";" + thauan.EventAtEnd+ "|";
+        saveDataLine += (moacir.Visible ? moacir.dialogPath + ";" + moacir.EventAtEnd: "") + "|";
+        saveDataLine += espirito.dialogPath + ";" + espirito.EventAtEnd + "|";
         return saveDataLine;
     }
 
@@ -44,36 +49,42 @@ public partial class GameManager : Node{
     {
         if (saveDataLine == "") return;
         string[] saveData = saveDataLine.Split('|');
-        Apoena.dialogPath = saveData[0];
-        Apua.dialogPath = saveData[1];
 
-        if (saveData[2] == "")
-        {
-            Karai_dialog.Visible = false;
-            Karai_Merchant.Visible = true;
-        }
-        else
-        {
-            Karai_dialog.Visible = true;
-            Karai_Merchant.Visible = false;
-            Karai_dialog.dialogPath = saveData[2];
-        }
-        Luna.dialogPath = saveData[3];
-        caua.dialogPath = saveData[4];
-        thauan.dialogPath = saveData[5];
-
-        if (saveData[6] == "")
-        {
-            moacir.Visible = false;
-        }
-        else
-        {
-            moacir.Visible = true;
-            moacir.dialogPath = saveData[6];
-        }
-
-        espirito.dialogPath = saveData[7];
+        SetQuest(Apoena, saveData[0]);
+        SetQuest(Apua, saveData[1]);
+        SetQuest(Karai_dialog, saveData[2], true, Karai_Merchant);
+        SetQuest(Luna, saveData[3]);
+        SetQuest(caua, saveData[4]);
+        SetQuest(thauan, saveData[5]);
+        SetQuest(moacir, saveData[6], true);
+        SetQuest(espirito, saveData[7], true);
     }
+    public void SetQuest(NpcDialogZone npc, string dataRaw, bool canBeInvisible = false, Merchant merchant = null)
+    {
+        string[] data = dataRaw.Split(";");
+
+        if (canBeInvisible)
+        {
+            if (dataRaw == "")
+            {
+                npc.Visible = false;
+                if (merchant != null) merchant.Visible = true;
+            }
+            else
+            {
+                if (merchant != null) merchant.Visible = false;
+                npc.Visible = true;
+                npc.dialogPath = data[0];
+                npc.EventAtEnd = data[1];
+            }
+        }
+        else
+        {
+            npc.dialogPath = data[0];
+            npc.EventAtEnd = data[1];
+        }
+    }
+    
 
     public enum GameState
     {
@@ -115,6 +126,8 @@ public partial class GameManager : Node{
 
         if (Configurator.Instance != null) config = Configurator.Instance;
         else config = new();
+
+        if(beachAnimation != null) beachAnimation.Play("beach_animation");
     }
 
     public override void _Ready()

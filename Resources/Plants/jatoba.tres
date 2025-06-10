@@ -1,12 +1,20 @@
-[gd_resource type="Resource" script_class="PlantResource" load_steps=3 format=3 uid="uid://boblcy686nrxo"]
+[gd_resource type="Resource" script_class="PlantResource" load_steps=10 format=3 uid="uid://boblcy686nrxo"]
 
+[ext_resource type="Texture2D" uid="uid://ci6e1vncqqin7" path="res://assets/Planting/plantas/jatoba/jatoba_dead.png" id="1_1jo5t"]
 [ext_resource type="Resource" uid="uid://bs364q5t4j0o0" path="res://Resources/Items/fruto_jatoba.tres" id="1_3k5br"]
 [ext_resource type="Script" uid="uid://ctetg1bf2kml4" path="res://Resources/PlantResource.cs" id="1_vq286"]
+[ext_resource type="Texture2D" uid="uid://wtym3b4phudh" path="res://assets/Planting/plantas/jatoba/jatoba_0.png" id="2_n1tv3"]
+[ext_resource type="Texture2D" uid="uid://7a0kf6j2du6l" path="res://assets/Planting/plantas/jatoba/jatoba_1.png" id="3_soude"]
+[ext_resource type="Texture2D" uid="uid://c6gqptqlksils" path="res://assets/Planting/plantas/jatoba/jatoba_2.png" id="4_kr1vy"]
+[ext_resource type="Texture2D" uid="uid://b31eby5ten2os" path="res://assets/Planting/plantas/jatoba/jatoba_3.png" id="5_y1ex8"]
+[ext_resource type="Texture2D" uid="uid://d00oukvrxhje8" path="res://assets/Planting/plantas/jatoba/jatoba_4.png" id="6_8x1j2"]
+[ext_resource type="Texture2D" uid="uid://bkw2r6t41ocs2" path="res://assets/Planting/plantas/jatoba/jatoba_5.png" id="7_0h4fm"]
 
 [resource]
 script = ExtResource("1_vq286")
-GrowthProcess = null
-growthDurationSeconds = 180
+GrowthProcess = Array[Texture2D]([ExtResource("2_n1tv3"), ExtResource("3_soude"), ExtResource("4_kr1vy"), ExtResource("5_y1ex8"), ExtResource("6_8x1j2"), ExtResource("7_0h4fm")])
+DeadPlant = ExtResource("1_1jo5t")
+growthDurationSeconds = 45
 result = ExtResource("1_3k5br")
 resultQuantity = 3
 metadata/_custom_type_script = "uid://ctetg1bf2kml4"

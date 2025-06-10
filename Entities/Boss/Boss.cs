@@ -12,6 +12,7 @@ public partial class Boss : CharacterBody2D
     [Export] public AudioStream PisadaRocksSound;
     [Export] public AudioStream WalkSound;
     [Export] public AudioStream GiradaSound;
+    [Export] public AudioStream DieSound;
 
     public static Boss Instance;
 
@@ -31,8 +32,10 @@ public partial class Boss : CharacterBody2D
     int timesInTheState = 0;
     AnimationHandler animationHandler;
     AudioStreamPlayer2D audioPlayer;
+    AnimationPlayer effectsPlayer;
 
-
+    Sprite2D effectSprite;
+    Vector2 effectSpriteInitialPos;
     Area2D HitArea;
     CollisionShape2D HitAreaCollision;
     Player player;
@@ -42,7 +45,6 @@ public partial class Boss : CharacterBody2D
 
     Timer pisadaUpdater;
     RectangleShape2D pisadaShape;
-    AnimationPlayer rocksAnimationPlayer;
 
     Timer atirarCoolDownTimer;
     Timer temporizadorDeTiro; //quanto tempo até parar de atirar
@@ -68,6 +70,10 @@ public partial class Boss : CharacterBody2D
         GetNode<Area2D>("CollisionArea").BodyEntered += Hit;
         GetNode<CollisionShape2D>("CollisionArea/CollisionShape2D").Disabled = true;
 
+        effectSprite = HitArea.GetNode<Sprite2D>("effects");
+        effectSpriteInitialPos = effectSprite.Position;
+        effectsPlayer = GetNode<AnimationPlayer>("Animations/EffectsAnimationPlayer");
+
         StateUpdaterTimer = NodeMisc.GenTimer(this, 4, StateUpdate);
         inStateCoolDown = NodeMisc.GenTimer(this, 2f, () => whenStateCoolDownEnds?.Invoke());
 
@@ -80,7 +86,6 @@ public partial class Boss : CharacterBody2D
             GetNode<AnimationPlayer>("Animations/SpriteAnimationPlayer"),
             GetNode<AnimationPlayer>("Animations/HitAnimationPlayer")
         );
-        rocksAnimationPlayer = GetNode<AnimationPlayer>("Animations/RocksAnimationPlayer");
         lifeSystem.WhenDies += Die;
     }
 
@@ -103,12 +108,14 @@ public partial class Boss : CharacterBody2D
     {
         if (bossState == BossStates.Giratoria && curSpeed > 0)
         {
-            RotationDegrees += (float)(curSpeed * delta);
+            HitArea.RotationDegrees += (float)(curSpeed * delta);
             GlobalPosition += (player.Position - GlobalPosition).Normalized() * GameManager.GAMEUNITS /4 * (float)delta;
         }
         if (bossState == BossStates.pisada && !inStateCoolDown.IsStopped())
         {
-            GlobalPosition += (player.Position - GlobalPosition).Normalized() * GameManager.GAMEUNITS * 2 * (float)delta;
+            Vector2 direction = GetDir();
+            GlobalPosition += direction * GameManager.GAMEUNITS * 2 * (float)delta;
+            animationHandler.Direction(MathM.RoundedVector(direction));
         }
     }
 
@@ -120,6 +127,8 @@ public partial class Boss : CharacterBody2D
             audioPlayer.Play();
         }catch{}
     }
+
+    Vector2 GetDir() => (player.Position - GlobalPosition).Normalized();
 
 
     void StateUpdate()
@@ -159,21 +168,39 @@ public partial class Boss : CharacterBody2D
     // ================================ pisada =====================================
     void PisadaStart()
     {
-        HitArea.LookAt(player.GlobalPosition);
-        HitArea.Rotate(1.57f);
+        effectSprite.Position = effectSpriteInitialPos;
+        effectSprite.RotationDegrees = -90;
+        if (GetDir().Y < 0)
+            animationHandler.Play("pisada_down");
+        else
+            animationHandler.Play("pisada_up");
 
-        pisadaShape = new RectangleShape2D()
+        Timer tm = new();
+
+
+        tm = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime()/2, () =>
         {
-            Size = new Vector2(32, 0)
-        };
+            HitArea.LookAt(player.GlobalPosition);
+            HitArea.Rotate(1.57f);
 
-        HitAreaCollision.Shape = pisadaShape;
-        HitAreaCollision.Position = new Vector2(0, 0);
-        HitAreaCollision.Disabled = false;
+            pisadaShape = new RectangleShape2D()
+            {
+                Size = new Vector2(32, 0)
+            };
 
-        PlaySFX(PisadaSound);
-        pisadaUpdater.Start();
+            HitAreaCollision.Shape = pisadaShape;
+            HitAreaCollision.Position = new Vector2(0, 0);
+            HitAreaCollision.Disabled = false;
+            pisadaUpdater.Start();
+
+            tm.QueueFree();
+            PlaySFX(PisadaSound);
+            effectsPlayer.Play("pedras");
+        });
+        tm.Start();
+
     }
+
     void PisadaEnd()
     {
         timesInTheState++;
@@ -219,12 +246,14 @@ public partial class Boss : CharacterBody2D
         isToStopShooting = false;
         atirarCoolDownTimer.Start();
         temporizadorDeTiro.Start();
+        animationHandler.Play("ball_start");
     }
 
     void ShootEnd()
     {
         isToStopShooting = true;
         atirarCoolDownTimer.Stop();
+        animationHandler.Play("ball_end");
         restart();
     }
 
@@ -276,6 +305,11 @@ public partial class Boss : CharacterBody2D
     {
         curSpeed = 0f;
         HitArea.RotationDegrees = 0;
+        effectSprite.Position = Vector2.Zero;
+        effectSprite.Scale = new Vector2(2, 2);
+        effectSprite.RotationDegrees = 0;
+        effectsPlayer.Play("laminaStart");
+        animationHandler.Play("ball_start");
 
         HitAreaCollision.Disabled = false;
         HitAreaCollision.Position = Vector2.Zero;
@@ -309,7 +343,6 @@ public partial class Boss : CharacterBody2D
             StopRotation();
             return;
         }
-        audioPlayer.Stop();
 
         // Desaceleração suave
         tween = GetTree().CreateTween();
@@ -330,7 +363,11 @@ public partial class Boss : CharacterBody2D
         tween?.Kill();
         curSpeed = 0f;
         HitAreaCollision.Disabled = true;
-        RotationDegrees = 0;
+        HitArea.RotationDegrees = 0;
+        effectSprite.Scale = Vector2.One;
+        audioPlayer.Stop();
+        effectsPlayer.Play("laminaEnd");
+        animationHandler.Play("ball_end");
     }
     // =============================== Giratoria ===================================
 
@@ -349,14 +386,18 @@ public partial class Boss : CharacterBody2D
         atirarCoolDownTimer.Stop();
         temporizadorDeTiro.Stop();
 
-        Timer timeTodie = NodeMisc.GenTimer(this, 2.2f, () =>
+        Timer timeTodie = NodeMisc.GenTimer(this, 6f, () =>
         {
-            QueueFree();
+            GetTree().ChangeSceneToFile("res://GUI/TelasPrincipais/TelaCreditos.tscn");
         });
         timeTodie.Start();
+        animationHandler.Play("ball_start");
+        animationHandler.SetVel(0.3f);
+        Player.Instance.WinState();
 
         GD.Print("BOSS DIED");
         
+        PlaySFX(DieSound);
     }
 
     public void Damage(float modifier, int amount = 1)

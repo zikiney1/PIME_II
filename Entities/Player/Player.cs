@@ -19,7 +19,7 @@ public partial class Player : CharacterBody2D
 
     Area2D HitArea;
     Area2D InteractableRange;
-    Area2D ShieldArea;
+    StaticBody2D ShieldCollision;
     GameManager gameManager;
 
 
@@ -39,15 +39,16 @@ public partial class Player : CharacterBody2D
     DialogGui dialogGui;
     MainMenu mainMenu;
 
-    bool isDefending = false;
+    public bool isDefending = false;
     bool canPlant = true;
     public byte handItemIndex = 0;
-    public float PlantRange = GameManager.GAMEUNITS ;
+    public float PlantRange = GameManager.GAMEUNITS;
     public int gold = 0;
     float Speed = GameManager.GAMEUNITS * 200;
     public bool canAttack = false;
     Vector2 lastDirection;
     Vector2 MouseDirection;
+    public Vector2 direction;
 
     ItemData HandItem = null;
     public PotionModifier potionModifier = new();
@@ -73,12 +74,15 @@ public partial class Player : CharacterBody2D
     public void AddStation(SaveStation saveStation) => saveGUI.AddStation(saveStation);
     public string[] KnowCheckPoints() => saveGUI.ToNames();
     public bool CanPurchase(int amount) => gold - amount >= 0;
-    
+
     public int CurrentLife() => lifeSystem.CurrentLife();
     public int MaxLife() => lifeSystem.MaxLife();
 
     public Texture2D BulletTexture = GD.Load<Texture2D>("res://assets/Sprites/test/player_projectile.png");
     public float bulletSpeed = 300f;
+
+    //debug
+    bool isImortal = true;
 
     public override void _EnterTree()
     {
@@ -93,7 +97,7 @@ public partial class Player : CharacterBody2D
         PlantCoolDownTimer = NodeMisc.GenTimer(this, 0.5f, () => canPlant = true);
 
         HitArea = GetNode<Area2D>("HitArea");
-        ShieldArea = GetNode<Area2D>("shield");
+        ShieldCollision = GetNode<StaticBody2D>("shield");
         GUI = GetNode<GameGui>("Canvas/GameGUI");
         CraftGUI = GetNode<CraftingGui>("Canvas/CraftingGUI");
         ShopGUI = GetNode<ShopGui>("Canvas/ShopGUI");
@@ -119,7 +123,7 @@ public partial class Player : CharacterBody2D
 
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
         blur.Visible = false;
-        
+
     }
 
 
@@ -158,34 +162,34 @@ public partial class Player : CharacterBody2D
 
         HitArea.BodyEntered += whenHitEnemy;
 
-        
-
         animationHandler.Play("idle");
-                
+
         if (GlobalPosition == new Vector2(64, 128))
             EventHandler.EmitEvent("OnStart");
+
+        GD.Print(canAttack);
     }
 
     public override void _PhysicsProcess(double delta)
     {
         if (state == PlayerState.Attacking || CraftGUI.Visible || state == PlayerState.Lock || state == PlayerState.Dead) return;
 
-        Vector2 direction = InputSystem.GetVector();
+        direction = InputSystem.GetVector();
 
         float speedModifier = equipamentSys.speed + potionModifier.speed + 1;
-        bool isDefending = Input.IsActionPressed("defend");
+        isDefending = Input.IsActionPressed("defend");
 
         float speedTotal;
         if (isDefending && canAttack)
         {
-            ShieldArea.Position = direction * (GameManager.GAMEUNITS / 4);
-            ShieldArea.Rotation = direction.Angle();
-            ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+            ShieldCollision.Position = direction * (GameManager.GAMEUNITS / 4);
+            ShieldCollision.Rotation = direction.Angle();
+            ShieldCollision.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
             speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
         }
         else
         {
-            ShieldArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+            ShieldCollision.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
             speedTotal = (Speed * speedModifier);
         }
         animationHandler.Direction(direction);
@@ -209,7 +213,7 @@ public partial class Player : CharacterBody2D
 
     public override void _Process(double delta)
     {
-        if(state == PlayerState.Dead) return;
+        if (state == PlayerState.Dead) return;
         reflectionHandler.Update();
     }
 
@@ -229,15 +233,17 @@ public partial class Player : CharacterBody2D
             else if (KeyEvent.IsActionPressed("change_weapon")) switchWeapon();
             else if (KeyEvent.IsActionPressed("inventory")) ToggleInventory();
             else if (KeyEvent.IsActionPressed("ui_cancel")) mainMenu.Open();
-            
+
 
         }
         if (@event is InputEventMouseMotion mouseMove)
         {
             MouseDirection = (GetGlobalMousePosition() - GlobalPosition).Normalized();
         }
-        if(@event is InputEventMouseButton mouseButton){
-            if (mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed && playerWeapon == PlayerWeapon.Zarabatana){
+        if (@event is InputEventMouseButton mouseButton)
+        {
+            if (mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed && playerWeapon == PlayerWeapon.Zarabatana)
+            {
                 Attack();
             }
         }
@@ -248,7 +254,7 @@ public partial class Player : CharacterBody2D
 
     public void DeactivateBlur() => blur.Visible = false;
     public void ActivateBlur() => blur.Visible = true;
-    public void SetDialog(string dialogRaw,string EventAtEnd) => dialogGui.SetDialog(dialogRaw,EventAtEnd);
+    public void SetDialog(string dialogRaw, string EventAtEnd) => dialogGui.SetDialog(dialogRaw, EventAtEnd);
     public void InteractDialog(string dialogPath, string EventAtEnd)
     {
         if (dialogGui.isPlayingAnimation) return;
@@ -266,15 +272,17 @@ public partial class Player : CharacterBody2D
         }
     }
 
-    public void InteractMerchant(ItemResource[] shopItems)
+    public void InteractMerchant(ItemResource[] shopItems, Texture2D merchantBanner = null)
     {
-        if (ShopGUI.Visible){
+        if (ShopGUI.Visible)
+        {
             ShopGUI.Deactivate();
             state = PlayerState.Idle;
             blur.Visible = false;
         }
-        else{
-            ShopGUI.Activate(shopItems);
+        else
+        {
+            ShopGUI.Activate(shopItems, merchantBanner);
             state = PlayerState.Lock;
             blur.Visible = true;
         }
@@ -282,12 +290,14 @@ public partial class Player : CharacterBody2D
 
     public void InteractCraft()
     {
-        if (CraftGUI.Visible){
+        if (CraftGUI.Visible)
+        {
             CraftGUI.Deactivate();
             state = PlayerState.Idle;
             blur.Visible = false;
         }
-        else{
+        else
+        {
             CraftGUI.Activate();
             state = PlayerState.Lock;
             blur.Visible = true;
@@ -390,7 +400,7 @@ public partial class Player : CharacterBody2D
                 UpdatePortrait();
 
         GUI.InventoryUpdate();
-        
+
         return result;
     }
     public bool Add(byte id, byte quantity = 1) => Add(ItemDB.GetItemData(id), quantity);
@@ -403,11 +413,11 @@ public partial class Player : CharacterBody2D
     /// <returns>True if the item was successfully removed, otherwise false.</returns>
     public bool Remove(ItemResource item, byte quantity = 1)
     {
-        
+
         bool result = inventory.Remove(item.id, quantity);
         if (HandItem.id == item.id)
             UpdatePortrait();
-        
+
         GUI.InventoryUpdate();
         return result;
     }
@@ -507,7 +517,7 @@ public partial class Player : CharacterBody2D
         else
         {
             // if(HandItem.resource.type == ItemType.Ingredient || HandItem.resource.type == ItemType.Equipament)
-                // ChangeHandItem();
+            // ChangeHandItem();
             UpdatePortrait();
         }
 
@@ -589,7 +599,7 @@ public partial class Player : CharacterBody2D
 
     public void UpdateKnowsCheckPoints(string[] names)
     {
-        if(checkPointManager.player == null ) checkPointManager.player = this;
+        if (checkPointManager.player == null) checkPointManager.player = this;
         checkPointManager.UpdateKnows(names);
     }
     //============================================================================================================
@@ -597,7 +607,7 @@ public partial class Player : CharacterBody2D
 
     public void ChangeSong()
     {
-        
+
     }
 
 
@@ -637,6 +647,7 @@ public partial class Player : CharacterBody2D
     }
     void Die()
     {
+        if (isImortal) return;
         state = PlayerState.Dead;
         gameOver.Activate();
         animationHandler.Die();
@@ -667,4 +678,9 @@ public partial class Player : CharacterBody2D
         }
     }
 
+    public void WinState()
+    {
+        state = PlayerState.Lock;
+        animationHandler.Play("win_fx");        
+    }
 }

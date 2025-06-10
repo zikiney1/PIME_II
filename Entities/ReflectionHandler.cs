@@ -16,7 +16,7 @@ public class ReflectionHandler
         ReflectSprite.Vframes = ownSprite.Vframes;
         ReflectSprite.Scale = new(1, -1);
         ReflectSprite.Position = new(0, GameManager.GAMEUNITS);
-        ReflectSprite.ZIndex = -14;
+        // ReflectSprite.ZIndex = -50;
     }
 
 

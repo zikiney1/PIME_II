@@ -1,0 +1,16 @@
+10|0|5||1
+1;2|
+100;100;100;100;100;100;100;100;100;
+
+550|54
+Vila Anhau
+pocao_jatoba
+2_1#_apoena;|;||5#_velhaLuna;Quest4#Ended|;|;|side_1_moacir;side_moacir_start|side_fantasma;side_espirito_start|
+
+
+Error:
+
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at PlantZoneData..ctor(Byte columns, Byte rows, Byte[] soilsLife) in R:\PIME_II\scripts\Systems\PlantingSystem.cs:line 70
+   at SaveData.LoadSaveFile(Player player) in R:\PIME_II\scripts\SaveData.cs:line 100
+   at SaveData.TryLoadSaveFile(Player p) in R:\PIME_II\scripts\SaveData.cs:line 18

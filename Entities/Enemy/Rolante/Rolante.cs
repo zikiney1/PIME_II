@@ -10,7 +10,7 @@ public partial class Rolante : CharacterBody2D
     [Export] byte totalLife = 4;
     [Export] byte damage = 1;
     [Export] float rotationSpeed = 50f;
-    [Export] float speed = 1000;
+    [Export] float speed = 350;
     [Export] float timeToAct = 2f;
     [Export] float StunnedTime = 1f;
     [Export] byte coinsToDrop = 1;
@@ -26,6 +26,7 @@ public partial class Rolante : CharacterBody2D
 
     LifeSystem lifeSystem;
     AnimationHandler animationHandler;
+    Sprite2D sp;
 
     Vector2 playerPos;
 
@@ -45,7 +46,7 @@ public partial class Rolante : CharacterBody2D
 
         animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
         audioHandler = GetNode<AudioHandler>("AudioHandler");
-
+        sp = GetNode<Sprite2D>("Sprite");
 
         visibleNotifier = new();
         visibleNotifier.ScreenEntered += Activate;
@@ -104,11 +105,18 @@ public partial class Rolante : CharacterBody2D
                 Stun();
                 return;
             }
-            Velocity = (playerPos - GlobalPosition).Normalized() * speed * GameManager.GAMEUNITS * (float)delta;
+            Vector2 dir = (playerPos - GlobalPosition).Normalized();
+            if(dir.X > 0) sp.FlipH = false;
+            else sp.FlipH = true;
+
+            Velocity = dir * speed * GameManager.GAMEUNITS * (float)delta;
+
             MoveAndSlide();
-            if (MathM.IsInRange(GlobalPosition, playerPos, 5f))
+
+            if (MathM.IsInRange(GlobalPosition, playerPos, 10f))
             {
                 followLastPlayerPos = false;
+                animationHandler.Play("back");
             }
         }
         else
@@ -136,6 +144,7 @@ public partial class Rolante : CharacterBody2D
         hitArea.GetChild<CollisionShape2D>(0).CallDeferred("set_disabled", true);
         timerToAct.Stop();
         audioHandler.PlaySpecialSFX(0);
+        animationHandler.Play("stun");
     }
 
     public void StopStun()
@@ -144,6 +153,7 @@ public partial class Rolante : CharacterBody2D
         hitArea.GetChild<CollisionShape2D>(0).CallDeferred("set_disabled", false);
 
         followLastPlayerPos = false;
+        sp.FrameCoords = new(2, 0);
     }
 
     public void Damage(float modifier, int amount = 1)
@@ -159,6 +169,7 @@ public partial class Rolante : CharacterBody2D
         followLastPlayerPos = true;
         inFrontCast.LookAt(playerPos);
         audioHandler.PlayShoot();
+        animationHandler.Play("walk");
     }
 
     void Die()

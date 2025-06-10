@@ -9,8 +9,8 @@ public static class EventHandler
     public static void Setup()
     {
         if (isSetup) return;
-        isSetup = true;
         Events.Setup();
+        isSetup = true;
     }
     public static Event Get(string name)
     {

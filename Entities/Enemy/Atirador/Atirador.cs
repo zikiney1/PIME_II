@@ -34,6 +34,7 @@ public partial class Atirador : StaticBody2D
 
     bool lookToOrigin = false;
     bool active = true;
+    Sprite2D cabeca;
 
 
     public override void _Ready()
@@ -47,6 +48,7 @@ public partial class Atirador : StaticBody2D
         lifeSystem.WhenDies += Die;
         animationHandler = new(GetNode<AnimationPlayer>("Animation/AnimationPlayer"), GetNode<AnimationPlayer>("Animation/HitAnimationPlayer"));
         audioHandler = GetNode<AudioHandler>("AudioHandler");
+        cabeca = GetNode<Sprite2D>("cabeca");
 
         originalRotation = Rotation;
 
@@ -100,7 +102,7 @@ public partial class Atirador : StaticBody2D
         if (rayCast.IsColliding() && rayCast.GetCollider() == player)
         {
             // Rotaciona até o jogador
-            Rotation = Mathf.LerpAngle(Rotation, (player.GlobalPosition - GlobalPosition).Angle(), (float)delta * rotationSpeed);
+            cabeca.Rotation = Mathf.LerpAngle(cabeca.Rotation, (player.GlobalPosition - GlobalPosition).Angle(), (float)delta * rotationSpeed);
             lookTimer.Stop();
             lookToOrigin = false;
 
@@ -117,10 +119,10 @@ public partial class Atirador : StaticBody2D
             else
             {
 
-                Rotation = Mathf.LerpAngle(Rotation, originalRotation, (float)delta * rotationSpeed);
-                if (Mathf.IsEqualApprox(Rotation, originalRotation, 0.01f))
+                cabeca.Rotation = Mathf.LerpAngle(cabeca.Rotation, originalRotation, (float)delta * rotationSpeed);
+                if (Mathf.IsEqualApprox(cabeca.Rotation, originalRotation, 0.01f))
                 {
-                    Rotation = originalRotation;
+                    cabeca.Rotation = originalRotation;
                     lookToOrigin = false;
                 }
             }

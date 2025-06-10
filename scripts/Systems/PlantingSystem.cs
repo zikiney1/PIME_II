@@ -4,7 +4,7 @@ using Godot;
 
 public static class PlantingSystem{
     static Dictionary<string, PlantResource> plantDB = new();
-
+    static bool activated = false;
     /// <summary>
     /// Sets up the plant system by loading all the plants in the <c>res://Resources/Plants/</c> directory.
     /// </summary>
@@ -14,19 +14,22 @@ public static class PlantingSystem{
     /// If a plant is already in the database, it is skipped.
     /// If a plant has a null growth process, result, or result quantity of 0 or less, it is skipped.
     /// </remarks>
-    public static void SetupPlantSystem(){
+    public static void SetupPlantSystem()
+    {
+        if (activated) return;
         const string path = "res://Resources/Plants/";
         DirAccess dir = DirAccess.Open(path);
-        if(dir == null) return;
+        if (dir == null) return;
         dir.ListDirBegin();
         string fileName;
-        while((fileName = dir.GetNext()) != ""){
+        while ((fileName = dir.GetNext()) != "")
+        {
             PlantResource plant = GD.Load<PlantResource>(path + "/" + fileName);
 
-            fileName = fileName.Replace(".tres","");
-            if(plant == null) continue;
-            if(
-                plant.GrowthProcess == null || 
+            fileName = fileName.Replace(".tres", "");
+            if (plant == null) continue;
+            if (
+                plant.GrowthProcess == null ||
                 plant.result == null ||
                 plant.resultQuantity <= 0 ||
                 plantDB.ContainsKey(fileName)
@@ -36,6 +39,7 @@ public static class PlantingSystem{
 
             plantDB.Add(fileName, plant);
         }
+        activated = true;
     }
     public static PlantResource GetPlant(string name){
         if(!plantDB.ContainsKey(name)) return null;

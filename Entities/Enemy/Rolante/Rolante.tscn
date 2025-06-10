@@ -1,8 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://c7qi0gxc1vg1d"]
+[gd_scene load_steps=21 format=3 uid="uid://c7qi0gxc1vg1d"]
 
 [ext_resource type="Script" uid="uid://d08hjo7neo4sa" path="res://Entities/Enemy/Rolante/Rolante.cs" id="1_6g53m"]
-[ext_resource type="Texture2D" uid="uid://b210i72t60l40" path="res://icon.svg" id="2_2yjkb"]
 [ext_resource type="Shader" uid="uid://ch401k1srlcv7" path="res://Shaders/HitShader.gdshader" id="2_xn7e5"]
+[ext_resource type="Texture2D" uid="uid://bdqu1rlfin8mm" path="res://assets/Sprites/enemys/rolante/rolante_sprite_sheet.png" id="3_n313q"]
 [ext_resource type="Script" uid="uid://cl3o3ab6ernub" path="res://Entities/Enemy/AudioHandler.cs" id="4_n313q"]
 [ext_resource type="AudioStream" uid="uid://bnv4v2etr8osm" path="res://assets/audio/sfx/enemy/enemy_hit.wav" id="5_kcqxl"]
 [ext_resource type="AudioStream" uid="uid://b01uvqxmnsdyc" path="res://assets/audio/sfx/enemy/walk_enemy.wav" id="6_xa0gx"]
@@ -19,6 +19,82 @@ shader_parameter/active = false
 shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6g53m"]
+size = Vector2(18, 18)
+
+[sub_resource type="Animation" id="Animation_kcqxl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_xa0gx"]
+resource_name = "stun"
+length = 0.3
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_n313q"]
+resource_name = "walk"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_bpekd"]
+resource_name = "back"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(4, 1), Vector2i(3, 1), Vector2i(2, 1), Vector2i(1, 1), Vector2i(0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bpekd"]
+_data = {
+&"RESET": SubResource("Animation_kcqxl"),
+&"back": SubResource("Animation_bpekd"),
+&"stun": SubResource("Animation_xa0gx"),
+&"walk": SubResource("Animation_n313q")
+}
 
 [sub_resource type="Animation" id="Animation_dpwm0"]
 length = 0.001
@@ -63,24 +139,32 @@ collision_mask = 8
 script = ExtResource("1_6g53m")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
 shape = SubResource("RectangleShape2D_xn7e5")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 modulate = Color(0.27451, 0, 0.85098, 1)
 material = SubResource("ShaderMaterial_jbwke")
-texture = ExtResource("2_2yjkb")
+texture = ExtResource("3_n313q")
+hframes = 5
+vframes = 2
+frame = 5
 
 [node name="HitArea" type="Area2D" parent="." groups=["EnemyGroup"]]
 collision_layer = 4
 collision_mask = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(0, 5)
 shape = SubResource("RectangleShape2D_6g53m")
 
 [node name="Animation" type="Node" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Animation"]
 root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_bpekd")
+}
 
 [node name="HitAnimationPlayer" type="AnimationPlayer" parent="Animation"]
 root_node = NodePath("../..")
