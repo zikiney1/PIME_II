@@ -1,12 +1,20 @@
-[gd_resource type="Resource" script_class="PlantResource" load_steps=3 format=3 uid="uid://b4mv5c8mufgdy"]
+[gd_resource type="Resource" script_class="PlantResource" load_steps=10 format=3 uid="uid://b4mv5c8mufgdy"]
 
 [ext_resource type="Script" uid="uid://ctetg1bf2kml4" path="res://Resources/PlantResource.cs" id="1_0dydo"]
 [ext_resource type="Resource" uid="uid://c4hne7iq22g8i" path="res://Resources/Items/fruto_uxi.tres" id="1_hicmj"]
+[ext_resource type="Texture2D" uid="uid://btubhqtm2ym0w" path="res://assets/Planting/plantas/uxi/uxi_dead.png" id="1_yrs3j"]
+[ext_resource type="Texture2D" uid="uid://br3mfo2yxrtvn" path="res://assets/Planting/plantas/uxi/uxi_0.png" id="2_wgjb2"]
+[ext_resource type="Texture2D" uid="uid://q5pumf8eh1ms" path="res://assets/Planting/plantas/uxi/uxi_1.png" id="3_wb6tm"]
+[ext_resource type="Texture2D" uid="uid://dcqhg2fsb6std" path="res://assets/Planting/plantas/uxi/uxi_2.png" id="4_5ffdp"]
+[ext_resource type="Texture2D" uid="uid://c5ua7t216sj1j" path="res://assets/Planting/plantas/uxi/uxi_3.png" id="5_yxfjw"]
+[ext_resource type="Texture2D" uid="uid://s7r2qgkj06ir" path="res://assets/Planting/plantas/uxi/uxi_4.png" id="6_xh7q3"]
+[ext_resource type="Texture2D" uid="uid://dsf8d4eltdilm" path="res://assets/Planting/plantas/uxi/uxi_5.png" id="7_c5uj5"]
 
 [resource]
 script = ExtResource("1_0dydo")
-GrowthProcess = null
-growthDurationSeconds = 300
+GrowthProcess = Array[Texture2D]([ExtResource("2_wgjb2"), ExtResource("3_wb6tm"), ExtResource("4_5ffdp"), ExtResource("5_yxfjw"), ExtResource("6_xh7q3"), ExtResource("7_c5uj5")])
+DeadPlant = ExtResource("1_yrs3j")
+growthDurationSeconds = 60
 result = ExtResource("1_hicmj")
-resultQuantity = 1
+resultQuantity = 3
 metadata/_custom_type_script = "uid://ctetg1bf2kml4"

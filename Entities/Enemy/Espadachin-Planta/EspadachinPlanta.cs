@@ -97,7 +97,10 @@ public partial class EspadachinPlanta : Area2D
             if (rayCast.IsColliding() && rayCast.GetCollider() == player)
             {
                 if (timerToAct.IsStopped())
+                {
                     timerToAct.Start();
+                    animationHandler.Play("activate");
+                }
             }
             else
             {
@@ -109,7 +112,7 @@ public partial class EspadachinPlanta : Area2D
 
     public void Damage(float modifier, int amount = 1)
     {
-        if(isGoingToDie) return;
+        if (isGoingToDie) return;
         lifeSystem.GetDamage(modifier, amount);
         animationHandler.Damage();
         audioHandler.PlayHit();
@@ -120,6 +123,7 @@ public partial class EspadachinPlanta : Area2D
         playerPos = player.GlobalPosition;
         followLastPlayerPos = true;
         audioHandler.PlayShoot();
+        animationHandler.Play("flying");
     }
     void Die()
     {
