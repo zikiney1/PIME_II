@@ -10,7 +10,7 @@ public partial class Rolante : CharacterBody2D
     [Export] byte totalLife = 4;
     [Export] byte damage = 1;
     [Export] float rotationSpeed = 50f;
-    [Export] float speed = 700;
+    [Export] float speed = 350;
     [Export] float timeToAct = 2f;
     [Export] float StunnedTime = 1f;
     [Export] byte coinsToDrop = 1;
@@ -113,9 +113,10 @@ public partial class Rolante : CharacterBody2D
 
             MoveAndSlide();
 
-            if (MathM.IsInRange(GlobalPosition, playerPos, 5f))
+            if (MathM.IsInRange(GlobalPosition, playerPos, 10f))
             {
                 followLastPlayerPos = false;
+                animationHandler.Play("back");
             }
         }
         else

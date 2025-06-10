@@ -15,6 +15,14 @@ public class AnimationHandler
     {
         characterAnimPlayer.SpeedScale = vel;
     }
+    public void StopCharacter()
+    {
+        characterAnimPlayer.Stop();
+    }
+    public void StopHit()
+    {
+        hitAnimPlayer.Stop();
+    }
     public void Direction(Vector2 direction)
     {
 

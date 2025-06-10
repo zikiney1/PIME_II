@@ -1,8 +1,8 @@
-1|0|136|21|1
-1;2|
-100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;
+1|0|238|21|1
 
-2096|1580
+100;100;100;100;100;100;100;100;100;100;99;99;100;100;100;100;100;100;100;100;100;100;100;100;100;
+jatoba;10;12|jatoba;11;8|
+565|45
 Vila Anhau|Floresta ka'a|Vila do Mar|Covil do Golem
 armadura_viva|pocao_jatoba|pocao_protetora|pocao_uxi
 2_1#_apoena;|;||5_1#_velhaLuna;|6_1#_caua;|;||side_3_fantasma;side_espiritos_end|
