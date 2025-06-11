@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_wau2s"]
 [ext_resource type="Resource" uid="uid://62hv3odhfpxl" path="res://Resources/potionEffects/defensa.tres" id="1_yn11d"]
-[ext_resource type="Texture2D" uid="uid://2hmkq2mql8fi" path="res://assets/Sprites/items/pocao_aroeira.png" id="2_0r4a5"]
+[ext_resource type="Texture2D" uid="uid://2hmkq2mql8fi" path="res://assets/Sprites/items/pocaos/pocao_aroeira.png" id="2_0r4a5"]
 
 [resource]
 script = ExtResource("1_wau2s")

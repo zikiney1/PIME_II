@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cxkkkpysy7ml"]
+[gd_scene load_steps=14 format=3 uid="uid://cxkkkpysy7ml"]
 
 [ext_resource type="Script" uid="uid://r6wdiajo3p31" path="res://GUI/TelasPrincipais/TelaCreditos.cs" id="1_rsbh7"]
 [ext_resource type="FontFile" uid="uid://bgbpc4xvl2epj" path="res://assets/Fonts/Pixelon-E4JEg.otf" id="2_xai2q"]
 [ext_resource type="AudioStream" uid="uid://38fleg55wegl" path="res://assets/audio/songs/raphael goulart - eggcredits.wav" id="3_7w18y"]
 [ext_resource type="FontFile" uid="uid://cwtjloy6xs3e6" path="res://assets/Fonts/CutePixel.ttf" id="4_u1tir"]
+[ext_resource type="Texture2D" uid="uid://csl3ni5ex87jw" path="res://assets/GUI/image.png" id="5_nslck"]
+[ext_resource type="Shader" uid="uid://cl5jxu5opacda" path="res://Shaders/blur_effect.gdshader" id="6_pxg6c"]
 
 [sub_resource type="Animation" id="Animation_7w18y"]
 length = 0.001
@@ -98,6 +100,10 @@ _data = {
 &"porrada": SubResource("Animation_u1tir")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kj02d"]
+shader = ExtResource("6_pxg6c")
+shader_parameter/lod = 2.009
+
 [node name="TelaCreditos" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -160,7 +166,7 @@ Level Design:
 Henrique Souza Costa
 
 Agradecimento especial:
-Thauan pela receita da Armadura viva
+Epico e Dantekurutta
 
 Atuação de Pai de aranã feita por:
 [shake rate=30.0 level=2 connected=1][color=red] NULL POINTER EXCEPTION[/color][/shake]"
@@ -194,7 +200,26 @@ rotation = -0.328436
 theme_override_fonts/normal_font = ExtResource("4_u1tir")
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
-text = "0x Porradas para ir pro menu"
+text = "0x Tecladas para ir pro menu"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -10
+layout_mode = 0
+offset_left = -181.0
+offset_top = -72.0
+offset_right = 1426.0
+offset_bottom = 855.0
+rotation = 0.0570074
+texture = ExtResource("5_nslck")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -8
+material = SubResource("ShaderMaterial_kj02d")
+layout_mode = 0
+offset_left = -268.0
+offset_top = -146.0
+offset_right = 1443.0
+offset_bottom = 969.0

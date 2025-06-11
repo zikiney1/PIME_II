@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://bwdt544ko5niu"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://bwdt544ko5niu"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_6tfem"]
 [ext_resource type="Resource" uid="uid://dx7fchafk3rse" path="res://Resources/EquipamentData/armadura_viva.tres" id="1_gugso"]
+[ext_resource type="Texture2D" uid="uid://chxag4qefso3g" path="res://assets/Sprites/items/equipaments/armadura_viva.png" id="2_p0pw3"]
 
 [resource]
 script = ExtResource("1_6tfem")
@@ -9,6 +10,7 @@ id = 23
 level = 1
 name = "Armadura Viva"
 description = "Forjada com a essência de todas as plantas místicas da região. Respira com a floresta e protege com a força da terra."
+icon = ExtResource("2_p0pw3")
 price = 300
 stackMaxSize = 1
 type = 1

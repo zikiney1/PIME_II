@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db7ledty8kv6v"
-path="res://.godot/imported/seed_urucum.png-96955b1d6a33aa36a671bb13f876bc58.ctex"
+uid="uid://bwxr86am3m3tp"
+path="res://.godot/imported/seed_jatoba.png-5c18fd0574d78252f328bb5261ec2c55.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Sprites/items/seed_urucum.png"
-dest_files=["res://.godot/imported/seed_urucum.png-96955b1d6a33aa36a671bb13f876bc58.ctex"]
+source_file="res://assets/Sprites/items/seeds/seed_jatoba.png"
+dest_files=["res://.godot/imported/seed_jatoba.png-5c18fd0574d78252f328bb5261ec2c55.ctex"]
 
 [params]
 

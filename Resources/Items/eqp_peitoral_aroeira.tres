@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cv32ks30d15wd"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://cv32ks30d15wd"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_bc8pd"]
 [ext_resource type="Resource" uid="uid://dgjnmmggpgjwv" path="res://Resources/EquipamentData/peitoral_aroeira.tres" id="1_sx5dm"]
+[ext_resource type="Texture2D" uid="uid://di60tmpw3ovue" path="res://assets/Sprites/items/equipaments/armadura_aroeira.png" id="2_7vggn"]
 
 [resource]
 script = ExtResource("1_bc8pd")
@@ -9,6 +10,7 @@ id = 22
 level = 1
 name = "Peitoral de Aroeira Curada"
 description = "Produzido a partir da madeira leve e resistente da aroeira, oferece boa proteção."
+icon = ExtResource("2_7vggn")
 price = 80
 stackMaxSize = 1
 type = 1

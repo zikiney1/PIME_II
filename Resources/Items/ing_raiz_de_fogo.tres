@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://cc6t4woyiprjj"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cc6t4woyiprjj"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_c75b4"]
+[ext_resource type="Texture2D" uid="uid://cxnp6d8qlfd1e" path="res://assets/Sprites/items/ingredientes/raiz_de_fogo.png" id="1_i573d"]
 
 [resource]
 script = ExtResource("1_c75b4")
@@ -8,6 +9,7 @@ id = 18
 level = 1
 name = "Raiz de Fogo"
 description = "Uma raiz ardente que estimula o metabolismo, mas pode causar febre"
+icon = ExtResource("1_i573d")
 price = 10
 stackMaxSize = 10
 type = 3

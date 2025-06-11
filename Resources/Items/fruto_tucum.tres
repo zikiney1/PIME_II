@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://cx0cy1oytb5a1"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cx0cy1oytb5a1"]
 
+[ext_resource type="Texture2D" uid="uid://brqhw0w3rgb6j" path="res://assets/Sprites/items/frutas/fibra_tucum.png" id="1_3yad4"]
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_hfrhx"]
 
 [resource]
@@ -9,6 +10,7 @@ level = 1
 name = "Fibra de Tucum"
 description = "Fibra vegetal forte usada na criação de equipamentos leves.
 "
+icon = ExtResource("1_3yad4")
 price = 35
 stackMaxSize = 20
 type = 3

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_mwfk0"]
 [ext_resource type="Resource" uid="uid://dbgbmkbd2a22q" path="res://Resources/Plants/tucum.tres" id="1_pj7b3"]
-[ext_resource type="Texture2D" uid="uid://yxqj7xgamyrh" path="res://assets/Sprites/items/seed_tucum.png" id="1_vvvv4"]
+[ext_resource type="Texture2D" uid="uid://yxqj7xgamyrh" path="res://assets/Sprites/items/seeds/seed_tucum.png" id="1_vvvv4"]
 
 [resource]
 script = ExtResource("1_mwfk0")

@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://brkqif6ps2ivj"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://brkqif6ps2ivj"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_a7xu1"]
+[ext_resource type="Texture2D" uid="uid://bmumuj14jvsgd" path="res://assets/Sprites/items/frutas/capsula_urucum.png" id="1_hdjip"]
 
 [resource]
 script = ExtResource("1_a7xu1")
 id = 7
 level = 1
-name = "tinta de Urucum"
+name = "Cápsula de Urucum"
 description = "Cápsula com sementes vermelhas usadas como corante e em rituais.
 "
+icon = ExtResource("1_hdjip")
 price = 30
 stackMaxSize = 15
 type = 3

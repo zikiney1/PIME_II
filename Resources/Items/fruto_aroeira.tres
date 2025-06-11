@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://cr4qft41pwit2"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cr4qft41pwit2"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_hpabx"]
+[ext_resource type="Texture2D" uid="uid://behsjlt3ervux" path="res://assets/Sprites/items/frutas/casca_aroeira.png" id="1_mlaoe"]
 
 [resource]
 script = ExtResource("1_hpabx")
@@ -9,6 +10,7 @@ level = 1
 name = "Casca de Aroeira"
 description = "Casca com propiedades medicinais muito fortes.
 "
+icon = ExtResource("1_mlaoe")
 price = 25
 stackMaxSize = 10
 type = 3

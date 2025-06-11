@@ -8,7 +8,7 @@ public partial class TelaCreditos : Control
     const int paraIrAoMenu = 25;
     AnimationPlayer porradaAnimationPlayer;
     RichTextLabel porradaText;
-    const string porradaTexto = "x Porradas para ir pro menu";
+    const string porradaTexto = "x Tecladas para ir pro menu";
     bool canDarPorrada = false;
     public override void _Ready()
     {

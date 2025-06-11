@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://yxqj7xgamyrh"
-path="res://.godot/imported/seed_tucum.png-d1c790328374c364c2eed8ca3c5fafb3.ctex"
+uid="uid://behsjlt3ervux"
+path="res://.godot/imported/casca_aroeira.png-64f59843dcc0c41ccb54360cc220a109.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Sprites/items/seed_tucum.png"
-dest_files=["res://.godot/imported/seed_tucum.png-d1c790328374c364c2eed8ca3c5fafb3.ctex"]
+source_file="res://assets/Sprites/items/frutas/casca_aroeira.png"
+dest_files=["res://.godot/imported/casca_aroeira.png-64f59843dcc0c41ccb54360cc220a109.ctex"]
 
 [params]
 

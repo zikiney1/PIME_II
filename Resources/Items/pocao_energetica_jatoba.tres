@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_b367n"]
 [ext_resource type="Resource" uid="uid://xe08w0iuqb36" path="res://Resources/potionEffects/InstaHealEffect.tres" id="1_d04l8"]
-[ext_resource type="Texture2D" uid="uid://jmlm7rs4h56o" path="res://assets/Sprites/items/pocao_jatoba.png" id="2_a0r71"]
+[ext_resource type="Texture2D" uid="uid://jmlm7rs4h56o" path="res://assets/Sprites/items/pocaos/pocao_jatoba.png" id="2_a0r71"]
 
 [resource]
 script = ExtResource("1_b367n")

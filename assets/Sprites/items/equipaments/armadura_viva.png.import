@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2hmkq2mql8fi"
-path="res://.godot/imported/pocao_aroeira.png-6bd6bc8c36e62fc6c7d992f02d1a2fa7.ctex"
+uid="uid://chxag4qefso3g"
+path="res://.godot/imported/armadura_viva.png-8820e93e5b1e70af6762cfc9e19b2d5c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Sprites/items/pocao_aroeira.png"
-dest_files=["res://.godot/imported/pocao_aroeira.png-6bd6bc8c36e62fc6c7d992f02d1a2fa7.ctex"]
+source_file="res://assets/Sprites/items/equipaments/armadura_viva.png"
+dest_files=["res://.godot/imported/armadura_viva.png-8820e93e5b1e70af6762cfc9e19b2d5c.ctex"]
 
 [params]
 

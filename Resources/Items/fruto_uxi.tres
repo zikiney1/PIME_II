@@ -1,13 +1,15 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://c4hne7iq22g8i"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://c4hne7iq22g8i"]
 
+[ext_resource type="Texture2D" uid="uid://efvau08v6eao" path="res://assets/Sprites/items/frutas/extrato_uxi.png" id="1_alxnp"]
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_n81vf"]
 
 [resource]
 script = ExtResource("1_n81vf")
 id = 10
 level = 1
-name = "Fruto de Uxi"
-description = "Fruto sagrado usado em poções poderosas e rituais espirituais."
+name = "Extrato de Uxi"
+description = "Extrato de uxi é sagrado e usado em poções poderosas e rituais espirituais."
+icon = ExtResource("1_alxnp")
 price = 40
 stackMaxSize = 5
 type = 3

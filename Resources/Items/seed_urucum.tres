@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://cwiles20jwl8k" path="res://Resources/Plants/urucum.tres" id="1_774nh"]
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_axvqq"]
-[ext_resource type="Texture2D" uid="uid://db7ledty8kv6v" path="res://assets/Sprites/items/seed_urucum.png" id="1_be17j"]
+[ext_resource type="Texture2D" uid="uid://db7ledty8kv6v" path="res://assets/Sprites/items/seeds/seed_urucum.png" id="1_be17j"]
 
 [resource]
 script = ExtResource("1_axvqq")

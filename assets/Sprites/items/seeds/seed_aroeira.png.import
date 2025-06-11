@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jmlm7rs4h56o"
-path="res://.godot/imported/pocao_jatoba.png-0ec31d1fc7702fcb70e8be7b7c59166a.ctex"
+uid="uid://b5l32lx7bb32v"
+path="res://.godot/imported/seed_aroeira.png-014b3d633e9b366fcb9d68961f1eb0cf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Sprites/items/pocao_jatoba.png"
-dest_files=["res://.godot/imported/pocao_jatoba.png-0ec31d1fc7702fcb70e8be7b7c59166a.ctex"]
+source_file="res://assets/Sprites/items/seeds/seed_aroeira.png"
+dest_files=["res://.godot/imported/seed_aroeira.png-014b3d633e9b366fcb9d68961f1eb0cf.ctex"]
 
 [params]
 

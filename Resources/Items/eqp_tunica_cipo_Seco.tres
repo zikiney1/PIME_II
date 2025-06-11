@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://bflbtroanvp0n"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://bflbtroanvp0n"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_5xhn8"]
 [ext_resource type="Resource" uid="uid://cbr8pi8ektdoy" path="res://Resources/EquipamentData/tunica_cipo_ceco.tres" id="1_21acn"]
+[ext_resource type="Texture2D" uid="uid://8so8sjdua544" path="res://assets/Sprites/items/equipaments/tunica_cipo.png" id="2_820bb"]
 
 [resource]
 script = ExtResource("1_5xhn8")
@@ -9,6 +10,7 @@ id = 20
 level = 1
 name = "Túnica de Cipó Seco"
 description = " Uma vestimenta leve feita de cipós trançados. Oferece pouca defesa, porem aumenta sua agilidade."
+icon = ExtResource("2_820bb")
 price = 55
 stackMaxSize = 1
 type = 1

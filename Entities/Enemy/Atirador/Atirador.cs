@@ -72,7 +72,7 @@ public partial class Atirador : StaticBody2D
 
         AddChild(visibleNotifier);
         AddChild(rayCast);
-        AddChild(mira);
+        cabeca.AddChild(mira);
         DeActivate();
     }
 
@@ -161,7 +161,7 @@ public partial class Atirador : StaticBody2D
 
     void Fire()
     {
-        Vector2 direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(Rotation));
+        Vector2 direction = new Vector2(Mathf.Cos(cabeca.GlobalRotation), Mathf.Sin(cabeca.GlobalRotation));
 
         var e = manager.GetBullet(GameManager.EnemyBulletMask, GlobalPosition, direction);
         e.SetTexture(BulletTexture);
