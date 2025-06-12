@@ -13,7 +13,7 @@ public partial class GameManager : Node{
     public static GameManager Instance { get; set; }
     Player player;
     [Export] Camera camera;
-    Random rnd;
+    public static Random rnd = new();
 
     public static Vector2 deadPosition = new(2000, 2000);
 
@@ -135,7 +135,6 @@ public partial class GameManager : Node{
     public override void _Ready()
     {
         base._Ready();
-        rnd = new();
         player = Player.Instance;
         camera.ProcessMode = ProcessModeEnum.Always;
         AudioSetup();

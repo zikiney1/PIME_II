@@ -46,7 +46,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yceil"]
-size = Vector2(28, 25)
+size = Vector2(32, 28)
 
 [node name="CraftZone" type="Area2D"]
 collision_layer = 2
@@ -54,6 +54,7 @@ collision_mask = 2
 script = ExtResource("1_yceil")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -25
 texture = ExtResource("2_yceil")
 hframes = 24
 vframes = 6
@@ -67,9 +68,10 @@ libraries = {
 &"": SubResource("AnimationLibrary_yyg4o")
 }
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["Wall"]]
 collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(0, 2.5)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_yceil")
+debug_color = Color(0.879814, 0.244833, 0.594049, 0.42)

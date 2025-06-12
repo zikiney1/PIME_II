@@ -46,6 +46,15 @@ public partial class MenuPrincipal : Control
 
     }
 
+    void LoadStuff()
+    {
+        ItemDB.SetupItemDB();
+        CraftingSystem.SetupRecipes();
+        PlantingSystem.SetupPlantSystem();
+        EventHandler.Setup();
+        DialogManager.Setup();
+    }
+
 
     public void OpenConfig()
     {

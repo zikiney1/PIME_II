@@ -42,8 +42,8 @@ public static class ItemDB{
             if (item.plantData != null) item.plantData.seed = item;
 
             itemDB.Add(item.id, item);
-            activated = true;
         }
+        activated = true;
     }
     
     /// <summary>

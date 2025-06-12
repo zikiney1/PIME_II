@@ -9,6 +9,8 @@ public partial class CachorroPlanta : CharacterBody2D
     [Export] public int distanceToPlayer = 20;
     [Export] public float Speed = 220;
     [Export] public byte damage = 1;
+    [Export] public ItemResource itemThatMightDrop = null;
+    [Export] public byte itemDropPercentage = 50;
 
     LifeSystem lifeSystem;
     FightSystem fightSystem;
@@ -140,6 +142,12 @@ public partial class CachorroPlanta : CharacterBody2D
         animationHandler.Die();
         Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
         {
+            if (itemThatMightDrop != null)
+            {
+                byte chance = (byte)GameManager.rnd.Next(1, 100);
+                if(itemDropPercentage >= chance)
+                    manager.SpawnItem(GlobalPosition, itemThatMightDrop, 1 );
+            }
             manager.SpawnCoins(GlobalPosition, coinsToDrop);
             // QueueFree();
             GlobalPosition = GameManager.deadPosition;

@@ -167,7 +167,6 @@ public partial class Player : CharacterBody2D
         if (GlobalPosition == new Vector2(64, 128))
             EventHandler.EmitEvent("OnStart");
 
-        GD.Print(canAttack);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -186,13 +185,14 @@ public partial class Player : CharacterBody2D
             ShieldCollision.Rotation = direction.Angle();
             ShieldCollision.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
             speedTotal = (Speed * speedModifier) / (MathM.BoolToInt(isDefending) + 1);
+            animationHandler.Defend(direction);
         }
         else
         {
             ShieldCollision.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
             speedTotal = (Speed * speedModifier);
+            animationHandler.Direction(direction);
         }
-        animationHandler.Direction(direction);
 
         if (direction != Vector2.Zero)
         {
@@ -605,12 +605,6 @@ public partial class Player : CharacterBody2D
     //============================================================================================================
     //============================================================================================================
 
-    public void ChangeSong()
-    {
-
-    }
-
-
     void Attack()
     {
         if (!fightSystem.canAttack || !canAttack) return;
@@ -622,6 +616,7 @@ public partial class Player : CharacterBody2D
             HitArea.Rotation = lastDirection.Angle();
             HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(false);
             audioManager.PlayAttack();
+            animationHandler.Attack(lastDirection);
         }
         else
         {
@@ -630,6 +625,15 @@ public partial class Player : CharacterBody2D
             e.WhenBodyEnter = whenHitEnemy;
             e.speed = bulletSpeed;
             audioManager.PlayZarabatan();
+            if(MouseDirection.X < 0)
+                animationHandler.Play("attack2_left");
+            else if(MouseDirection.X > 0)
+                animationHandler.Play("attack2_right");
+            else if(MouseDirection.Y < 0)
+                animationHandler.Play("attack2_up");
+            else if(MouseDirection.Y > 0)
+                animationHandler.Play("attack2_down");
+            // animationHandler.Attack2(MouseDirection);
         }
 
         if (state == PlayerState.Attacking) return;

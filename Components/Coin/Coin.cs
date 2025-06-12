@@ -47,7 +47,6 @@ public partial class Coin : Area2D
         {
             sp.Frame = (sp.Frame + 1) % 4;
             animationTimer.Start();
-            GD.Print(sp.Frame);
         });
         
     }

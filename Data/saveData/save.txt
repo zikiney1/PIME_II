@@ -1,8 +1,8 @@
-8|0|25||1
+6|0|259||1
 1;2|
 100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;
 
-589|2909
-Vila do Mar
+2101|1571
+Vila do Mar|Covil do Golem
 pocao_jatoba|pocao_protetora|pocao_uxi
 2_1#_apoena;|;||5_1#_velhaLuna;|6#_caua;Quest5#Ended|;|side_1_moacir;side_moacir_start|side_fantasma;side_espirito_start|

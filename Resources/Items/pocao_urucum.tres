@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://66ecqvlqlfm0"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://66ecqvlqlfm0"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_m2coi"]
 [ext_resource type="Resource" uid="uid://bq561mhf0jkeg" path="res://Resources/potionEffects/danoPorVel.tres" id="1_ydmxv"]
+[ext_resource type="Texture2D" uid="uid://bvmwbmxjk7lfq" path="res://assets/Sprites/items/pocaos/pocao_urucum.png" id="2_bqaoy"]
 
 [resource]
 script = ExtResource("1_m2coi")
@@ -9,6 +10,7 @@ id = 13
 level = 1
 name = "Tintura de Urucum Explosiva"
 description = "Um preparo agressivo que ativa a circulação, mas cobra seu preço"
+icon = ExtResource("2_bqaoy")
 price = 40
 stackMaxSize = 10
 type = 0

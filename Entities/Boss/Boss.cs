@@ -394,15 +394,12 @@ public partial class Boss : CharacterBody2D
         animationHandler.Play("ball_start");
         animationHandler.SetVel(0.3f);
         Player.Instance.WinState();
-
-        GD.Print("BOSS DIED");
         
         PlaySFX(DieSound);
     }
 
     public void Damage(float modifier, int amount = 1)
     {
-        GD.Print("Boss life: " + lifeSystem.CurrentLife());
         lifeSystem.GetDamage(modifier, amount);
         animationHandler.Damage();
     }

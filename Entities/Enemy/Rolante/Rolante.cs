@@ -14,6 +14,8 @@ public partial class Rolante : CharacterBody2D
     [Export] float timeToAct = 2f;
     [Export] float StunnedTime = 1f;
     [Export] byte coinsToDrop = 1;
+    [Export] ItemResource itemThatMightDrop = null;
+    [Export] byte itemDropPercentage = 50;
 
     RayCast2D rayCast;
     RayCast2D inFrontCast;
@@ -191,6 +193,12 @@ public partial class Rolante : CharacterBody2D
         animationHandler.Die();
         Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
         {
+            if (itemThatMightDrop != null)
+            {
+                byte chance = (byte)GameManager.rnd.Next(1, 100);
+                if(chance >= itemDropPercentage)
+                    manager.SpawnItem(GlobalPosition, itemThatMightDrop, 1 );
+            }
             manager.SpawnCoins(GlobalPosition, coinsToDrop);
             // QueueFree();
             GlobalPosition = GameManager.deadPosition;

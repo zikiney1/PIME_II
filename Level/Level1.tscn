@@ -696,21 +696,27 @@ beachAnimation = NodePath("World/ocean2/BeachAnimation")
 position = Vector2(-627, 2069)
 attackSpeed = 1.0
 totalLife = 1
+itemThatMightDrop = ExtResource("10_swnsj")
+itemDropPercentage = 100
 
 [node name="Cachorro-planta2" parent="moacirQuestEnemies" instance=ExtResource("2_egjdj")]
 position = Vector2(-525, 2096)
 attackSpeed = 1.0
 totalLife = 1
+itemThatMightDrop = ExtResource("10_swnsj")
 
 [node name="Cachorro-planta3" parent="moacirQuestEnemies" instance=ExtResource("2_egjdj")]
 position = Vector2(-503, 2035)
 attackSpeed = 1.0
 totalLife = 1
+itemThatMightDrop = ExtResource("15_oa7dg")
 
 [node name="Cachorro-planta4" parent="moacirQuestEnemies" instance=ExtResource("2_egjdj")]
 position = Vector2(-703, 2031)
 attackSpeed = 1.0
 totalLife = 1
+itemThatMightDrop = ExtResource("10_swnsj")
+itemDropPercentage = 15
 
 [node name="NPCs Dialogos" type="Node" parent="."]
 
@@ -1155,24 +1161,32 @@ speed = 400.0
 
 [node name="Rolante2" parent="inimigos" instance=ExtResource("38_x6qm1")]
 position = Vector2(1646, 2946)
+itemThatMightDrop = ExtResource("10_swnsj")
 
 [node name="Rolante3" parent="inimigos" instance=ExtResource("38_x6qm1")]
 position = Vector2(1360, 2464)
+itemThatMightDrop = ExtResource("8_dfyb3")
 
 [node name="Cachorro-planta" parent="inimigos" instance=ExtResource("2_egjdj")]
 position = Vector2(351, 2428)
 attackSpeed = 1.0
+itemThatMightDrop = ExtResource("10_swnsj")
+itemDropPercentage = 25
 
 [node name="Cachorro-planta2" parent="inimigos" instance=ExtResource("2_egjdj")]
 position = Vector2(424, 2138)
 attackSpeed = 1.0
+itemDropPercentage = 25
 
 [node name="Cachorro-planta3" parent="inimigos" instance=ExtResource("2_egjdj")]
 position = Vector2(574, 1937)
 attackSpeed = 1.0
+itemThatMightDrop = ExtResource("15_oa7dg")
+itemDropPercentage = 25
 
 [node name="Cachorro-planta4" parent="inimigos" instance=ExtResource("2_egjdj")]
 position = Vector2(1628, 2013)
+itemThatMightDrop = ExtResource("10_swnsj")
 
 [node name="Cachorro-planta5" parent="inimigos" instance=ExtResource("2_egjdj")]
 position = Vector2(2343, 1820)
