@@ -32,6 +32,10 @@ public partial class Rolante : CharacterBody2D
 
     bool followLastPlayerPos = false;
     bool isStunned = false;
+    
+    Vector2 SpawnPosition;
+    Timer respawnTimer;
+    bool isDead = false;
 
     public override void _Ready()
     {
@@ -64,7 +68,7 @@ public partial class Rolante : CharacterBody2D
             TargetPosition = new Vector2(2 * GameManager.GAMEUNITS, 0)
         };
 
-        
+
         AddChild(rayCast);
         AddChild(inFrontCast);
         AddChild(visibleNotifier);
@@ -72,10 +76,20 @@ public partial class Rolante : CharacterBody2D
         timerToAct = NodeMisc.GenTimer(this, timeToAct, WhenAct);
         stunnedTimer = NodeMisc.GenTimer(this, StunnedTime, StopStun);
         DeActivate();
+
+
+        SpawnPosition = GlobalPosition;
+        respawnTimer = NodeMisc.GenTimer(this, GameManager.RESPAWNTIME, () =>
+        {
+            isDead = false;
+            GlobalPosition = SpawnPosition;
+        });
     }
 
     void Activate()
     {
+        if(isDead) return;
+        
         SetPhysicsProcess(true);
         SetProcess(true);
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
@@ -178,8 +192,11 @@ public partial class Rolante : CharacterBody2D
         Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
         {
             manager.SpawnCoins(GlobalPosition, coinsToDrop);
-            QueueFree();
-
+            // QueueFree();
+            GlobalPosition = GameManager.deadPosition;
+            isDead = true;
+            respawnTimer.Start();
+            DeActivate();
         });
         toDie.Start();
         audioHandler.PlayDie();

@@ -27,6 +27,10 @@ public partial class EspadachinPlanta : Area2D
     bool inPlayerPos = false;
     float targetAngle = 0;
 
+    Vector2 spawnPosition;
+    bool isDead = false;
+    Timer respawnTimer;
+
     public override void _Ready()
     {
         player = Player.Instance;
@@ -48,12 +52,19 @@ public partial class EspadachinPlanta : Area2D
             TargetPosition = new Vector2(rayCastDistanceInTiles * GameManager.GAMEUNITS, 0)
         };
         timerToAct = NodeMisc.GenTimer(this, timeToAct, Act);
-        DieTimer = NodeMisc.GenTimer(this,1, Die);
+        DieTimer = NodeMisc.GenTimer(this, 1, Die);
         BodyEntered += WhenHit;
 
         AddChild(visibleNotifier);
         AddChild(rayCast);
         DeActivate();
+
+        spawnPosition = GlobalPosition;
+        respawnTimer = NodeMisc.GenTimer(this, GameManager.RESPAWNTIME,()=>
+        {
+            GlobalPosition = spawnPosition;
+            isDead = false;
+        });
     }
 
     void Activate()
@@ -142,7 +153,11 @@ public partial class EspadachinPlanta : Area2D
             if (!inPlayerPos) manager.SpawnCoins(GlobalPosition, coinsToDrop);
             else manager.SpawnCoins(GlobalPosition, coinsToDrop / 2);
 
-            QueueFree();
+            // QueueFree();
+            GlobalPosition = GameManager.deadPosition;
+            isDead = true;
+            respawnTimer.Start();
+            DeActivate();
         });
         toDie.Start();
         

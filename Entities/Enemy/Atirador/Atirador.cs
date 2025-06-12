@@ -36,6 +36,10 @@ public partial class Atirador : StaticBody2D
     bool active = true;
     Sprite2D cabeca;
 
+    Vector2 spawnPosition;
+    bool isDead = false;
+    Timer respawnTimer;
+    
 
     public override void _Ready()
     {
@@ -74,15 +78,24 @@ public partial class Atirador : StaticBody2D
         AddChild(rayCast);
         cabeca.AddChild(mira);
         DeActivate();
+
+        spawnPosition = GlobalPosition;
+        respawnTimer = NodeMisc.GenTimer(this, GameManager.RESPAWNTIME, () =>
+        {
+            isDead = false;
+            GlobalPosition = spawnPosition;
+        });
     }
 
 
     void Activate()
     {
+        if (isDead) return;
         SetPhysicsProcess(true);
         SetProcess(true);
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
         GetNode<Sprite2D>("Sprite").Visible = true;
+        cabeca.Visible = true;
         
     }
     void DeActivate()
@@ -91,6 +104,7 @@ public partial class Atirador : StaticBody2D
         SetProcess(false);
         GetNode<Sprite2D>("Sprite").Visible = false;
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+        cabeca.Visible = false;
     }
 
 
@@ -144,11 +158,14 @@ public partial class Atirador : StaticBody2D
         Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
         {
             manager.SpawnCoins(GlobalPosition, coinsToDrop);
-            QueueFree();
+            // QueueFree();
+            GlobalPosition = GameManager.deadPosition;
+            isDead = true;
+            respawnTimer.Start();
+            DeActivate();
         });
         toDie.Start();
         manager.SpawnCoins(GlobalPosition, coinsToDrop);
-        QueueFree();
     }
 
 

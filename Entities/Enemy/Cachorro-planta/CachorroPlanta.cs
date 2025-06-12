@@ -28,6 +28,10 @@ public partial class CachorroPlanta : CharacterBody2D
     bool isInVision => VisionCast.IsColliding() && VisionCast.GetCollider() == player;
     bool isGoingToDie = false;
 
+
+    Vector2 spawnPosition;
+    bool isDead = false;
+    Timer respawnTimer;
     public override void _Ready()
     {
         base._Ready();
@@ -57,10 +61,18 @@ public partial class CachorroPlanta : CharacterBody2D
         AddChild(visibleNotifier);
         visibleNotifier.ScreenEntered += Activate;
         DeActivate();
+
+        spawnPosition = GlobalPosition;
+        respawnTimer = NodeMisc.GenTimer(this, GameManager.RESPAWNTIME, () =>
+        {
+            isDead = false;
+            GlobalPosition = spawnPosition;
+        });
     }
 
     void Activate()
     {
+        if (isDead) return;
         NavUpdate();
         SetPhysicsProcess(true);
         SetProcess(true);
@@ -129,7 +141,11 @@ public partial class CachorroPlanta : CharacterBody2D
         Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
         {
             manager.SpawnCoins(GlobalPosition, coinsToDrop);
-            QueueFree();
+            // QueueFree();
+            GlobalPosition = GameManager.deadPosition;
+            isDead = true;
+            respawnTimer.Start();
+            DeActivate();
         });
         toDie.Start();
         audioHandler.PlayDie();

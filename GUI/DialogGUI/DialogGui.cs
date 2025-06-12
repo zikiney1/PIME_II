@@ -18,8 +18,6 @@ public partial class DialogGui : VBoxContainer
     Player player;
     Sequencer<string> DialogSequence;
 
-    Dictionary<string, Character> Characters = new();
-
     string EventAtEnd = "";
     Action animationTimerEnds;
     public bool isPlayingAnimation => animationPlayer.IsPlaying();
@@ -42,36 +40,9 @@ public partial class DialogGui : VBoxContainer
             animationPlayer.Stop(true);
         });
         Deactivate(false);
-        SetupCharacters();
     }
 
 
-    public void SetupCharacters()
-    {
-        Character tutorial = new("", "");
-        Character arana = new("Aranã", "res://Dialogo/portrait/arana.png");
-        Character PaiDeArana = new("Pai de Arana", "res://Dialogo/portrait/pai_de_arana.png");
-        Character apoena = new("Apoena", "res://Dialogo/portrait/apoena.png");
-        Character apua = new("Apuã", "res://Dialogo/portrait/apua.png");
-        Character karai = new("Karai", "res://Dialogo/portrait/karai.png");
-        Character luna = new("Velha Luna", "res://Dialogo/portrait/luna.png");
-        Character caua = new("Cauã", "res://Dialogo/portrait/caua.png");
-        Character thauan = new("Thauan", "res://Dialogo/portrait/thauan.png");
-        Character moacir = new("Moacir", "res://Dialogo/portrait/moacir.png");
-        Character espirito = new("Moacir", "res://Dialogo/portrait/espirito.png");
-
-        Characters.Add("tutorial", tutorial);
-        Characters.Add("arana", arana);
-        Characters.Add("pai_de_arana", PaiDeArana);
-        Characters.Add("apoena", apoena);
-        Characters.Add("apua", apua);
-        Characters.Add("karai", karai);
-        Characters.Add("luna", luna);
-        Characters.Add("caua", caua);
-        Characters.Add("thauan", thauan);
-        Characters.Add("moacir", moacir);
-        Characters.Add("espirito", espirito);
-    }
 
     /// <summary>
     /// Deactivates the dialog GUI, making it invisible and clearing the current dialog sequence.
@@ -161,7 +132,7 @@ public partial class DialogGui : VBoxContainer
         }
         else
         {
-            SetCharacter(Characters[splited[0]]);
+            SetCharacter(DialogManager.Characters[splited[0]]);
             dialog = dialogRaw.Split(":")[1];
         }
         dialog.Trim();
@@ -260,23 +231,6 @@ public partial class DialogGui : VBoxContainer
                     Next();
                 }
             }
-        }
-    }
-}
-
-
-public class Character
-{
-    public string name;
-    public Texture2D portrait;
-    public Character(string name, string portraitPath)
-    {
-        this.name = name;
-        if(portraitPath == "") return;
-        try{
-            this.portrait = ResourceLoader.Load<Texture2D>(portraitPath);
-        }catch(Exception e){
-            GD.PushError(e);
         }
     }
 }

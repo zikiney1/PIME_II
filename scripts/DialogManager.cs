@@ -8,6 +8,7 @@ public static class DialogManager
     const string DIALOG_PATH = "res://Dialogs/";
     static Dictionary<string, string[]> dialogDic = new();
     static bool activated = false;
+    public static Dictionary<string, Character> Characters = new();
 
     public static void Setup()
     {
@@ -42,8 +43,36 @@ public static class DialogManager
         ReadDialogFile("res://Dialogo/fantasma/side_fantasma.txt");
 
         ReadDialogFile("res://Dialogo/tutorial/tuto_save_stations.txt");
+        SetupCharacters();
         activated = true;
     }
+    public static void SetupCharacters()
+    {
+        Character tutorial = new("", "");
+        Character arana = new("Aranã", "res://Dialogo/portrait/arana.png");
+        Character PaiDeArana = new("Pai de Arana", "res://Dialogo/portrait/pai_de_arana.png");
+        Character apoena = new("Apoena", "res://Dialogo/portrait/apoena.png");
+        Character apua = new("Apuã", "res://Dialogo/portrait/apua.png");
+        Character karai = new("Karai", "res://Dialogo/portrait/karai.png");
+        Character luna = new("Velha Luna", "res://Dialogo/portrait/luna.png");
+        Character caua = new("Cauã", "res://Dialogo/portrait/caua.png");
+        Character thauan = new("Thauan", "res://Dialogo/portrait/thauan.png");
+        Character moacir = new("Moacir", "res://Dialogo/portrait/moacir.png");
+        Character espirito = new("Moacir", "res://Dialogo/portrait/espirito.png");
+
+        Characters.Add("tutorial", tutorial);
+        Characters.Add("arana", arana);
+        Characters.Add("pai_de_arana", PaiDeArana);
+        Characters.Add("apoena", apoena);
+        Characters.Add("apua", apua);
+        Characters.Add("karai", karai);
+        Characters.Add("luna", luna);
+        Characters.Add("caua", caua);
+        Characters.Add("thauan", thauan);
+        Characters.Add("moacir", moacir);
+        Characters.Add("espirito", espirito);
+    }
+    public static Character GetCharacter(string name) => Characters[name];
     public static string[] GetDialog(string name) => dialogDic[name];
 
     static void ReadDialogFile(string path)
@@ -58,5 +87,21 @@ public static class DialogManager
 
         string name = path.Split('/').Last().Replace(".txt", "");
         dialogDic.Add(name, DialogSequence);
+    }
+}
+
+public class Character
+{
+    public string name;
+    public Texture2D portrait;
+    public Character(string name, string portraitPath)
+    {
+        this.name = name;
+        if(portraitPath == "") return;
+        try{
+            this.portrait = ResourceLoader.Load<Texture2D>(portraitPath);
+        }catch(Exception e){
+            GD.PushError(e);
+        }
     }
 }
