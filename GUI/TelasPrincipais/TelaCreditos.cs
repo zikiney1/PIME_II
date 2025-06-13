@@ -16,7 +16,7 @@ public partial class TelaCreditos : Control
         animationPlayer.Play("creditos");
         creditsTimer = NodeMisc.GenTimer(this, (float)animationPlayer.CurrentAnimationLength, GoToMainMenu);
         porradaAnimationPlayer = GetNode<AnimationPlayer>("porradasPlayer");
-        porradaText = GetNode<RichTextLabel>("porradaText");
+        porradaText = GetNode<RichTextLabel>("Control2/porradaText");
         porradaText.Visible = false;
         Timer tm = NodeMisc.GenTimer(this, 0.5f, () => { canDarPorrada = true; });
         tm.Start();
@@ -24,7 +24,7 @@ public partial class TelaCreditos : Control
 
     void GoToMainMenu()
     {
-        GetTree().ChangeSceneToFile("res://GUI/TelasPrincipais/MenuPrincipal.tscn");
+        Between.instance.ChangeScene("res://GUI/TelasPrincipais/MenuPrincipal.tscn");
     }
     public override void _Input(InputEvent @event)
     {

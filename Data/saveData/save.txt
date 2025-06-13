@@ -1,8 +1,8 @@
-6|0|259||1
+10|0|0||1
 1;2|
 100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;
 
-2101|1571
-Vila do Mar|Covil do Golem
-pocao_jatoba|pocao_protetora|pocao_uxi
-2_1#_apoena;|;||5_1#_velhaLuna;|6#_caua;Quest5#Ended|;|side_1_moacir;side_moacir_start|side_fantasma;side_espirito_start|
+491|46
+Vila Anhau
+
+2_1#_apoena;|3_1#_apua;vereficaSementes||5#_velhaLuna;Quest4#Ended|;|;|side_1_moacir;side_moacir_start|side_fantasma;side_espirito_start|

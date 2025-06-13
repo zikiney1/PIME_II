@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 boot_splash/bg_color=Color(0.0338533, 0.0338533, 0.0338533, 1)
 config/icon="res://icon.svg"
 
+[autoload]
+
+Between="*res://GUI/TelasPrincipais/between.tscn"
+
 [display]
 
 window/size/viewport_width=1280

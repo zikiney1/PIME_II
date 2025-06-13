@@ -247,7 +247,7 @@ public partial class GameManager : Node{
 
     public void GoToMainMenu(){
         GetTree().Paused = false;
-        GetTree().ChangeSceneToFile("res://GUI/TelasPrincipais/MenuPrincipal.tscn");
+        Between.instance.ChangeScene("res://GUI/TelasPrincipais/MenuPrincipal.tscn");
     }
 
 }
