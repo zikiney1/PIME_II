@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://7wm04y0pg8u6"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://7wm04y0pg8u6"]
 
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_3w2gp"]
 [ext_resource type="Resource" uid="uid://bnvnqh7curmq5" path="res://Resources/potionEffects/forca.tres" id="1_lbsxh"]
+[ext_resource type="Texture2D" uid="uid://bswjgfu375af6" path="res://assets/Sprites/items/pocaos/pocao_tucum.png" id="2_1p8x4"]
 
 [resource]
 script = ExtResource("1_3w2gp")
@@ -9,6 +10,7 @@ id = 15
 level = 1
 name = "Poção de Força de Tucum"
 description = "Estimula os músculos e melhora temporariamente a capacidade de combate"
+icon = ExtResource("2_1p8x4")
 price = 60
 stackMaxSize = 5
 type = 0

@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://45moj83vkhu5"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://45moj83vkhu5"]
 
+[ext_resource type="Texture2D" uid="uid://cn8nejet7fcl" path="res://assets/Sprites/items/ingredientes/resina_densa.png" id="1_4khbl"]
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_e4sf2"]
 
 [resource]
@@ -9,6 +10,7 @@ level = 1
 name = "Resina Densa"
 description = "Substância viscosa coletada de árvores antigas, usada para fortalecer compostos.
 "
+icon = ExtResource("1_4khbl")
 price = 5
 stackMaxSize = 5
 type = 3

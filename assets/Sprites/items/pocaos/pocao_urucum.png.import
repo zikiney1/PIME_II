@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://duskyac5s7cci"
-path="res://.godot/imported/jurema.png-382b38f5b11ac793946d41d499c23df7.ctex"
+uid="uid://bvmwbmxjk7lfq"
+path="res://.godot/imported/pocao_urucum.png-d366a02257a09226c34b0c114d37cdbe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Dialogo/portrait/jurema.png"
-dest_files=["res://.godot/imported/jurema.png-382b38f5b11ac793946d41d499c23df7.ctex"]
+source_file="res://assets/Sprites/items/pocaos/pocao_urucum.png"
+dest_files=["res://.godot/imported/pocao_urucum.png-d366a02257a09226c34b0c114d37cdbe.ctex"]
 
 [params]
 

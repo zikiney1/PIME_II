@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Godot;
 public partial class GameManager : Node{
-
+    public readonly static byte RESPAWNTIME = 5;
     public readonly static byte GAMEUNITS = 32;
     public readonly static byte SOILTILESIZE = 5;
 
@@ -13,7 +13,9 @@ public partial class GameManager : Node{
     public static GameManager Instance { get; set; }
     Player player;
     [Export] Camera camera;
-    Random rnd;
+    public static Random rnd = new();
+
+    public static Vector2 deadPosition = new(2000, 2000);
 
     [ExportGroup("Npcs And Quests")]
     [Export] public NpcDialogZone Apoena;
@@ -133,7 +135,6 @@ public partial class GameManager : Node{
     public override void _Ready()
     {
         base._Ready();
-        rnd = new();
         player = Player.Instance;
         camera.ProcessMode = ProcessModeEnum.Always;
         AudioSetup();
@@ -246,7 +247,7 @@ public partial class GameManager : Node{
 
     public void GoToMainMenu(){
         GetTree().Paused = false;
-        GetTree().ChangeSceneToFile("res://GUI/TelasPrincipais/MenuPrincipal.tscn");
+        Between.instance.ChangeScene("res://GUI/TelasPrincipais/MenuPrincipal.tscn");
     }
 
 }

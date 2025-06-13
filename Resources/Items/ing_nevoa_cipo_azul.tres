@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=2 format=3 uid="uid://01ghjtmggcc8"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://01ghjtmggcc8"]
 
+[ext_resource type="Texture2D" uid="uid://cdgirkay72esh" path="res://assets/Sprites/items/ingredientes/nevoa_cipo_azul.png" id="1_io8fi"]
 [ext_resource type="Script" uid="uid://bp21ptg4qc36q" path="res://Resources/ItemResource.cs" id="1_mj6jo"]
 
 [resource]
@@ -8,6 +9,7 @@ id = 0
 level = 1
 name = "Nevoa de Cipo Azul"
 description = "Um líquido extraído de cipós raros, com efeito calmante e místico"
+icon = ExtResource("1_io8fi")
 price = 15
 stackMaxSize = 3
 type = 3

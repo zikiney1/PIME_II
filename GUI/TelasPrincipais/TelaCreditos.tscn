@@ -12,7 +12,7 @@ length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("creditos:position:y")
+tracks/0/path = NodePath("Control/creditos:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -28,7 +28,7 @@ step = 0.1
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("creditos:position:y")
+tracks/0/path = NodePath("Control/creditos:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -48,7 +48,7 @@ length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../porradaText:scale:x")
+tracks/0/path = NodePath("../Control2/porradaText:scale:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -59,7 +59,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../porradaText:scale:y")
+tracks/1/path = NodePath("../Control2/porradaText:scale:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -74,7 +74,7 @@ step = 0.1
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../porradaText:scale:x")
+tracks/0/path = NodePath("../Control2/porradaText:scale:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -85,7 +85,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../porradaText:scale:y")
+tracks/1/path = NodePath("../Control2/porradaText:scale:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -104,8 +104,7 @@ _data = {
 shader = ExtResource("6_pxg6c")
 shader_parameter/lod = 2.009
 
-[node name="TelaCreditos" type="Control"]
-layout_mode = 3
+[node name="TelaCreditos" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -113,11 +112,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rsbh7")
 
-[node name="creditos" type="RichTextLabel" parent="."]
+[node name="Control" type="Control" parent="."]
 layout_mode = 2
-offset_top = 700.0
+
+[node name="creditos" type="RichTextLabel" parent="Control"]
+layout_mode = 2
+offset_top = 721.0
 offset_right = 1302.0
-offset_bottom = 2048.0
+offset_bottom = 2069.0
 theme_override_fonts/normal_font = ExtResource("2_xai2q")
 theme_override_fonts/mono_font = ExtResource("2_xai2q")
 theme_override_fonts/italics_font = ExtResource("2_xai2q")
@@ -133,13 +135,13 @@ RM: 24213725
 Gabriela Cavalcante Rocha
 RM: 24214389
 
-Henrique Souza Costa 
+Henrique Souza Costa
 RM: 24213710
 
 José Carlos Gomez do Nascimento
 RM: 24112780
 
-Julia Volpato de Souza 
+Julia Volpato de Souza
 RM: 24214384
 
 Pesquisa:
@@ -149,27 +151,40 @@ Roteiro: José Carlos Gomez do Nascimento/ Henrique Souza Costa
 
 Programação: Henrique Souza Costa
 
-Arte: 
+Level Design: Henrique Souza Costa
+
+Arte:
 Alexander Cabral Santiago Lucena
 Gabriela Cavalcante Rocha
 José Carlos Gomez do Nascimento
 Julia Volpato de Souza
 Henrique Souza Costa
 
-Musicas de:
+Design de personagens:
+Alexander Cabral Santiago Lucena / Henrique Souza Costa / José Carlos Gomez do Nascimento
+
+Design de inimigos: Henrique Souza Costa / José Carlos Gomez do Nascimento
+
+Itens - Henrique Souza Costa / Julia Volpato de Souza / Gabriela Cavalcante Rocha
+
+Cenário - Henrique Souza Costa
+
+Animações: Henrique Souza Costa / Alexander Cabral Santiago Lucena
+
+
+Músicas de:
 Raphael Goulart
 
 Sound Design:
 Henrique Souza Costa
 
-Level Design:
-Henrique Souza Costa
 
 Agradecimento especial:
-Epico e Dantekurutta
+Epico, Dantekurutta e BearInk
 
 Atuação de Pai de aranã feita por:
-[shake rate=30.0 level=2 connected=1][color=red] NULL POINTER EXCEPTION[/color][/shake]"
+[shake rate=30.0 level=2 connected=1][color=red] NULL POINTER EXCEPTION[/color][/shake]
+"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -190,13 +205,16 @@ libraries = {
 &"": SubResource("AnimationLibrary_8fcbx")
 }
 
-[node name="porradaText" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_left = 952.0
-offset_top = 630.0
-offset_right = 1245.0
-offset_bottom = 674.0
-rotation = -0.328436
+[node name="Control2" type="Control" parent="."]
+layout_mode = 2
+
+[node name="porradaText" type="RichTextLabel" parent="Control2"]
+layout_mode = 2
+offset_left = 390.0
+offset_top = 340.0
+offset_right = 1670.0
+offset_bottom = 1060.0
+rotation = -0.148477
 theme_override_fonts/normal_font = ExtResource("4_u1tir")
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
@@ -207,19 +225,10 @@ vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -10
-layout_mode = 0
-offset_left = -181.0
-offset_top = -72.0
-offset_right = 1426.0
-offset_bottom = 855.0
-rotation = 0.0570074
+layout_mode = 2
 texture = ExtResource("5_nslck")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = -8
 material = SubResource("ShaderMaterial_kj02d")
-layout_mode = 0
-offset_left = -268.0
-offset_top = -146.0
-offset_right = 1443.0
-offset_bottom = 969.0
+layout_mode = 2

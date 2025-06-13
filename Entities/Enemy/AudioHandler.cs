@@ -33,8 +33,8 @@ public partial class AudioHandler : AudioStreamPlayer2D
 
     public void PlaySpecialSFX(int index, bool isLoop = false)
     {
-        if(specialSFX == null) return;
-        if(specialSFX.Length <= index || specialSFX[index] == null || specialSFX.Length == 0) return;
+        if (specialSFX == null) return;
+        if (specialSFX.Length <= index || specialSFX[index] == null || specialSFX.Length == 0) return;
         if (isLoop) PlayLoopSFX(specialSFX[index]);
         else PlaySFX(specialSFX[index]);
     }

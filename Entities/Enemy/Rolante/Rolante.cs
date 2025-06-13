@@ -14,6 +14,8 @@ public partial class Rolante : CharacterBody2D
     [Export] float timeToAct = 2f;
     [Export] float StunnedTime = 1f;
     [Export] byte coinsToDrop = 1;
+    [Export] ItemResource itemThatMightDrop = null;
+    [Export] byte itemDropPercentage = 50;
 
     RayCast2D rayCast;
     RayCast2D inFrontCast;
@@ -32,6 +34,10 @@ public partial class Rolante : CharacterBody2D
 
     bool followLastPlayerPos = false;
     bool isStunned = false;
+    
+    Vector2 SpawnPosition;
+    Timer respawnTimer;
+    bool isDead = false;
 
     public override void _Ready()
     {
@@ -64,7 +70,7 @@ public partial class Rolante : CharacterBody2D
             TargetPosition = new Vector2(2 * GameManager.GAMEUNITS, 0)
         };
 
-        
+
         AddChild(rayCast);
         AddChild(inFrontCast);
         AddChild(visibleNotifier);
@@ -72,10 +78,20 @@ public partial class Rolante : CharacterBody2D
         timerToAct = NodeMisc.GenTimer(this, timeToAct, WhenAct);
         stunnedTimer = NodeMisc.GenTimer(this, StunnedTime, StopStun);
         DeActivate();
+
+
+        SpawnPosition = GlobalPosition;
+        respawnTimer = NodeMisc.GenTimer(this, GameManager.RESPAWNTIME, () =>
+        {
+            isDead = false;
+            GlobalPosition = SpawnPosition;
+        });
     }
 
     void Activate()
     {
+        if(isDead) return;
+        
         SetPhysicsProcess(true);
         SetProcess(true);
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
@@ -93,6 +109,7 @@ public partial class Rolante : CharacterBody2D
         hitArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
         hitArea.Monitoring = false;
         hitArea.Monitorable = false;
+        audioHandler.Stop();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -177,9 +194,18 @@ public partial class Rolante : CharacterBody2D
         animationHandler.Die();
         Timer toDie = NodeMisc.GenTimer(this, (float)animationHandler.GetAnimationTime(), () =>
         {
+            if (itemThatMightDrop != null)
+            {
+                byte chance = (byte)GameManager.rnd.Next(1, 100);
+                if(chance >= itemDropPercentage)
+                    manager.SpawnItem(GlobalPosition, itemThatMightDrop, 1 );
+            }
             manager.SpawnCoins(GlobalPosition, coinsToDrop);
-            QueueFree();
-
+            // QueueFree();
+            GlobalPosition = GameManager.deadPosition;
+            isDead = true;
+            respawnTimer.Start();
+            DeActivate();
         });
         toDie.Start();
         audioHandler.PlayDie();

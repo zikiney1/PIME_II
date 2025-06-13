@@ -38,6 +38,18 @@ public class AnimationHandler
             characterAnimPlayer.Play("idle");
     }
 
+    public void Defend(Vector2 direction)
+    {
+        if (direction.Y < 0)
+            characterAnimPlayer.Play("defend_up");
+        else if (direction.Y > 0)
+            characterAnimPlayer.Play("defend_down");
+        else if (direction.X > 0)
+            characterAnimPlayer.Play("defend_right");
+        else if (direction.X < 0)
+            characterAnimPlayer.Play("defend_left");
+    }
+
     public void Attack(Vector2 direction)
     {
         if (direction.Y < 0)

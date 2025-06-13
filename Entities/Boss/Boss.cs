@@ -388,21 +388,18 @@ public partial class Boss : CharacterBody2D
 
         Timer timeTodie = NodeMisc.GenTimer(this, 6f, () =>
         {
-            GetTree().ChangeSceneToFile("res://GUI/TelasPrincipais/TelaCreditos.tscn");
+            Between.instance.ChangeScene("res://GUI/TelasPrincipais/TelaCreditos.tscn");
         });
         timeTodie.Start();
         animationHandler.Play("ball_start");
         animationHandler.SetVel(0.3f);
         Player.Instance.WinState();
-
-        GD.Print("BOSS DIED");
         
         PlaySFX(DieSound);
     }
 
     public void Damage(float modifier, int amount = 1)
     {
-        GD.Print("Boss life: " + lifeSystem.CurrentLife());
         lifeSystem.GetDamage(modifier, amount);
         animationHandler.Damage();
     }

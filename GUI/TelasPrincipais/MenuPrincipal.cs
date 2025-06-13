@@ -21,7 +21,7 @@ public partial class MenuPrincipal : Control
         };
         mainMenu.GetNode<Button>("VBoxContainer/Carregar").Pressed += () =>
         {
-            GetTree().ChangeSceneToFile("res://Level/Level1.tscn");
+            Between.instance.ChangeScene("res://Level/Level1.tscn");
         };
         mainMenu.GetNode<Button>("VBoxContainer/Carregar").Disabled = !SaveData.ContainsSaveFile();
         mainMenu.GetNode<Button>("VBoxContainer/Configuracoes").Pressed += OpenConfig;
@@ -38,12 +38,21 @@ public partial class MenuPrincipal : Control
         };
         mainMenu.GetNode<Button>("VBoxContainer/Creditos").Pressed += () =>
         {
-            GetTree().ChangeSceneToFile("res://GUI/TelasPrincipais/TelaCreditos.tscn");
+            Between.instance.ChangeScene("res://GUI/TelasPrincipais/TelaCreditos.tscn");
         };
         GetNode<AnimationPlayer>("AnimationPlayer").Play("enter");
         AudioStreamPlayer audioPlayer = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
         if (!audioPlayer.Playing) audioPlayer.Play();
 
+    }
+
+    void LoadStuff()
+    {
+        ItemDB.SetupItemDB();
+        CraftingSystem.SetupRecipes();
+        PlantingSystem.SetupPlantSystem();
+        EventHandler.Setup();
+        DialogManager.Setup();
     }
 
 
@@ -62,6 +71,6 @@ public partial class MenuPrincipal : Control
     void confirmNovo()
     {
         SaveData.CreateEmptySaveFile();
-        GetTree().ChangeSceneToFile("res://Level/Level1.tscn");
+        Between.instance.ChangeScene("res://Level/Level1.tscn");
     }
 }
