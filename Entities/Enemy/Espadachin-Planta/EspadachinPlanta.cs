@@ -84,6 +84,7 @@ public partial class EspadachinPlanta : Area2D
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
         Monitoring = false;
         Monitorable = false;
+        audioHandler.Stop();
     }
 
     public override void _PhysicsProcess(double delta)

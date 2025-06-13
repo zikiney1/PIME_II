@@ -90,6 +90,7 @@ public partial class CachorroPlanta : CharacterBody2D
         GetNode<Sprite2D>("Sprite").Visible = false;
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
+        audioHandler.Stop();
     }
 
     public override void _Process(double delta)

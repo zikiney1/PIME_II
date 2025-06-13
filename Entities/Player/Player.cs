@@ -81,9 +81,6 @@ public partial class Player : CharacterBody2D
     public Texture2D BulletTexture = GD.Load<Texture2D>("res://assets/Sprites/test/player_projectile.png");
     public float bulletSpeed = 300f;
 
-    //debug
-    bool isImortal = true;
-
     public override void _EnterTree()
     {
         Instance = this;
@@ -651,7 +648,6 @@ public partial class Player : CharacterBody2D
     }
     void Die()
     {
-        if (isImortal) return;
         state = PlayerState.Dead;
         gameOver.Activate();
         animationHandler.Die();

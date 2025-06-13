@@ -109,6 +109,7 @@ public partial class Rolante : CharacterBody2D
         hitArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = true;
         hitArea.Monitoring = false;
         hitArea.Monitorable = false;
+        audioHandler.Stop();
     }
 
     public override void _PhysicsProcess(double delta)
