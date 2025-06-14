@@ -10,7 +10,7 @@ public class InventorySystem {
 
     public byte Length => (byte)items.Count;
 
-    public List<ItemData> HandItems = new();
+    // public List<ItemData> HandItems = new();
 
     public InventorySystem()
     {
@@ -40,10 +40,10 @@ public class InventorySystem {
                 resource = item,
                 quantity = quantity
             };
-            if (item.type == ItemType.Potion || item.type == ItemType.Seed || item.type == ItemType.Resource)
-            {
-                HandItems.Add(data);
-            }
+            // if (item.type == ItemType.Potion || item.type == ItemType.Seed || item.type == ItemType.Resource)
+            // {
+            //     HandItems.Add(data);
+            // }
             items.Add(data);
             itemPositions.Add(item.id, (byte)(items.Count - 1));
             return true;
@@ -63,10 +63,10 @@ public class InventorySystem {
             byte index = itemPositions[id];
             items[index].quantity -= quantity;
             if (items[index].quantity <= 0) {
-                ItemResource itr = items[index].resource;
-                if (itr.type == ItemType.Potion || itr.type == ItemType.Seed || itr.type == ItemType.Resource) {
-                    HandItems.Remove(items[index]);
-                }
+                // ItemResource itr = items[index].resource;
+                // if (itr.type == ItemType.Potion || itr.type == ItemType.Seed || itr.type == ItemType.Resource) {
+                //     HandItems.Remove(items[index]);
+                // }
                 items.RemoveAt(index);
                 itemPositions.Remove(id);
             }
@@ -84,13 +84,18 @@ public class InventorySystem {
 
     public bool IsHandItem(int index)
     {
-        if (index <= HandItems.Count) {
-            if (items[index] == null) return false;
-            ItemResource item = items[index].resource;
-            return item.type == ItemType.Potion || item.type == ItemType.Seed || item.type == ItemType.Resource;
-        }
-        else
-            return false;
+        // if (index <= HandItems.Count) {
+        //     if (items[index] == null) return false;
+        //     ItemResource item = items[index].resource;
+        //     return item.type == ItemType.Potion || item.type == ItemType.Seed || item.type == ItemType.Resource;
+        // }
+        // else
+        //     return false;
+
+        if (index >= items.Count) return false;
+        if (items[index] == null) return false;
+        ItemResource item = items[index].resource;
+        return item.type == ItemType.Potion || item.type == ItemType.Seed || item.type == ItemType.Resource;
     }
 
     public ItemData this[byte index]

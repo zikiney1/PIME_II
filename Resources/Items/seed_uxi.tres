@@ -14,6 +14,6 @@ description = "Semente da árvore sagrada de uxi. Seus frutos têm valor medicin
 icon = ExtResource("1_mmjtc")
 price = 18
 stackMaxSize = 5
-type = 3
+type = 2
 plantData = ExtResource("1_a76gc")
 metadata/_custom_type_script = "uid://bp21ptg4qc36q"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://cdg0jp7odllo"]
+[gd_scene load_steps=54 format=3 uid="uid://cdg0jp7odllo"]
 
 [ext_resource type="Script" uid="uid://bnqm2p5umlph6" path="res://Entities/Player/Player.cs" id="1_cabni"]
 [ext_resource type="Script" uid="uid://dc5oud1trtym" path="res://Components/PlayerAudioManager/PlayerAudioManager.cs" id="2_lmeus"]
@@ -20,7 +20,6 @@
 [ext_resource type="AudioStream" uid="uid://dhrrmnhujfm7f" path="res://assets/audio/sfx/player/Character - Hurt 01.wav" id="8_h6pxy"]
 [ext_resource type="AudioStream" uid="uid://xyk33ky68fic" path="res://assets/audio/sfx/player/zarabatana_shoot.wav" id="9_l80rc"]
 [ext_resource type="AudioStream" uid="uid://biascylwpw4ld" path="res://assets/audio/sfx/player/walk/walk2.wav" id="10_vcmon"]
-[ext_resource type="Shader" uid="uid://cl5jxu5opacda" path="res://Shaders/blur_effect.gdshader" id="11_jynvv"]
 [ext_resource type="Texture2D" uid="uid://b7a1iq4fpr7to" path="res://assets/Sprites/Player/arana.png" id="16_mgqku"]
 [ext_resource type="PackedScene" uid="uid://cj8xly5bx0k65" path="res://GUI/GameOver/game_over.tscn" id="22_l2mqv"]
 
@@ -42,10 +41,6 @@ shader_parameter/color = Color(0, 1.29412, 0.607843, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1des2"]
 size = Vector2(24, 16)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lmeus"]
-shader = ExtResource("11_jynvv")
-shader_parameter/lod = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t38ms"]
 size = Vector2(36, 36)
@@ -681,8 +676,6 @@ shape = SubResource("RectangleShape2D_1des2")
 [node name="Canvas" type="CanvasLayer" parent="."]
 
 [node name="blur" type="ColorRect" parent="Canvas"]
-visible = false
-material = SubResource("ShaderMaterial_lmeus")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -690,6 +683,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+color = Color(0, 0, 0, 0.227)
 
 [node name="DialogGUI" parent="Canvas" instance=ExtResource("4_x44r4")]
 visible = false
