@@ -11,7 +11,8 @@ public partial class CachorroPlanta : CharacterBody2D
     [Export] public byte damage = 1;
     [Export] public ItemResource itemThatMightDrop = null;
     [Export] public byte itemDropPercentage = 50;
-
+    [Export] public bool freeAfterDeath = false;
+ 
     LifeSystem lifeSystem;
     FightSystem fightSystem;
     AnimationHandler animationHandler;
@@ -81,6 +82,7 @@ public partial class CachorroPlanta : CharacterBody2D
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
         GetNode<Sprite2D>("Sprite").Visible = true;
+        GetNode<Sprite2D>("Sprite").Frame = 0;
         
     }
     void DeActivate()
@@ -95,11 +97,11 @@ public partial class CachorroPlanta : CharacterBody2D
 
     public override void _Process(double delta)
     {
-        if (isGoingToDie) return;
-        if (!MathM.IsInRange(GlobalPosition, player.GlobalPosition, GameManager.GAMEUNITS * distanceToPlayer))
-        {
-            DeActivate();
-        }
+        // if (isGoingToDie) return;
+        // if (!MathM.IsInRange(GlobalPosition, player.GlobalPosition, GameManager.GAMEUNITS * distanceToPlayer))
+        // {
+        //     DeActivate();
+        // }
     }
 
 
@@ -150,11 +152,17 @@ public partial class CachorroPlanta : CharacterBody2D
                     manager.SpawnItem(GlobalPosition, itemThatMightDrop, 1 );
             }
             manager.SpawnCoins(GlobalPosition, coinsToDrop);
-            // QueueFree();
-            GlobalPosition = GameManager.deadPosition;
-            isDead = true;
-            respawnTimer.Start();
-            DeActivate();
+            if (freeAfterDeath)
+            {
+                QueueFree();
+            }
+            else
+            {
+                GlobalPosition = GameManager.deadPosition;
+                isDead = true;
+                respawnTimer.Start();
+                DeActivate();
+            }
         });
         toDie.Start();
         audioHandler.PlayDie();

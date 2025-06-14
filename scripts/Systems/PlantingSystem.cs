@@ -85,8 +85,7 @@ public class PlantZoneData{
     /// <param name="progress">The initial growth progress of the plant.</param>
     /// <returns>Returns true if the plant was successfully added; otherwise, false.</returns>
     public bool Add(string fileName, int position, short progress){
-        PlantData plantData = new(PlantingSystem.GetPlant(fileName),progress);
-        return SoilsData[position].SetPlant(plantData.plant);
+        return SoilsData[position].SetPlant(PlantingSystem.GetPlant(fileName),progress);
     }
 
     /// <summary>
@@ -160,9 +159,9 @@ public class SoilTileData{
     /// </summary>
     /// <param name="plant">The plant resource to set.</param>
     /// <returns>Returns true if the plant was successfully set; otherwise, false.</returns>
-    public bool SetPlant(PlantResource plant){
+    public bool SetPlant(PlantResource plant,short progress = 0){
         if(plant == null || plantData != null) return false;
-        plantData = new(plant,0);
+        plantData = new(plant,progress);
         if(WhenPlantSet != null)
             WhenPlantSet.Invoke(plantData);
         return true;

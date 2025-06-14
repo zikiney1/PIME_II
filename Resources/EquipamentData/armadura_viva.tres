@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_cli06")
-DamageModifier = 0.5
+DamageModifier = 1.0
 DefenseModifier = 1.0
 SpeedModifier = 0.5
 AttackSpeedModifier = 0.5

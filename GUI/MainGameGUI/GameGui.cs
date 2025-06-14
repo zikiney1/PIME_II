@@ -125,7 +125,7 @@ public partial class GameGui : VBoxContainer
         inventory.Visible = true;
         animationPlayer.Play("open");
         animationTimer.WaitTime = animationPlayer.CurrentAnimationLength;
-
+        InventoryUpdate();
     }
     public void CloseInventory()
     {
@@ -176,11 +176,9 @@ public partial class GameGui : VBoxContainer
         
         if (item.isHandItem()) player.SetHandItem((int)index);
         else if (item.resource.type == ItemType.Equipament) player.SetEquipament(item.resource.id);
-            
+                
     }
 }
-
-
 
 
 public partial class HeartIcon : TextureRect{

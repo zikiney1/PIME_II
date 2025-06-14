@@ -418,6 +418,7 @@ public partial class Player : CharacterBody2D
         GUI.InventoryUpdate();
         return result;
     }
+    public bool Remove(byte id, byte quantity = 1) => Remove(ItemDB.GetItemData(id), quantity);
 
     public void Heal(int amount = 1)
     {
@@ -563,7 +564,7 @@ public partial class Player : CharacterBody2D
         {
             GUI.UpdateHandItem("", null, 0);
         }
-
+        GUI.InventoryUpdate();
         return handItemData;
     }
 
@@ -585,6 +586,7 @@ public partial class Player : CharacterBody2D
                 state = PlayerState.Idle;
             };
             Position = pos;
+            Camera.Instance.UpdateScreen(pos);
             animationHandler.Play("teleport_end");
             AnimationTimer.WaitTime = animationHandler.GetAnimationTime();
             AnimationTimer.Start();

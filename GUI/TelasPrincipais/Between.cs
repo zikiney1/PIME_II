@@ -15,7 +15,7 @@ public partial class Between : CanvasLayer
         timerAnimation = new();
         AddChild(timerAnimation);
 
-        timerAnimation = NodeMisc.GenTimer(this, (float)animationPlayer.CurrentAnimationLength, () =>
+        timerAnimation = NodeMisc.GenTimer(this, 0, () =>
         {
             whenChanged?.Invoke();
             animationPlayer.PlayBackwards("dissolve");
@@ -27,6 +27,7 @@ public partial class Between : CanvasLayer
     {
         animationPlayer.Play("dissolve");
         whenChanged = () => GetTree().ChangeSceneToFile(scene);
+        timerAnimation.WaitTime = (float)animationPlayer.CurrentAnimationLength;
         timerAnimation.Start();
     }
 }

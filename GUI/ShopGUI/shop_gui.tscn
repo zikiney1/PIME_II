@@ -70,6 +70,7 @@ text = "Vender"
 [node name="MerchantImage" type="TextureRect" parent="CharacterArea"]
 layout_mode = 2
 texture = ExtResource("3_pfuqk")
+expand_mode = 3
 stretch_mode = 3
 
 [node name="ShopArea" type="PanelContainer" parent="."]

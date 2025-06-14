@@ -1,0 +1,17 @@
+10||972|21|1
+0;2|18;2|17;1|20;1|24;1|6;6|1;2|9;6|4;3|
+100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;
+
+450|89
+Vila Anhau|Floresta ka'a|Vila do Mar|Covil do Golem
+armadura_viva|pocao_jatoba|pocao_protetora|pocao_tucum|pocao_urucum|pocao_uxi
+2_1#_apoena;|;||5_1#_velhaLuna;|6_1#_caua;|;||;|
+
+
+Error:
+
+System.FormatException: The input string '' was not in a correct format.
+   at System.Number.ThrowFormatException[TChar](ReadOnlySpan`1 value)
+   at System.Byte.Parse(String s)
+   at SaveData.LoadSaveFile(Player player) in R:\PIME_II\scripts\SaveData.cs:line 62
+   at SaveData.TryLoadSaveFile(Player p) in R:\PIME_II\scripts\SaveData.cs:line 18

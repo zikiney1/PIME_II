@@ -131,9 +131,10 @@ public static class Events
         });
         EventHandler.AddEvent("side_espiritos_end", false, () =>
         {
-            if (Player.Instance.inventory.Contains(3))
+            if (Player.Instance.inventory.Contains(24,3))
             {
                 Player.Instance.SetDialog("side_1_fantasma", "");
+                Player.Instance.Remove(24, 3);
                 GameManager.Instance.espirito.dialogPath = "";
                 GameManager.Instance.espirito.EventAtEnd = "";
                 CraftingSystem.DiscoverRecipe("pocao_tucum");

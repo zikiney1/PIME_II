@@ -76,7 +76,7 @@ public class InventorySystem {
         }
     }
 
-    public bool Contains(byte id, int quantity = 1) => itemPositions.ContainsKey(id) && items[itemPositions[id]].quantity > 0;
+    public bool Contains(byte id, int quantity = 1) => itemPositions.ContainsKey(id) && items[itemPositions[id]].quantity >= quantity;
     public bool Contains(ItemResource item, int quantity = 1) => Contains(item.id, quantity);
 
     public int GetPosition(ItemResource item) => itemPositions[item.id];
@@ -84,7 +84,7 @@ public class InventorySystem {
 
     public bool IsHandItem(int index)
     {
-        if (index < HandItems.Count) {
+        if (index <= HandItems.Count) {
             if (items[index] == null) return false;
             ItemResource item = items[index].resource;
             return item.type == ItemType.Potion || item.type == ItemType.Seed || item.type == ItemType.Resource;

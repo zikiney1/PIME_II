@@ -1,8 +1,8 @@
-7|0|0||1
-1;2|
+10|0|4888||1
+6;2|1;1|
 100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;
-
-587|2906
-Vila Anhau|Floresta ka'a|Vila do Mar
-armadura_viva|pocao_protetora|pocao_uxi
-2_1#_apoena;|3_1#_apua;vereficaSementes||5_1#_velhaLuna;|6_1#_caua;|;|side_2_moacir;side_moacir_end|side_fantasma;side_espirito_start|
+aroeira;16;18|aroeira;17;18|aroeira;18;17|aroeira;19;16|jatoba;20;37|aroeira;21;22|aroeira;22;21|aroeira;23;17|aroeira;24;15|
+467|87
+Vila Anhau
+armadura_viva|pocao_jatoba|pocao_protetora|pocao_tucum|pocao_urucum|pocao_uxi
+2_1#_apoena;|;||5#_velhaLuna;Quest4#Ended|;|;|side_1_moacir;side_moacir_start|side_fantasma;side_espirito_start|
