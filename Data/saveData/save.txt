@@ -1,8 +1,6 @@
-7|0|0||1
-1;2|
-100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;
+10|0|0|
 
-587|2906
-Vila Anhau|Floresta ka'a|Vila do Mar
-armadura_viva|pocao_protetora|pocao_uxi
-2_1#_apoena;|3_1#_apua;vereficaSementes||5_1#_velhaLuna;|6_1#_caua;|;|side_2_moacir;side_moacir_end|side_fantasma;side_espirito_start|
+
+
+64|128
+

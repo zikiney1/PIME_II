@@ -59,11 +59,14 @@ public static class SaveData
         //atualiza as informacoes do jogador
         string[] pInfo = lines[indexer].Split('|');
         player.lifeSystem = new(byte.Parse(pInfo[0]), 10);
-        player.handItemIndex = byte.Parse(pInfo[1]);
+        if(pInfo[1] != "") player.handItemIndex = byte.Parse(pInfo[1]);
         player.gold = int.Parse(pInfo[2]);
         if (pInfo.Length > 3)
         {
-            if (pInfo[3] != "") player.equipamentSys.AddEquipament(byte.Parse(pInfo[3]));
+            if (pInfo[3] != "")
+            {
+                player.equipamentSys.AddEquipament(byte.Parse(pInfo[3]));
+            }
         }
         if (pInfo.Length > 4)
         {

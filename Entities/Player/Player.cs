@@ -346,8 +346,9 @@ public partial class Player : CharacterBody2D
     /// </remarks>
     void Plant(SoilTileData data)
     {
+        if(data.ContainsPlant() || !canPlant) return;
         ItemResource HandItemResource = UseHandItem(ItemType.Seed);
-        if (HandItemResource == null || data.ContainsPlant() || !canPlant) return;
+        if (HandItemResource == null) return;
         if (HandItemResource.plantData == null) return;
 
         data.SetPlant(HandItemResource.plantData);
@@ -418,6 +419,7 @@ public partial class Player : CharacterBody2D
         GUI.InventoryUpdate();
         return result;
     }
+    public bool Remove(byte id, byte quantity = 1) => Remove(ItemDB.GetItemData(id), quantity);
 
     public void Heal(int amount = 1)
     {
@@ -448,7 +450,7 @@ public partial class Player : CharacterBody2D
         if (index < 0) return;
         if (inventory.IsHandItem(index))
         {
-            HandItem = inventory.HandItems[index];
+            HandItem = inventory[(byte)index];
             GUI.UpdateHandItem(HandItem.name, HandItem.icon, HandItem.quantity);
         }
     }
@@ -498,24 +500,20 @@ public partial class Player : CharacterBody2D
     /// </summary>
     void ChangeHandItem()
     {
-        if (inventory.Length == 0 || inventory.HandItems.Count == 0)
+        handItemIndex++;
+        if (inventory.Length == 0 || handItemIndex >= inventory.Length )
         {
-            GUI.UpdateHandItem("", null, 0);
+            GUI.SetEmptyHandItem();
             return;
         }
-        handItemIndex++;
-        if (handItemIndex >= inventory.HandItems.Count) handItemIndex = 0;
-        HandItem = inventory.HandItems[handItemIndex];
-
-        if (HandItem == null)
+        if (inventory.IsHandItem(handItemIndex))
         {
-            ChangeHandItem();
+            HandItem = inventory[handItemIndex];
+            UpdatePortrait();
         }
         else
         {
-            // if(HandItem.resource.type == ItemType.Ingredient || HandItem.resource.type == ItemType.Equipament)
-            // ChangeHandItem();
-            UpdatePortrait();
+            ChangeHandItem();
         }
 
     }
@@ -563,7 +561,7 @@ public partial class Player : CharacterBody2D
         {
             GUI.UpdateHandItem("", null, 0);
         }
-
+        GUI.InventoryUpdate();
         return handItemData;
     }
 
@@ -585,6 +583,7 @@ public partial class Player : CharacterBody2D
                 state = PlayerState.Idle;
             };
             Position = pos;
+            Camera.Instance.UpdateScreen(pos);
             animationHandler.Play("teleport_end");
             AnimationTimer.WaitTime = animationHandler.GetAnimationTime();
             AnimationTimer.Start();
@@ -646,6 +645,7 @@ public partial class Player : CharacterBody2D
         HitArea.Rotation = 0;
         HitArea.GetNode<CollisionShape2D>("CollisionShape2D").SetDisabled(true);
     }
+
     void Die()
     {
         state = PlayerState.Dead;

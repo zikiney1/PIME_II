@@ -26,17 +26,18 @@ public static class MathM
     /// <returns>Instantaneous profit value (can be fractional).</returns>
     public static int ProfitAtProgress(int progresso, int pico, int maxProgresso)
     {
-        if (progresso < 0 || progresso > maxProgresso || pico < 0 || pico > maxProgresso)
-            return 0;
+        if (progresso > maxProgresso || progresso == 0) return 0;
+        // 1 - 0
+        // 2 - pico/4
+        // 3 - pico/2
+        // 4 - pico
+        // 5 - pico/4
+        // 6 - 0
 
-        if (progresso <= pico)
-        {
-            return (int)Math.Floor((double)progresso / pico);
-        }
-        else
-        {
-            return (int)Math.Floor((double)((maxProgresso - progresso) / (maxProgresso - pico)));
-        }
+        return (int)((pico * (float)progresso / maxProgresso) * 2) - 1;
+
+        // return (int)(pico * (float)progresso / maxProgresso);
+
     }
 
     public static Vector2 RoundedVector(Vector2 vector) => new Vector2(Mathf.Round(vector.X), Mathf.Round(vector.Y));
