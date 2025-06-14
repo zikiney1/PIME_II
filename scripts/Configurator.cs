@@ -19,15 +19,11 @@ public class Configurator
     {
         if(Instance != null) return;
         Instance = this;
-        if (FileAccess.FileExists(configPath))
+        if (!FileAccess.FileExists(configPath))
         {
-            configData = CFGParser.Parse(configPath);
+            DefaultConfig();
         }
-        else
-        {
-            configData = DefaultConfig();
-            SaveConfig();
-        }
+        configData = CFGParser.Parse(configPath);
 
         SetKeys();
     }
@@ -53,22 +49,12 @@ public class Configurator
     /// <item><term>CHANGE_ITEM</term><description>T key</description></item>
     /// </list>
     /// </summary>
-    public CfgData DefaultConfig()
+    public void DefaultConfig()
     {
-        CfgData data = new CfgData();
-        data.Add(new Section(KEYCONFIG));
-        data[KEYCONFIG].Add("LEFT", "Left,D");
-        data[KEYCONFIG].Add("RIGHT", "Right,A");
-        data[KEYCONFIG].Add("UP", "Up,W");
-        data[KEYCONFIG].Add("DOWN", "Down,S");
-        data[KEYCONFIG].Add("ATTACK", "Space");
-        data[KEYCONFIG].Add("DEFEND", "Shift");
-        data[KEYCONFIG].Add("USE", "E");
-        data[KEYCONFIG].Add("CONFIRM", "Enter");
-        data[KEYCONFIG].Add("INVENTORY", "Tab");
-        data[KEYCONFIG].Add("CHANGE_ITEM", "T");
-
-        return data;
+        string data = "[KEY_CONFIG]\nLEFT=A\nRIGHT=D\nUP=W\nDOWN=S\nATTACK=Space\nDEFEND=Shift\nUSE_POTION=Q\nUSE=E\nCONFIRM=Enter\nINVENTORY=Tab\nCHANGE_ITEM=T\nCHANGE_WEAPON=H\n[AUDIO]\nMASTER=0,5\nMUSICA=0,5\nSFX=0,5";
+        FileAccess file = FileAccess.Open(configPath, FileAccess.ModeFlags.Write);
+        file.StoreString(data);
+        file.Close();
     }
     public string KeyConfig(string key)
     {

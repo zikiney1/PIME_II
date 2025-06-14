@@ -161,7 +161,7 @@ public partial class Player : CharacterBody2D
 
         animationHandler.Play("idle");
 
-        if (GlobalPosition == new Vector2(64, 128))
+        if(MathM.IsInRange(GlobalPosition, new Vector2(64, 128), 32))
             EventHandler.EmitEvent("OnStart");
 
     }

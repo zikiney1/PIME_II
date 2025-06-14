@@ -1,3 +1,5 @@
 para salvar, se aproxime no totem e precione E
 para construir um item, chegue na bancada de trabalho e tambem precione E
 de inicio você não tera nenhuma receita, ao adiquirir, elas estarão disponiveis
+para plantar, clique com botão esquerdo do mouse no solo para colher a planta
+e para planta selecione a semente e com o botão direito em cima do solo ele irá plantar

@@ -1,10 +1,11 @@
 arana: Você é Thauan Certo?
 thauan: isso mesmo, e você deve ser Aranã
 arana: Como você sabe disso?
-thauan: A velha Lua não para de falar de você.
+thauan: A velha Luna não para de falar de você.
 thauan: acredito que você quer saber como derrotar o Golem
 arana: isso mesmo.
 thauan: eu sei como te ajudar a derrotar o Golem, mas você tera que ter um pouco de paciência.
 arana: em que sentido.
 thauan: aqui, a receita que meus antepassados passam por gerações, uma receita de como fazer a armadura viva.
 thauan: com isso você terá chance de de derrotar aquel Golem. Desejo sorte na sua jornada.
+thauan:Boa sorte com sua jornada, Você vai precisar.

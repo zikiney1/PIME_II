@@ -8,6 +8,10 @@ public partial class MenuPrincipal : Control
     Configuracoes configuracoes;
 
     // public static MenuPrincipal Instance { get; private set; }
+    public override void _EnterTree()
+    {
+        CheckFiles();
+    }
 
     public override void _Ready()
     {
@@ -68,9 +72,35 @@ public partial class MenuPrincipal : Control
     }
 
 
+
     void confirmNovo()
     {
         SaveData.CreateEmptySaveFile();
         Between.instance.ChangeScene("res://Level/Level1.tscn");
+    }
+    
+    public void CheckFiles()
+    {
+        const string relativePath = "user://Data/saveData/";
+
+        if (!DirAccess.DirExistsAbsolute(relativePath))
+        {
+            FileAccess file = FileAccess.Open("user://ata.txt", FileAccess.ModeFlags.Write);
+            string err;
+            var error = DirAccess.MakeDirAbsolute(relativePath);
+
+            if (error != Error.Ok)
+            {
+                err = "Failed to create directory: " + relativePath + " Error: " + error;
+            }
+            else
+            {
+                err = "Directory created at: " + relativePath;
+            }
+            Configurator cfg = new();
+            file.StoreString(err);
+            file.Close();
+
+        }
     }
 }

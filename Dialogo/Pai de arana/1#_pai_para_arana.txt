@@ -1,3 +1,9 @@
-pai_de_arana: Aranã, obrigado por vir, tenho um pedido para te fazer.
-arana: é sobre essa planta que assolou nosso plantio?
-pai_de_arana: Isso, e eu preciso que você fale com o Cacique Apoena sobre isso.
+pai_de_arana:Aranã, obrigado por vir, nossa vila passa por grandes perigos.
+arana:Sim, vim o mais rapido que pude, mas por que precisa de mim tanto assim, e onde está as pessoas?
+pai_de_arana:Estão com medo, desde que essas plantas começaram a invadir nossa vila...
+pai_de_arana:As coisas não estão sendo faceis por aqui.
+pai_de_arana:Eu preciso que você ajude a gente mas não com suas habilidades de curandeiro, mas sim com sua força.
+arana: mas o que aconteceu com o resto dos guerreiros, por que eles não foram atras?
+pai_de_arana:Eles foram... mas não voltaram, fale com Apoena, ele provavelmente está ao lado vigiando a vila.
+arana:Verei o que posso fazer.
+pai_de_arana:Obrigado arana, que os espiritos estejam com você

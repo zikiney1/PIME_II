@@ -1,6 +1,8 @@
-apoena: Olá Aranã, como posso ajudar?
-arana: Eu preciso de ajuda, como eu faço para impedir essa planta de assolar nossas terras?
-apoena: Temo que a resposta seja algo que talvez você não consiga resolver sozinha, peça ajuda a Apuã para te guiar nessa jornada.
+apoena:Olá Aranã, quanto tempo! como posso ajudar?
+arana:Eu ouvi que está tendo problemas com essa infestação de plantas sangue-suga. Tem alguma coisa que posso fazer para impedir o avanço dessas plantas?
+apoena:Temo que a resposta seja algo que talvez você não consiga resolver sozinha, peça ajuda a Apuã para te guiar nessa jornada.
+apoena:Ele está cuidando dos nossos campos ferteis, vai la e faça uma visita.
 apoena: A propósito, aqui, pegue meu equipamento, você ira precisar
 Você conseguiu equipamento
 aperte Espaço para fazer o atacar e Shift para se defender
+para trocar para a zarabatana aperte H, e clique na direção em que irá atirar
